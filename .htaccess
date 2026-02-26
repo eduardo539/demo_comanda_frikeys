@@ -1,0 +1,5 @@
+# Activar el motor de reescritura de URLs
+RewriteEngine On
+
+# 1. cambiar nombre a las rutas
+RewriteRule ^autenticacion$ app/auth_login.php [L,QSA]

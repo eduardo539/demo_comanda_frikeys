@@ -22,7 +22,7 @@
                 <p class="text-white-50 small">Panel de Administración y Cocina</p>
             </div>
 
-            <form action="app/auth_login.php" method="POST">
+            <form action="autenticacion" method="POST">
                 
                 <div class="mb-4">
                     <label class="form-label small text-white-50 mb-1 ps-1">Usuario</label>
