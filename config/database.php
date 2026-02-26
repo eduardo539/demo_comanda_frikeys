@@ -20,18 +20,18 @@ $pass = $env['DB_PASSWORD'];
 $port = $env['DB_PORT'] ?? 3306;
 
 
-// 3. Creamos la conexión con CNN (La forma más segura en PHP)
+// 3. Creamos la conexión con PDO (La forma más segura en PHP)
 try {
     $dsn = "mysql:host=$host;port=$port;dbname=$db;charset=utf8mb4";
     $opciones = [
-        CNN::ATTR_ERRMODE            => CNN::ERRMODE_EXCEPTION, // Muestra errores de SQL
-        CNN::ATTR_DEFAULT_FETCH_MODE => CNN::FETCH_ASSOC,       // Devuelve arrays limpios
-        CNN::ATTR_EMULATE_PREPARES   => false,                  // Mayor seguridad
+        PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION, // Muestra errores de SQL
+        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,       // Devuelve arrays limpios
+        PDO::ATTR_EMULATE_PREPARES   => false,                  // Mayor seguridad
     ];
     
-    $cnn = new CNN($dsn, $user, $pass, $opciones);
+    $pdo = new PDO($dsn, $user, $pass, $opciones);
     
-} catch (CNNException $e) {
+} catch (PDOException $e) {
     die("Error de conexión a la Base de Datos: " . $e->getMessage());
 }
 
