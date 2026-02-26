@@ -1,0 +1,100 @@
+/* --- ESTILOS BASE --- */
+body, html {
+    height: 100%;
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    overflow: hidden; 
+}
+
+/* --- FONDO CON OVERLAY OSCURO --- */
+.bg-login {
+    background: linear-gradient(rgba(15, 23, 42, 0.7), rgba(15, 23, 42, 0.7)), 
+                url('https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?q=80&w=2070&auto=format&fit=crop') no-repeat center center;
+    background-size: cover;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* --- TARJETA GLASSMORPHISM --- */
+.glass-card {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 24px;
+    padding: 3rem 2rem;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+    color: white;
+    transition: transform 0.3s ease;
+}
+
+.glass-card:hover {
+    transform: translateY(-5px);
+}
+
+/* --- ESTILOS DEL FORMULARIO --- */
+/* --- ESTILOS DEL LOGO --- */
+.brand-logo {
+    width: 100px;
+    height: 100px;
+    object-fit: cover; /* Evita que la imagen se estire o aplaste */
+    border-radius: 50%; /* Hace que el logo se vea circular (muy elegante) */
+    border: 3px solid #f97316; /* Borde naranja a juego con el botón */
+    box-shadow: 0 8px 20px rgba(249, 115, 22, 0.3); /* Brillo suave */
+    transition: transform 0.3s ease;
+}
+
+.brand-logo:hover {
+    transform: scale(1.05); /* Pequeño efecto al pasar el mouse */
+}
+
+.form-control {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    padding: 0.8rem 1rem;
+    border-radius: 12px;
+}
+
+.form-control::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.form-control:focus {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: #f97316;
+    color: white;
+    box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.15);
+}
+
+.input-group-text {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: rgba(255, 255, 255, 0.7);
+    border-radius: 12px;
+    cursor: pointer;
+}
+
+/* --- BOTÓN PRINCIPAL --- */
+.btn-login {
+    background: #f97316;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 0.8rem;
+    font-weight: 600;
+    font-size: 1.1rem;
+    letter-spacing: 0.5px;
+    transition: all 0.3s;
+}
+
+.btn-login:hover {
+    background: #ea580c;
+    transform: scale(1.02);
+    box-shadow: 0 10px 20px rgba(249, 115, 22, 0.3);
+    color: white;
+}
