@@ -1,3 +1,51 @@
+
+<?php
+session_start();
+
+// Esto detecta si estás en XAMPP (carpeta) o en un Hosting (raíz)
+require_once __DIR__ . '/config/config.php';
+// ----------------------------------------------------
+
+// 1. Atrapamos lo que sea que mandó el .htaccess
+$pagina_solicitada = $_GET['page'] ?? '';
+
+// 2. EL INTERRUPTOR: Si el usuario escribió CUALQUIER COSA en la URL (que no sea la raíz)
+if ($pagina_solicitada !== '') {
+    
+    // Llamamos a nuestro cerebro
+    require_once __DIR__ . '/core/router.php';
+    
+    // El router nos devuelve el 404.php o la vista correcta
+    $archivo_vista = despacharRuta($pagina_solicitada);
+    
+    // Mostramos la vista en pantalla
+    include $archivo_vista;
+    
+    // ¡DETENEMOS EL CÓDIGO AQUÍ! Para que no se dibuje el login de abajo
+    exit; 
+}
+
+
+// =================================================================
+// EL DIRECTOR DE TRÁFICO:
+// =================================================================
+if (isset($_SESSION['nombre_rol'])) {
+    
+    $rol = $_SESSION['nombre_rol'];
+
+    if ($rol === 'ADMINISTRADOR') {
+        header("Location: " . RUTA_BASE . "admin"); 
+    } 
+    else if ($rol === 'COCINA') {
+        header("Location: " . RUTA_BASE . "cocina");    
+    } 
+    
+    exit;
+}
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -22,7 +70,7 @@
                 <p class="text-white-50 small">Panel de Administración y Cocina</p>
             </div>
 
-            <form action="autenticacion" method="POST">
+            <form action="iniciar" method="POST">
                 
                 <div class="mb-4">
                     <label class="form-label small text-white-50 mb-1 ps-1">Usuario</label>

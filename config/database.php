@@ -1,6 +1,5 @@
 <?php
 
-
 // 1. Leemos el archivo .env que está en la carpeta anterior (la raíz)
 $envPath = __DIR__ . '/../.env';
 

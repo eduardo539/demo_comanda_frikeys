@@ -1,0 +1,60 @@
+:root {
+    --frikeys-blue: #4fc3d0;
+    --frikeys-gold: #9e763b;
+    --frikeys-dark: #2d1b0d;
+}
+
+body { background-color: #fdfdfd; font-family: 'Poppins', sans-serif; }
+
+.brand-font { font-family: 'Pacifico', cursive; color: white; font-size: 2.8rem; margin: 0; }
+.brand-subtitle { color: white; text-transform: uppercase; letter-spacing: 2px; font-size: 0.8rem; }
+
+.menu-header {
+    background-color: var(--frikeys-blue);
+    padding: 25px 0;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+/* Navegación PC */
+.desktop-nav {
+    display: flex;
+    gap: 10px;
+    background: rgba(255, 255, 255, 0.15);
+    padding: 8px 15px;
+    border-radius: 50px;
+}
+.desktop-nav .cat-btn {
+    border: none; background: transparent; color: white;
+    padding: 5px 15px; border-radius: 20px; transition: 0.3s;
+}
+.desktop-nav .cat-btn.active { background: white; color: var(--frikeys-blue); font-weight: 600; }
+
+/* Botón Sándwich Móvil */
+.btn-menu-categorias {
+    background: white; border: none; color: var(--frikeys-blue);
+    width: 45px; height: 45px; border-radius: 12px;
+    font-size: 1.5rem; display: flex; align-items: center; justify-content: center;
+}
+
+/* Tarjetas */
+.frikeys-card {
+    border: none; border-radius: 20px; overflow: hidden;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.05); transition: 0.3s;
+}
+.img-wrapper { height: 180px; }
+.img-wrapper img { width: 100%; height: 100%; object-fit: cover; }
+.price { font-size: 1.3rem; font-weight: 700; color: var(--frikeys-gold); }
+.btn-frikeys {
+    background: var(--frikeys-gold); color: white; border: none;
+    padding: 6px 15px; border-radius: 12px;
+}
+
+/* Carrito */
+.cart-container {
+    position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+    background: var(--frikeys-dark); color: white;
+    display: flex; align-items: center; gap: 15px;
+    padding: 10px 20px; border-radius: 50px; width: 90%; max-width: 450px;
+    z-index: 1050; justify-content: space-between;
+}
+.btn-ver-pedido { background: var(--frikeys-blue); border: none; color: white; padding: 5px 15px; border-radius: 50px; }
