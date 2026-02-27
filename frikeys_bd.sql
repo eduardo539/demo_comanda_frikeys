@@ -69,13 +69,13 @@ CREATE TABLE `estado_pedido` (
   `estado_id` int(11) NOT NULL AUTO_INCREMENT,
   `estado_pedido` varchar(50) NOT NULL,
   PRIMARY KEY (`estado_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `estado_pedido` */
 
 LOCK TABLES `estado_pedido` WRITE;
 
-insert  into `estado_pedido`(`estado_id`,`estado_pedido`) values (1,'RECIBIDO'),(2,'EN PREPARACIÓN'),(3,'LISTO');
+insert  into `estado_pedido`(`estado_id`,`estado_pedido`) values (1,'RECIBIDO'),(2,'EN PREPARACIÓN'),(3,'LISTO'),(4,'CANCELADO');
 
 UNLOCK TABLES;
 
@@ -107,11 +107,13 @@ CREATE TABLE `mesa` (
   `uuid` varchar(500) NOT NULL,
   `qr_img` text NOT NULL,
   PRIMARY KEY (`mesa_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `mesa` */
 
 LOCK TABLES `mesa` WRITE;
+
+insert  into `mesa`(`mesa_id`,`nombre_mesa`,`uuid`,`qr_img`) values (1,'MESA 1','123456','');
 
 UNLOCK TABLES;
 
@@ -148,13 +150,13 @@ CREATE TABLE `roles` (
   `rol_id` int(11) NOT NULL AUTO_INCREMENT,
   `nombre_rol` varchar(150) NOT NULL,
   PRIMARY KEY (`rol_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `roles` */
 
 LOCK TABLES `roles` WRITE;
 
-insert  into `roles`(`rol_id`,`nombre_rol`) values (1,'ADMINISTRADOR');
+insert  into `roles`(`rol_id`,`nombre_rol`) values (1,'ADMINISTRADOR'),(2,'COCINA');
 
 UNLOCK TABLES;
 
