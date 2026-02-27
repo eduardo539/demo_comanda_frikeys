@@ -2,34 +2,52 @@
 // app/auth_login.php
 session_start();
 
+require_once __DIR__ . '/../config/config.php';
+require_once __DIR__ . '/../config/database.php';
+require_once __DIR__ . '/../core/consultas.php';
+
+
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header("Location: ../index.php?error=acceso_denegado");
+    // CORRECCIÓN 1: Evitar que salga a XAMPP si intentan entrar directo
+    header("Location: " . RUTA_BASE . "?error=acceso_denegado");
     exit;
 }
 
-// 1. Llamamos a los archivos exactamente como definiste tu estructura
-require_once __DIR__ . '/../config/database.php';
-require_once __DIR__ . '/../core/consultas.php';
 
 $user_input = $_POST['user'] ?? '';
 $pass_input = $_POST['pass'] ?? '';
 
-// 2. Usamos la función de consultas.php
 $usuario_db = obtenerUsuarioPorUsername($pdo, $user_input);
 
-// 3. Lógica de validación
-if ($usuario_db && $usuario_db['password'] === $pass_input) {
+// Lógica de validación
+if ($usuario_db && $usuario_db['passw'] === $pass_input) {
     
-    $_SESSION['usuario_id']   = $usuario_db['id'];
-    $_SESSION['usuario_nombre'] = $usuario_db['username'];
-    $_SESSION['usuario_rol']  = $usuario_db['rol'];
+    // Guardamos los datos en la "memoria"
+    $_SESSION['user_id']    = $usuario_db['user_id'];
+    $_SESSION['Nombre']     = $usuario_db['Nombre'];
+    $_SESSION['usuario']    = $usuario_db['usuario'];
+    $_SESSION['nombre_rol'] = $usuario_db['nombre_rol'];
     
-    // Interacción entre ventanas (redirige usando el router)
-    header("Location: /dashboard");
+    $rol = $_SESSION['nombre_rol'];
+
+    if ($rol === 'ADMINISTRADOR') {
+        // CORRECCIÓN 2: Mandarlo a la ruta de admin de TU proyecto
+        header("Location: " . RUTA_BASE . "admin"); 
+    } 
+    else if ($rol === 'COCINA') {
+        // CORRECCIÓN 3: Mandarlo a cocina de TU proyecto
+        header("Location: " . RUTA_BASE . "cocina");
+    } 
+    else {
+        // CORRECCIÓN 4: Error de rol dentro de TU proyecto
+        header("Location: " . RUTA_BASE . "?error=rol_desconocido");
+    }
+    
     exit;
 
 } else {
-    header("Location: /?error=credenciales_invalidas");
+    // CORRECCIÓN 5: ¡Este es el que te fallaba! Regresa a TU login con error
+    header("Location: " . RUTA_BASE . "?error=credenciales_invalidas");
     exit;
 }
 ?>
