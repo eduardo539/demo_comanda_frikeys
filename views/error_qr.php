@@ -98,7 +98,8 @@
         <p class="error-text">
             Lo sentimos, el código QR escaneado no es válido o ha expirado. 
             <br><br>
-            <strong>Por favor, póngase en contacto con el personal del restaurante para recibir asistencia.</strong>
+            <strong>Vuelva a escanear el codigo QR, en caso de no funcionar
+                por favor, póngase en contacto con el personal del restaurante para recibir asistencia.</strong>
         </p>
 
     </div>

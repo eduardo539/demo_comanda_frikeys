@@ -18,7 +18,7 @@ function obtenerUsuarioPorUsername($PDO, $username)
 
 function obtenerNumeroMesa($PDO, $uuid)
 {
-    $stmt = $PDO->prepare("SELECT mesa_id, nombre_mesa FROM mesa
+    $stmt = $PDO->prepare("SELECT mesa_id, nombre_mesa, uuid FROM mesa
                             WHERE uuid = ?;");
     $stmt->execute([$uuid]);
     return $stmt->fetch();

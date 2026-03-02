@@ -1,15 +1,61 @@
+<?php
+
+// Definimos el límite: 15 minutos * 60 segundos = 900 segundos
+$minutos_limite = 20;
+$segundos_limite = $minutos_limite * 60;
+
+
+if (!defined('RUTA_BASE')) {
+    header("Location: ../../"); 
+    exit;
+}
+
+// Si NO hay sesión iniciada O el rol NO es el de Administrador
+if (!isset($_SESSION['uuid'])) {
+    header("Location: " . RUTA_BASE . "error_scan");
+    exit;
+}
+
+
+if (isset($_SESSION['creacion_sesion'])) {
+    $segundos_transcurridos = time() - $_SESSION['creacion_sesion'];
+
+    if ($segundos_transcurridos > $segundos_limite) {
+        // ¡TIEMPO AGOTADO! 
+        // Limpiamos la sesión para que tenga que escanear de nuevo
+        session_unset();
+        session_destroy();
+        
+        // Redirigimos a la página de error con un mensaje específico
+        header("Location: " . RUTA_BASE . "error_scan");
+        exit;
+    }
+}
+
+
+$nombreMesa = $_SESSION['nombre_mesa'] ?? 'Mesa Desconocida';
+$idMesa = $_SESSION['mesa_id'] ?? 0;
+
+
+?><script>alert("Nombre de la mesa: <?php echo htmlspecialchars($nombreMesa); ?>");</script><?php
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Menú | Frikeys Café Restaurante</title>
-    
+
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="../../public/assets/css/menu_cliente.css">
+    <link rel="stylesheet" href="<?php echo RUTA_BASE; ?>public/assets/css/menu_cliente.css">
 </head>
+
 <body>
 
     <header class="menu-header">
@@ -119,4 +165,5 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../../public/assets/js/js_menu_cliente.js"></script>
 </body>
+
 </html>

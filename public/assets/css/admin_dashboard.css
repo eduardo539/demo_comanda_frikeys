@@ -1,0 +1,228 @@
+:root {
+    --sidebar-width: 280px;
+    --primary-color: #4fc3d0;
+    --accent-color: #38b2ac;
+    --dark-bg: #111827; /* Gris azulado muy oscuro */
+    --sidebar-item-hover: rgba(79, 195, 208, 0.15);
+    --glass: rgba(255, 255, 255, 0.03);
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f3f4f6;
+    color: #1f2937;
+}
+
+/* Sidebar Estilizado */
+#sidebar {
+    min-width: var(--sidebar-width);
+    max-width: var(--sidebar-width);
+    height: 100vh; /* Altura total de la ventana */
+    background: var(--dark-bg);
+    position: fixed;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1000;
+    box-shadow: 4px 0 10px rgba(0,0,0,0.1);
+    
+    /* ACTIVAR SCROLL */
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-header {
+    padding: 30px 20px;
+    text-align: center;
+}
+
+/* Contenedor de las opciones de menú con scroll */
+.sidebar-menu-container {
+    flex-grow: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-bottom: 20px;
+}
+
+/* Personalización del Scrollbar para que se vea moderno */
+.sidebar-menu-container::-webkit-scrollbar {
+    width: 5px;
+}
+
+.sidebar-menu-container::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.sidebar-menu-container::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+}
+
+.sidebar-menu-container::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-color);
+}
+
+/* Separadores de sección (Opcional, para organizar tantas opciones) */
+.menu-label {
+    color: #4b5563;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    padding: 20px 25px 10px;
+    display: block;
+}
+
+/* Card de Usuario bajo el Logo */
+.user-profile-section {
+    padding: 15px;
+    margin: 0 15px 25px 15px;
+    background: var(--glass);
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 16px;
+    text-align: center;
+}
+
+.user-avatar {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 10px;
+    font-size: 1.5rem;
+    color: white;
+    font-weight: bold;
+    box-shadow: 0 4px 15px rgba(79, 195, 208, 0.4);
+}
+
+.user-name {
+    color: white;
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin-bottom: 2px;
+    display: block;
+}
+
+.user-role {
+    color: var(--primary-color);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Navegación */
+#sidebar ul li a {
+    padding: 12px 25px;
+    margin: 4px 15px;
+    display: flex;
+    align-items: center;
+    color: #9ca3af;
+    text-decoration: none;
+    border-radius: 12px;
+    transition: 0.3s;
+}
+
+#sidebar ul li a i {
+    font-size: 1.25rem;
+    margin-right: 12px;
+}
+
+#sidebar ul li a:hover, 
+#sidebar ul li a.active {
+    background: var(--sidebar-item-hover);
+    color: var(--primary-color);
+}
+
+#sidebar ul li a.active {
+    background: var(--primary-color);
+    color: white;
+    box-shadow: 0 4px 12px rgba(79, 195, 208, 0.3);
+}
+
+/* Área de Contenido */
+#content {
+    width: calc(100% - var(--sidebar-width));
+    margin-left: var(--sidebar-width);
+    padding: 40px;
+    transition: all 0.4s;
+}
+
+
+/* Colores auxiliares para categorías */
+.bg-purple-subtle { background-color: #f3e8ff !important; }
+.text-purple { color: #7e22ce !important; }
+
+/* Estilo de los iconos de KPI */
+.icon-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 60px;
+}
+
+/* Tarjetas de Accesos Directos (Shortcut Cards) */
+.shortcut-card {
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: 1px solid transparent !important;
+}
+
+.shortcut-card:hover {
+    transform: translateY(-8px);
+    border-color: var(--primary-color) !important;
+    background-color: #fff;
+}
+
+.shortcut-icon {
+    width: 70px;
+    height: 70px;
+    background-color: rgba(79, 195, 208, 0.15);
+    color: var(--primary-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 20px;
+    font-size: 1.8rem;
+    transition: 0.3s;
+}
+
+.shortcut-card:hover .shortcut-icon {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+
+
+/* Círculos para los contadores */
+.icon-circle {
+    width: 65px;
+    height: 65px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-size: 1.5rem;
+}
+
+/* Efecto hover suave para las tarjetas de contadores */
+.card {
+    transition: transform 0.3s ease;
+}
+.card:hover {
+    transform: scale(1.02);
+}
+
+
+
+/* Responsive */
+@media (max-width: 992px) {
+    #sidebar { margin-left: calc(-1 * var(--sidebar-width)); }
+    #sidebar.active { margin-left: 0; }
+    #content { width: 100%; margin-left: 0; }
+}
+
+
+
+
