@@ -1,0 +1,89 @@
+/* VARIABLES DE DISEÑO */
+:root {
+  --primary-soft: rgba(79, 195, 208, 0.1);
+  --danger-soft: rgba(220, 53, 69, 0.1);
+}
+
+/* ESTILO DE LA CARD */
+.mesa-card {
+  border-radius: 30px;
+  background: #ffffff;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.mesa-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12) !important;
+}
+
+/* CONTENEDOR DEL ICONO GIGANTE */
+.mesa-icon-wrapper {
+  width: 100px;
+  height: 100px;
+  background: var(--primary-soft);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3.5rem;
+  transition: 0.3s;
+}
+
+.mesa-card:hover .mesa-icon-wrapper {
+  background: var(--primary-color);
+  color: white !important;
+}
+
+.mesa-card:hover .mesa-icon-wrapper i {
+  color: white !important;
+}
+
+/* BOTONES DE ACCIÓN */
+.btn-action {
+  width: 55px;
+  height: 55px;
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  border: none;
+  transition: 0.2s;
+}
+
+.btn-edit {
+  background: var(--primary-soft);
+  color: var(--primary-color);
+}
+
+.btn-edit:hover {
+  background: var(--primary-color);
+  color: white;
+}
+
+.btn-delete {
+  background: var(--danger-soft);
+  color: #dc3545;
+}
+
+.btn-delete:hover {
+  background: #dc3545;
+  color: white;
+}
+
+/* TIPOGRAFÍA */
+.tracking-wider {
+  letter-spacing: 0.1em;
+}
+
+/* AJUSTES RESPONSIVE */
+@media (max-width: 576px) {
+  .mesa-card {
+    border-radius: 20px;
+  }
+  .mesa-icon-wrapper {
+    width: 80px;
+    height: 80px;
+    font-size: 2.5rem;
+  }
+}

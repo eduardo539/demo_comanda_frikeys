@@ -1,0 +1,61 @@
+/* Diseño de Tarjetas Estilo Glass/Shadow */
+.status-card {
+  border-radius: 25px;
+  background: #ffffff;
+  transition: all 0.3s ease;
+}
+.status-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Bordes acentuados */
+.border-top-custom-success {
+  border-top: 6px solid #198754 !important;
+}
+.border-top-custom-danger {
+  border-top: 6px solid #dc3545 !important;
+}
+
+/* Iconos */
+.status-icon-wrapper {
+  width: 75px;
+  height: 75px;
+  border-radius: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+}
+
+/* Botones de acción */
+.btn-action-small {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  transition: 0.2s;
+}
+.btn-edit-status {
+  background: #eef2ff;
+  color: #4f46e5;
+}
+.btn-edit-status:hover {
+  background: #4f46e5;
+  color: white;
+}
+.btn-delete-status {
+  background: #fff1f2;
+  color: #e11d48;
+}
+.btn-delete-status:hover {
+  background: #e11d48;
+  color: white;
+}
+
+.tracking-wider {
+  letter-spacing: 0.12em;
+}

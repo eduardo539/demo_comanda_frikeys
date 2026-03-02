@@ -1,0 +1,57 @@
+/* Diseño de la Tarjeta */
+.product-card {
+  border-radius: 25px;
+  transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+  background: #fff;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12) !important;
+}
+
+/* Etiqueta de Precio */
+.price-tag {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  background: var(--primary-color, #4fc3d0);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 10px;
+  font-weight: 800;
+  font-size: 0.85rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Select de Filtro */
+.form-select-lg {
+  font-size: 1rem;
+  border-color: #eee;
+}
+
+.form-select-lg:focus {
+  border-color: var(--primary-color);
+  box-shadow: none;
+}
+
+.text-truncate-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Icon box del filtro */
+.icon-box {
+  display: inline-flex;
+}
+
+@media (max-width: 576px) {
+  .product-card .col-4 {
+    min-height: 140px;
+  }
+  .card-body {
+    padding: 1.25rem !important;
+  }
+}
