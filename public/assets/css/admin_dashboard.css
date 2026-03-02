@@ -17,16 +17,19 @@ body {
 #sidebar {
     min-width: var(--sidebar-width);
     max-width: var(--sidebar-width);
-    height: 100vh; /* Altura total de la ventana */
+    height: 100vh; 
     background: var(--dark-bg);
     position: fixed;
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     z-index: 1000;
     box-shadow: 4px 0 10px rgba(0,0,0,0.1);
     
-    /* ACTIVAR SCROLL */
+    /* CORRECCIÓN FLEXBOX */
     display: flex;
     flex-direction: column;
+    overflow: hidden; /* Evita que el sidebar mismo crezca */
+    left: 0;
+    top: 0;
 }
 
 .sidebar-header {
@@ -36,15 +39,27 @@ body {
 
 /* Contenedor de las opciones de menú con scroll */
 .sidebar-menu-container {
-    flex-grow: 1;
-    overflow-y: auto;
+    flex: 1 1 auto; /* Permite que crezca y se encoja */
+    overflow-y: auto; /* Activa el scroll interno */
     overflow-x: hidden;
-    padding-bottom: 20px;
+    padding-bottom: 20px; /* Reducimos para que no flote tanto */
+    scrollbar-width: thin;
+    display: block; /* Asegura comportamiento de bloque */
+}
+
+/* Estilo para el footer fijo */
+.sidebar-footer {
+    background: var(--dark-bg);
+    margin-top: auto; /* Empuja al fondo */
+    padding: 15px;
+    width: 100%;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    flex-shrink: 0; /* PROHIBIDO encogerse o desaparecer */
 }
 
 /* Personalización del Scrollbar para que se vea moderno */
 .sidebar-menu-container::-webkit-scrollbar {
-    width: 5px;
+    width: 4px;
 }
 
 .sidebar-menu-container::-webkit-scrollbar-track {
@@ -149,51 +164,6 @@ body {
 }
 
 
-/* Colores auxiliares para categorías */
-.bg-purple-subtle { background-color: #f3e8ff !important; }
-.text-purple { color: #7e22ce !important; }
-
-/* Estilo de los iconos de KPI */
-.icon-box {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 60px;
-    height: 60px;
-}
-
-/* Tarjetas de Accesos Directos (Shortcut Cards) */
-.shortcut-card {
-    transition: all 0.3s ease;
-    cursor: pointer;
-    border: 1px solid transparent !important;
-}
-
-.shortcut-card:hover {
-    transform: translateY(-8px);
-    border-color: var(--primary-color) !important;
-    background-color: #fff;
-}
-
-.shortcut-icon {
-    width: 70px;
-    height: 70px;
-    background-color: rgba(79, 195, 208, 0.15);
-    color: var(--primary-color);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 20px;
-    font-size: 1.8rem;
-    transition: 0.3s;
-}
-
-.shortcut-card:hover .shortcut-icon {
-    background-color: var(--primary-color);
-    color: white;
-}
-
-
 
 /* Círculos para los contadores */
 .icon-circle {
@@ -218,11 +188,18 @@ body {
 
 /* Responsive */
 @media (max-width: 992px) {
-    #sidebar { margin-left: calc(-1 * var(--sidebar-width)); }
-    #sidebar.active { margin-left: 0; }
-    #content { width: 100%; margin-left: 0; }
+    #sidebar { 
+        margin-left: calc(-1 * var(--sidebar-width)); 
+        height: 100vh; /* Reafirmamos la altura en móvil */
+    }
+    #sidebar.active { 
+        margin-left: 0; 
+    }
+    #content { 
+        width: 100%; 
+        margin-left: 0; 
+        padding: 20px; /* Menos padding en móvil para ganar espacio */
+    }
 }
-
-
 
 

@@ -15,7 +15,13 @@ function despacharRuta($pagina)
         'escanear' => 'app/consultar_mesa.php',
         'error_scan' => 'views/error_qr.php',
         'logout' => 'app/cerrar_sesion.php',
-        'dashboard_admin' => 'views/modulos/dashboard_admin.php'
+        'dashboard_admin' => 'views/modulos/dashboard_admin.php',
+        'gestionar_mesas' => 'views/modulos/gestionar_mesas.php',
+        'gestion_estados' => 'views/modulos/gestion_estados.php',
+        'gestion_productos' => 'views/modulos/gestion_productos.php',
+        'gestion_categorias' => 'views/modulos/gestion_categorias.php',
+        'gestion_usuarios' => 'views/modulos/gestion_usuarios.php',
+        'gestion_roles' => 'views/modulos/gestion_roles.php',
     ];
 
     // ==========================================

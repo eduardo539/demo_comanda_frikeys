@@ -71,3 +71,13 @@ document.addEventListener("DOMContentLoaded", function () {
     .catch(err => console.error("Error crítico:", err));
 }
 });
+
+
+
+
+
+
+
+
+
+

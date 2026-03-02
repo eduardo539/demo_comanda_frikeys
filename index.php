@@ -56,6 +56,8 @@ if (isset($_SESSION['nombre_rol'])) {
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
+    <link rel="shortcut icon" href="<?php echo RUTA_BASE; ?>public/assets/img/logo_ico.ico" type="image/x-icon">
+    
     <link rel="stylesheet" href="public/assets/css/login.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 

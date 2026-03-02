@@ -1,0 +1,65 @@
+/* Diseño de la Tarjeta de Rol */
+.role-card {
+  border-radius: 28px;
+  background: #ffffff;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.role-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12) !important;
+}
+
+/* Icono de Rol */
+.role-icon-bg {
+  width: 85px;
+  height: 85px;
+  border-radius: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.8rem;
+  transition: 0.3s;
+}
+
+.role-card:hover .role-icon-bg {
+  transform: scale(1.1);
+}
+
+/* Botones de Acción Estilizados */
+.btn-action-role {
+  width: 50px;
+  height: 50px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  transition: 0.2s;
+  font-size: 1.2rem;
+}
+
+.btn-edit-role {
+  background: #f0f4ff;
+  color: #4361ee;
+}
+
+.btn-edit-role:hover {
+  background: #4361ee;
+  color: white;
+}
+
+.btn-delete-role {
+  background: #fff0f3;
+  color: #ff4d6d;
+}
+
+.btn-delete-role:hover {
+  background: #ff4d6d;
+  color: white;
+}
+
+.tracking-widest {
+  letter-spacing: 0.2em;
+  font-size: 0.7rem;
+}
