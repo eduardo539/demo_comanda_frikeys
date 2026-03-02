@@ -19,8 +19,10 @@ $pass_input = $_POST['pass'] ?? '';
 
 $usuario_db = obtenerUsuarioPorUsername($pdo, $user_input);
 
+$pass_hash_input = hash('sha256', $pass_input);
+
 // Lógica de validación
-if ($usuario_db && $usuario_db['passw'] === $pass_input) {
+if ($usuario_db && $usuario_db['passw'] === $pass_hash_input) {
     
     // Guardamos los datos en la "memoria"
     $_SESSION['user_id']    = $usuario_db['user_id'];
