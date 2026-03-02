@@ -42,7 +42,7 @@ if (!isset($_SESSION['nombre_rol']) || $_SESSION['nombre_rol'] !== 'ADMINISTRADO
 <body>
 
     <div class="d-lg-none bg-dark p-3 d-flex align-items-center justify-content-between sticky-top" style="z-index: 1100;">
-        
+
         <button id="sidebarCollapse" class="btn btn-primary border-0">
             <i class="bi bi-list fs-2"></i>
         </button>
@@ -84,10 +84,14 @@ if (!isset($_SESSION['nombre_rol']) || $_SESSION['nombre_rol'] !== 'ADMINISTRADO
                     <li><a href="#" class="nav-link-ajax" data-modulo="gestion_usuarios"><i class="bi bi-people"></i> Usuarios</a></li>
                     <li><a href="#" class="nav-link-ajax" data-modulo="gestion_roles"><i class="bi bi-shield-lock"></i> Roles de Sistema</a></li>
 
-                    <li class="mt-4">
-                        <a href="logout" class="text-danger"><i class="bi bi-box-arrow-right"></i> Cerrar Sesión</a>
-                    </li>
+
                 </ul>
+            </div>
+
+            <div class="sidebar-footer border-top border-secondary border-opacity-25 p-3">
+                <a href="logout" class="btn btn-outline-danger w-100 d-flex align-items-center justify-content-center py-2 rounded-3 fw-bold">
+                    <i class="bi bi-box-arrow-right me-2"></i> Cerrar Sesión
+                </a>
             </div>
 
         </nav>
