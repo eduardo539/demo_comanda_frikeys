@@ -108,8 +108,105 @@ if (!isset($_SESSION['nombre_rol']) || $_SESSION['nombre_rol'] !== 'ADMINISTRADO
 
     </div>
 
+
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 1. Analizar la URL en busca de parámetros
+            const params = new URLSearchParams(window.location.search);
+
+            // 2. Si el registro fue exitoso
+            if (params.get('success') === 'ok') {
+                Swal.fire({
+                    title: '¡Registro Exitoso!',
+                    text: 'El nuevo registro ha sido añadido al sistema.',
+                    icon: 'success',
+                    confirmButtonColor: '#38b2ac', // Color acorde a tu gradiente
+                    confirmButtonText: 'Continuar'
+                }).then(() => {
+                    // Limpia la URL para que no repita la alerta si refrescan (F5)
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                });
+            }
+
+            // 3. Si hubo un error capturado en el header
+            if (params.has('error')) {
+                const errorType = params.get('error');
+                let mensajeError = 'No se pudo completar el registro.';
+
+                if (errorType === 'duplicado') mensajeError = 'Este registro ya existe en la base de datos.';
+                if (errorType === 'vacio') mensajeError = 'El nombre del registro no puede estar vacío.';
+                if (errorType === 'db') mensajeError = 'Error técnico en la base de datos.';
+
+                Swal.fire({
+                    title: 'Atención',
+                    text: mensajeError,
+                    icon: 'warning',
+                    confirmButtonColor: '#e53e3e'
+                }).then(() => {
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                });
+            }
+
+
+
+
+            if (params.get('error') === 'formato_invalido') {
+                Swal.fire({
+                    title: '¡Hay un error!',
+                    text: 'El formato aceptado solo es PNG',
+                    icon: 'error',
+                    confirmButtonColor: '#e53e3e', // Color acorde a tu gradiente
+                    confirmButtonText: 'Continuar'
+                }).then(() => {
+                    // Limpia la URL para que no repita la alerta si refrescan (F5)
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                });
+            }
+
+            if (params.get('error') === 'archivo_muy_grande') {
+                Swal.fire({
+                    title: '¡Hay un error!',
+                    text: 'La imagen debe pesar menos de 2MB',
+                    icon: 'error',
+                    confirmButtonColor: '#e53e3e', // Color acorde a tu gradiente
+                    confirmButtonText: 'Continuar'
+                }).then(() => {
+                    // Limpia la URL para que no repita la alerta si refrescan (F5)
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                });
+            }
+
+            if (params.get('error') === 'error_guardado') {
+                Swal.fire({
+                    title: '¡Hay un error!',
+                    text: 'Se produjo un error al intentar guardar la imagen, intente de nuevo',
+                    icon: 'error',
+                    confirmButtonColor: '#e53e3e', // Color acorde a tu gradiente
+                    confirmButtonText: 'Continuar'
+                }).then(() => {
+                    // Limpia la URL para que no repita la alerta si refrescan (F5)
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                });
+            }
+
+
+
+
+            
+        });
+    </script>
+
+
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="<?php echo RUTA_BASE; ?>public/assets/js/admin_dashboard.js"></script>
+
+
+
+
 
 </body>
 
