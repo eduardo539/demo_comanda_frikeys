@@ -18,7 +18,9 @@ $dataRoles = obtenerDataRoles($pdo);
             <p class="text-muted fs-5 mt-2">Define los niveles de acceso y responsabilidades para el personal del restaurante.</p>
         </div>
         <div class="col-md-4 text-md-end">
-            <button class="btn btn-primary btn-lg rounded-pill shadow px-5 py-3 fw-bold" onclick="nuevoRol()">
+            <button class="btn btn-primary btn-lg rounded-pill shadow px-5 py-3 fw-bold"
+                data-bs-toggle="modal"
+                data-bs-target="#modalNuevoRol">
                 <i class="bi bi-plus-circle-fill me-2"></i>Nuevo Rol
             </button>
         </div>
@@ -41,10 +43,10 @@ $dataRoles = obtenerDataRoles($pdo);
                 <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
                     <div class="card role-card border-0 shadow-lg h-100 p-2">
                         <div class="card-body text-center">
-                            <div class="role-icon-bg mx-auto mb-4 bg-dark text-white shadow-sm">
+                            <div class="role-icon-bg mx-auto mb-4 bg-primary bg-opacity-10 text-white shadow-sm">
                                 <img src="<?php echo RUTA_BASE; ?>public/assets/img/roles.png"
-                                        alt="Icono Estado"
-                                        style="width: 50px; height: 50px; object-fit: contain;">
+                                    alt="Icono Roles"
+                                    style="width: 70px; height: 70px; object-fit: contain;">
                             </div>
 
                             <h3 class="fw-bold text-dark mb-1">
@@ -52,15 +54,21 @@ $dataRoles = obtenerDataRoles($pdo);
                             </h3>
 
                             <div class="d-flex justify-content-center gap-2 border-top pt-4">
-                                <button class="btn btn-light-primary rounded-3 py-2 px-3"
-                                    onclick="editarUsuario(<?php echo $rol['rol_id']; ?>)" title="Editar Perfil">
+                                <button type="button"
+                                    class="btn btn-light-primary rounded-3 py-2 px-3 btn-editar"
+                                    data-id="<?php echo $rol['rol_id']; ?>"
+                                    title="Editar Perfil">
                                     <i class="bi bi-pencil-square"></i>
                                 </button>
-                                <button class="btn btn-light-danger rounded-3 py-2 px-3"
-                                    onclick="eliminarUsuario(<?php echo $rol['rol_id']; ?>)" title="Dar de Baja">
+
+                                <button type="button"
+                                    class="btn btn-light-danger rounded-3 py-2 px-3 btn-eliminar"
+                                    data-id="<?php echo $rol['rol_id']; ?>"
+                                    title="Dar de Baja">
                                     <i class="bi bi-person-x-fill"></i>
                                 </button>
                             </div>
+
                         </div>
                     </div>
                 </div>
@@ -72,4 +80,60 @@ $dataRoles = obtenerDataRoles($pdo);
         <?php endif; ?>
 
     </div>
+
+
+
+    <div class="modal fade" id="modalNuevoRol" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+            <div class="modal-content border-0 shadow-lg rounded-0" style="background: #f8f9fa;">
+                <div class="modal-header border-0 pb-0 justify-content-center pt-4">
+                    <div class="text-center">
+                        <div class="bg-primary bg-opacity-10 text-primary rounded-circle mx-auto mb-2 d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                            <i class="bi bi-shield-plus fs-2"></i>
+                        </div>
+                        <h5 class="modal-title fw-bold text-dark px-3">Crear Nuevo Rol</h5>
+                        <p class="text-muted small">Define un nuevo nivel de acceso</p>
+                    </div>
+                </div>
+
+                <div class="modal-body p-4 pt-2">
+
+                    <form id="formNuevoRol" action="addRol" method="POST">
+                        <div class="mb-4">
+                            <label class="form-label small fw-bold text-uppercase text-muted mb-2 ls-1">Nombre del Rol</label>
+                            <div class="input-group border-bottom border-primary border-2 shadow-sm">
+                                <span class="input-group-text bg-white border-0 text-primary">
+                                    <i class="bi bi-person-badge"></i>
+                                </span>
+                                <input type="text"
+                                    name="nombre_rol"
+                                    id="nombre_rol"
+                                    class="form-control border-0 bg-white ps-0 py-2 fw-semibold"
+                                    placeholder="Ej: Administrador"
+                                    required
+                                    autocomplete="off"
+                                    pattern="[A-Za-zñÑáéíóúÁÉÍÓÚ]+"
+                                    oninvalid="this.setCustomValidity('Solo se permiten letras, sin espacios ni números')"
+                                    oninput="this.setCustomValidity('')"
+                                    title="Solo letras, sin espacios">
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2 mt-4">
+                            <button type="submit" id="btnGuardarRol" class="btn btn-primary py-2 fw-bold text-uppercase rounded-0 shadow-sm border-0" style="background: linear-gradient(45deg, #4fc3d0, #38b2ac);">
+                                <i class="bi bi-check-lg me-2"></i>Guardar Rol
+                            </button>
+                            <button type="button" class="btn btn-link text-muted text-decoration-none small fw-bold py-2" data-bs-dismiss="modal">
+                                CANCELAR
+                            </button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
 </div>

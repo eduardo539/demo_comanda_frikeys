@@ -23,3 +23,5 @@ session_destroy();
 // Añadimos un parámetro para que SweetAlert detecte que salió con éxito
 header("Location: " . RUTA_BASE);
 exit;
+
+?>
