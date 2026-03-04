@@ -55,64 +55,71 @@ $categoria = obtenerCategorias($pdo);
     <div class="row g-4" id="grid-productos">
         <?php if (!empty($dataPlatillos)): ?>
             <?php foreach ($dataPlatillos as $dp): ?>
-                <div class="col-12 col-md-6 col-xl-4 category-fuertes">
-                    <div class="card product-card border-0 shadow-lg overflow-hidden h-100">
+                <div class="col-12 col-md-6 col-xxl-4 category-fuertes">
+                    <div class="card product-card border-0 shadow-lg overflow-hidden h-100 rounded-4">
                         <div class="row g-0 h-100">
 
-                            <div class="col-4 bg-light d-flex align-items-center justify-content-center position-relative overflow-hidden">
+                            <div class="col-5 bg-light d-flex align-items-center justify-content-center position-relative overflow-hidden" style="min-height: 200px;">
                                 <?php
-                                $rutaDB = $dp['imagen']; // Ejemplo: /../public/img_public/archivo.png
-
-                                // 1. Limpiamos la ruta para el navegador (quitamos los puntos iniciales si existen)
-                                // Esto transforma "/../public/img_public/..." en "public/img_public/..."
+                                $rutaDB = $dp['imagen'];
                                 $rutaNavegador = ltrim($rutaDB, '/. ');
-
-                                // 2. Ruta física para verificar existencia en el servidor
                                 $rutaFisica = __DIR__ . '/../../' . $rutaNavegador;
 
                                 if (!empty($rutaDB) && file_exists($rutaFisica)): ?>
                                     <img src="<?php echo htmlspecialchars($rutaNavegador); ?>"
                                         alt="<?php echo htmlspecialchars($dp['nombre']); ?>"
-                                        class="w-100 h-100"
+                                        class="w-100 h-100 img-zoom"
                                         style="object-fit: cover; position: absolute; top: 0; left: 0;">
                                 <?php else: ?>
                                     <div class="text-center">
-                                        <i class="bi bi-image text-muted fs-1 opacity-25"></i>
-                                        <p class="text-muted mb-0" style="font-size: 0.6rem;">SIN IMAGEN</p>
+                                        <i class="bi bi-image text-muted opacity-25" style="font-size: 3rem;"></i>
+                                        <p class="text-muted small mb-0">SIN FOTO</p>
                                     </div>
                                 <?php endif; ?>
 
-                                <div class="price-tag"> $ <?php echo htmlspecialchars($dp['costo']); ?></div>
+                                <div class="position-absolute top-0 start-0 m-2">
+                                    <span class="badge bg-dark bg-opacity-75 backdrop-blur px-3 py-2 rounded-pill shadow-sm">
+                                        $ <?php echo htmlspecialchars($dp['costo']); ?>
+                                    </span>
+                                </div>
                             </div>
 
-                            <div class="col-8">
+                            <div class="col-7">
                                 <div class="card-body p-4 d-flex flex-column h-100">
                                     <div class="mb-2">
-                                        <span class="badge bg-primary bg-opacity-10 text-primary rounded-pill px-3">
-                                            <?php echo htmlspecialchars($dp['categoria']); ?>
+                                        <span class="badge bg-primary bg-opacity-10 text-primary rounded-pill px-3 fw-bold" style="font-size: 0.7rem;">
+                                            <i class="bi bi-tag-fill me-1"></i><?php echo htmlspecialchars($dp['categoria']); ?>
                                         </span>
                                     </div>
-                                    <h4 class="fw-bold text-dark mb-1"><?php echo htmlspecialchars($dp['nombre']); ?></h4>
-                                    <p class="text-muted small flex-grow-1" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+
+                                    <h4 class="fw-extrabold text-dark mb-2"><?php echo htmlspecialchars($dp['nombre']); ?></h4>
+
+                                    <p class="text-muted small flex-grow-1 mb-3" style="display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.4;">
                                         <?php echo htmlspecialchars($dp['descripcion']); ?>
                                     </p>
-                                    <div class="d-flex justify-content-end gap-2 border-top pt-3 mt-2">
-                                        <button class="btn btn-sm btn-light text-primary rounded-3 py-2 px-3" onclick="editarProducto(<?php echo $dp['producto_id']; ?>)">
-                                            <i class="bi bi-pencil-square"></i>
-                                        </button>
-                                        <button class="btn btn-sm btn-light text-danger rounded-3 py-2 px-3" onclick="eliminarProducto(<?php echo $dp['producto_id']; ?>)">
-                                            <i class="bi bi-trash3"></i>
-                                        </button>
+
+                                    <div class="d-flex justify-content-between align-items-center border-top pt-3">
+                                        <small class="text-uppercase fw-bold text-muted" style="font-size: 0.65rem; letter-spacing: 1px;">Acciones</small>
+                                        <div class="btn-group shadow-sm rounded-3 overflow-hidden">
+                                            <button class="btn btn-sm btn-white border-end px-3" onclick="editarProducto(<?php echo $dp['producto_id']; ?>)" title="Editar">
+                                                <i class="bi bi-pencil-square text-primary"></i>
+                                            </button>
+                                            <button class="btn btn-sm btn-white px-3" onclick="eliminarProducto(<?php echo $dp['producto_id']; ?>)" title="Eliminar">
+                                                <i class="bi bi-trash3 text-danger"></i>
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+
                         </div>
                     </div>
                 </div>
             <?php endforeach; ?>
         <?php else: ?>
             <div class="col-12 text-center py-5">
-                <p class="text-muted">No hay platillos registrados.</p>
+                <i class="bi bi-clipboard-x text-muted opacity-25" style="font-size: 4rem;"></i>
+                <p class="text-muted fs-5 mt-3">No hay platillos en esta categoría.</p>
             </div>
         <?php endif; ?>
     </div>
@@ -195,10 +202,10 @@ $categoria = obtenerCategorias($pdo);
                                     <span class="input-group-text bg-white border-0 text-warning"><i class="bi bi-image"></i></span>
                                     <input type="file" name="imagen_platillo" id="imagen_platillo"
                                         class="form-control border-0 bg-white"
-                                        accept=".png"
+                                        accept=".png, .jpg, .jpeg"
                                         onchange="validarImagen(this)">
                                 </div>
-                                <small class="text-muted" style="font-size: 0.7rem;">Solo PNG. Máximo 2MB.</small>
+                                <small class="text-muted" style="font-size: 0.7rem;">Solo PNG, JPG, JPEG. Máximo 2MB.</small>
                             </div>
                         </div>
 
