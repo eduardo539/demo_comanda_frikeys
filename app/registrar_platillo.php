@@ -23,13 +23,11 @@ if (empty($nombre) || empty($costo) || empty($categoria) || empty($estado)) {
     exit;
 }
 
-// 3. Gestión y Validación Estricta de la Imagen
-$ruta_para_db = '/../public/img_public/default.png'; // Valor inicial
+// 3. Gestión y Validación de la Imagen
+$ruta_para_db = '/../public/img_public/default.png'; 
 
-// Verificamos si se intentó subir un archivo
 if (isset($_FILES['imagen_platillo']) && $_FILES['imagen_platillo']['error'] !== UPLOAD_ERR_NO_FILE) {
     
-    // Si hay un error de subida (exceso de tamaño en servidor, etc.)
     if ($_FILES['imagen_platillo']['error'] !== UPLOAD_ERR_OK) {
         header("Location: " . RUTA_BASE . "admin?error=archivo_danado");
         exit;
@@ -38,23 +36,24 @@ if (isset($_FILES['imagen_platillo']) && $_FILES['imagen_platillo']['error'] !==
     $fileTmpPath = $_FILES['imagen_platillo']['tmp_name'];
     $fileName    = $_FILES['imagen_platillo']['name'];
     $fileSize    = $_FILES['imagen_platillo']['size'];
-    $fileType    = $_FILES['imagen_platillo']['type'];
     
-    $fileNameCmps = explode(".", $fileName);
-    $fileExtension = strtolower(end($fileNameCmps));
+    $fileExtension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
 
-    // VALIDACIÓN ESTRICTA: Solo PNG y Máximo 2MB (2097152 bytes)
-    if ($fileExtension !== 'png') {
+    // --- CAMBIO AQUÍ: Array de extensiones permitidas ---
+    $allowedExtensions = ['png', 'jpg', 'jpeg'];
+
+    if (!in_array($fileExtension, $allowedExtensions)) {
         header("Location: " . RUTA_BASE . "admin?error=formato_invalido");
         exit;
     }
 
+    // VALIDACIÓN DE TAMAÑO: Máximo 2MB
     if ($fileSize > 2097152) {
         header("Location: " . RUTA_BASE . "admin?error=archivo_muy_grande");
         exit;
     }
 
-    // Si pasó las validaciones, procedemos a moverlo
+    // Nombre único para evitar sobrescribir archivos
     $nuevoNombreArchivo = md5(time() . $fileName) . '.' . $fileExtension;
     $uploadFileDir = __DIR__ . '/../public/img_public/';
     $dest_path = $uploadFileDir . $nuevoNombreArchivo;
@@ -67,10 +66,8 @@ if (isset($_FILES['imagen_platillo']) && $_FILES['imagen_platillo']['error'] !==
     }
 }
 
-
-
 try {
-    // 4. Inserción (Solo ocurre si la imagen fue válida o no se envió ninguna)
+    // 4. Inserción en DB
     $resultado = registrarNewPlatillo(
         $pdo, 
         $categoria, 

@@ -64,4 +64,23 @@ function registrarNewPlatillo($PDO, $categoria, $nombre, $descripcion, $costo, $
 }
 
 
+
+
+function registrarNewMesa($PDO, $nombre, $uuid, $qrimg, $estado)
+{
+    $sql = "INSERT INTO mesa(nombre_mesa, UUID, qr_img, estado_gen_id)
+            VALUES (:nombre,:uuid,:qrimg, :estado);";
+
+    $stmt = $PDO->prepare($sql);
+
+    return $stmt->execute([
+        ':nombre' => $nombre,
+        ':uuid' => $uuid,
+        ':qrimg' => $qrimg,
+        ':estado' => $estado,
+    ]);
+
+}
+
+
 ?>

@@ -13,6 +13,9 @@ RewriteRule ^addEstadoPlatillo$ app/registrar_estado_platillo.php [L]
 RewriteRule ^addNuevaCategoria$ app/registrar_new_categoria.php [L]
 RewriteRule ^addNewUsuario$ app/registrar_usuario.php [L]
 RewriteRule ^addNewPlatillo$ app/registrar_platillo.php [L]
+RewriteRule ^addNewMesa$ app/registrar_mesa.php [L]
+RewriteRule ^actualizaPerfil$ app/actualizar_data_perfil.php [L]
+RewriteRule ^newPass$ app/update_pass.php [L]
 
 # 2. Proteger archivos reales (Para que las imágenes y el CSS sigan funcionando)
 RewriteCond %{REQUEST_FILENAME} !-f

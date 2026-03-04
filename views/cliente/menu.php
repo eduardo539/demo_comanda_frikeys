@@ -1,46 +1,42 @@
 <?php
 
-// Definimos el límite: 15 minutos * 60 segundos = 900 segundos
-$minutos_limite = 20;
+require_once __DIR__ . '/../../config/config.php';
+require_once __DIR__ . '/../../config/database.php';
+require_once __DIR__ . '/../../core/consultas.php'; // Asumiendo que aquí están tus SELECT
+
+// 1. Configuración de tiempo de sesión (15 min)
+$minutos_limite = 15;
 $segundos_limite = $minutos_limite * 60;
 
-
-if (!defined('RUTA_BASE')) {
-    header("Location: ../../"); 
-    exit;
-}
-
-// Si NO hay sesión iniciada O el rol NO es el de Administrador
 if (!isset($_SESSION['uuid'])) {
     header("Location: " . RUTA_BASE . "error_scan");
     exit;
 }
 
-
+// 2. Control de expiración
 if (isset($_SESSION['creacion_sesion'])) {
     $segundos_transcurridos = time() - $_SESSION['creacion_sesion'];
-
     if ($segundos_transcurridos > $segundos_limite) {
-        // ¡TIEMPO AGOTADO! 
-        // Limpiamos la sesión para que tenga que escanear de nuevo
         session_unset();
         session_destroy();
-        
-        // Redirigimos a la página de error con un mensaje específico
-        header("Location: " . RUTA_BASE . "error_scan");
+        header("Location: " . RUTA_BASE . "error_scan?razon=tiempo_agotado");
         exit;
     }
 }
 
-
+// 3. Obtener datos de la mesa y base de datos
 $nombreMesa = $_SESSION['nombre_mesa'] ?? 'Mesa Desconocida';
 $idMesa = $_SESSION['mesa_id'] ?? 0;
 
-
-?><script>alert("Nombre de la mesa: <?php echo htmlspecialchars($nombreMesa); ?>");</script><?php
-
-
+// Consultas dinámicas
+$categorias = obtenerCategorias($pdo); // Función que debes tener
+$productos = obtenerDataPlatillos($pdo);   // Función que debes tener
 ?>
+
+
+
+
+
 
 <!DOCTYPE html>
 <html lang="es">
@@ -48,8 +44,7 @@ $idMesa = $_SESSION['mesa_id'] ?? 0;
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Menú | Frikeys Café Restaurante</title>
-
+    <title>Menú | <?php echo $nombreMesa; ?></title>
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -58,98 +53,101 @@ $idMesa = $_SESSION['mesa_id'] ?? 0;
 
 <body>
 
-    <header class="menu-header">
-        <div class="container position-relative">
+    <header class="menu-header sticky-top">
+        <div class="container">
             <div class="d-flex align-items-center justify-content-between">
-                <button class="btn-menu-categorias d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCategories">
-                    <i class="bi bi-list"></i>
+                <button class="btn-menu-categorias shadow-sm" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCategories">
+                    <i class="bi bi-grid-fill"></i>
                 </button>
 
-                <div class="text-center w-100">
+                <div class="text-center flex-grow-1">
                     <h1 class="brand-font">Frikeys</h1>
                     <p class="brand-subtitle mb-0">Café Restaurante</p>
+                    <div class="mt-2">
+                        <span class="badge bg-white text-dark rounded-pill px-3 py-2 shadow-sm" style="font-size: 0.75rem;">
+                            <i class="bi bi-geo-alt-fill text-info me-1"></i> <?php echo htmlspecialchars($nombreMesa); ?>
+                        </span>
+                    </div>
                 </div>
 
-                <div class="d-md-none" style="width: 45px;"></div>
+                <div style="width: 45px;" class="d-flex justify-content-end">
+                    <i class="bi bi-clock-history text-white opacity-75"></i>
+                </div>
             </div>
 
             <nav class="d-none d-md-flex justify-content-center mt-4">
                 <div class="desktop-nav">
                     <button class="cat-btn active" data-category="todos">✨ Todos</button>
-                    <button class="cat-btn" data-category="cafe">☕ Cafés</button>
-                    <button class="cat-btn" data-category="comida">🍔 Comida</button>
-                    <button class="cat-btn" data-category="postres">🍰 Postres</button>
+                    <?php foreach ($categorias as $cat): ?>
+                        <button class="cat-btn" data-category="<?php echo $cat['categoria_id']; ?>">
+                            <?php echo htmlspecialchars($cat['categoria']); ?>
+                        </button>
+                    <?php endforeach; ?>
                 </div>
             </nav>
         </div>
     </header>
 
     <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasCategories">
-        <div class="offcanvas-header">
-            <h5 class="offcanvas-title fw-bold">Categorías</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+        <div class="offcanvas-header bg-primary text-white">
+            <h5 class="offcanvas-title fw-bold">Nuestro Menú</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
         </div>
         <div class="offcanvas-body p-0">
             <div class="list-group list-group-flush">
                 <button class="list-group-item list-group-item-action cat-btn active" data-category="todos" data-bs-dismiss="offcanvas">✨ Todos</button>
-                <button class="list-group-item list-group-item-action cat-btn" data-category="cafe" data-bs-dismiss="offcanvas">☕ Cafés</button>
-                <button class="list-group-item list-group-item-action cat-btn" data-category="comida" data-bs-dismiss="offcanvas">🍔 Comida</button>
-                <button class="list-group-item list-group-item-action cat-btn" data-category="postres" data-bs-dismiss="offcanvas">🍰 Postres</button>
+                <?php foreach ($categorias as $cat): ?>
+                    <button class="list-group-item list-group-item-action cat-btn"
+                        data-category="<?php echo $cat['categoria_id']; ?>" data-bs-dismiss="offcanvas">
+                        <?php echo htmlspecialchars($cat['categoria']); ?>
+                    </button>
+                <?php endforeach; ?>
             </div>
         </div>
     </div>
 
     <main class="container py-5">
         <div class="row g-4" id="contenedor-productos">
-            <div class="col-12 col-md-6 col-lg-4 producto-item" data-cat="cafe">
-                <div class="card frikeys-card">
-                    <div class="img-wrapper">
-                        <img src="https://images.unsplash.com/photo-1541167760496-162955ed8a9f?q=80&w=500" alt="Capuchino">
-                    </div>
-                    <div class="card-body text-center">
-                        <h5 class="fw-bold">Capuchino Premium</h5>
-                        <p class="text-muted small">Doble shot de espresso con leche cremosa y un toque de canela.</p>
-                        <div class="d-flex justify-content-between align-items-center mt-3">
-                            <span class="price">$3.50</span>
-                            <button class="btn-frikeys btn-agregar" data-nombre="Capuchino" data-precio="3.50">Agregar</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <?php if (!empty($productos)): ?>
+                <?php foreach ($productos as $prod): ?>
+                    <div class="col-12 col-md-6 col-lg-4 producto-item" data-cat="<?php echo $prod['producto_id']; ?>">
+                        <div class="card frikeys-card h-100 border-0">
+                            <div class="img-wrapper position-relative">
+                                <?php
+                                $img = !empty($prod['imagen']) ? ltrim($prod['imagen'], '/. ') : 'public/img_public/default.png';
+                                ?>
+                                <img src="<?php echo RUTA_BASE . $img; ?>" alt="<?php echo $prod['nombre']; ?>" class="loading-lazy">
 
-            <div class="col-12 col-md-6 col-lg-4 producto-item" data-cat="comida">
-                <div class="card frikeys-card">
-                    <div class="img-wrapper">
-                        <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=500" alt="Burger">
-                    </div>
-                    <div class="card-body text-center">
-                        <h5 class="fw-bold">Frikeys Burger</h5>
-                        <p class="text-muted small">Carne artesanal, queso cheddar, tocino y nuestra salsa especial.</p>
-                        <div class="d-flex justify-content-between align-items-center mt-3">
-                            <span class="price">$8.50</span>
-                            <button class="btn-frikeys btn-agregar" data-nombre="Frikeys Burger" data-precio="8.50">Agregar</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                                <div class="position-absolute bottom-0 start-0 m-3">
+                                    <span class="badge bg-dark bg-opacity-50 backdrop-blur rounded-pill text-white border border-light border-opacity-25">
+                                        $<?php echo number_format($prod['costo'], 2); ?>
+                                    </span>
+                                </div>
+                            </div>
 
-            <div class="col-12 col-md-6 col-lg-4 producto-item" data-cat="postres">
-                <div class="card frikeys-card">
-                    <div class="img-wrapper">
-                        <img src="https://images.unsplash.com/photo-1551024506-0bccd828d307?q=80&w=500" alt="Crepa">
-                    </div>
-                    <div class="card-body text-center">
-                        <h5 class="fw-bold">Crepa de Nutella</h5>
-                        <p class="text-muted small">Rellena de chocolate, fresas frescas y azúcar glass.</p>
-                        <div class="d-flex justify-content-between align-items-center mt-3">
-                            <span class="price">$5.25</span>
-                            <button class="btn-frikeys btn-agregar" data-nombre="Crepa Nutella" data-precio="5.25">Agregar</button>
+                            <div class="card-body p-4">
+                                <h5 class="fw-bold text-dark mb-2"><?php echo htmlspecialchars($prod['nombre']); ?></h5>
+                                <p class="text-muted small mb-4" style="line-height: 1.5; height: 3rem; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">
+                                    <?php echo htmlspecialchars($prod['descripcion']); ?>
+                                </p>
+
+                                <div class="d-grid">
+                                    <button class="btn btn-frikeys shadow-sm btn-agregar w-100"
+                                        data-id="<?php echo $prod['producto_id']; ?>"
+                                        data-nombre="<?php echo htmlspecialchars($prod['nombre']); ?>"
+                                        data-precio="<?php echo $prod['costo']; ?>">
+                                        <i class="bi bi-bag-plus-fill me-2"></i>Añadir al pedido
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
+                <?php endforeach; ?>
+            <?php endif; ?>
         </div>
     </main>
+
+
 
     <div id="cart-floating" class="cart-container d-none">
         <div class="cart-info">
@@ -164,6 +162,3 @@ $idMesa = $_SESSION['mesa_id'] ?? 0;
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../../public/assets/js/js_menu_cliente.js"></script>
-</body>
-
-</html>

@@ -77,12 +77,16 @@ if (!isset($_SESSION['nombre_rol']) || $_SESSION['nombre_rol'] !== 'ADMINISTRADO
                     <li><a href="#" class="nav-link-ajax" data-modulo="gestion_categorias"><i class="bi bi-tags"></i> Categorías</a></li>
 
                     <span class="menu-label">Operaciones</span>
-                    <li><a href="#" class="nav-link-ajax" data-modulo="pedidos"><i class="bi bi-cart-check"></i> Pedidos Activos</a></li>
-                    <li><a href="#" class="nav-link-ajax" data-modulo="historial"><i class="bi bi-clock-history"></i> Historial Pedidos</a></li>
+                    <!--<li><a href="#" class="nav-link-ajax" data-modulo="pedidos"><i class="bi bi-cart-check"></i> Pedidos Activos</a></li>-->
+                    <li><a href="#" class="nav-link-ajax" data-modulo="historial_pedidos"><i class="bi bi-clock-history"></i> Historial Pedidos</a></li>
 
                     <span class="menu-label">Administración</span>
                     <li><a href="#" class="nav-link-ajax" data-modulo="gestion_usuarios"><i class="bi bi-people"></i> Usuarios</a></li>
                     <li><a href="#" class="nav-link-ajax" data-modulo="gestion_roles"><i class="bi bi-shield-lock"></i> Roles de Sistema</a></li>
+
+
+                    <span class="menu-label">Configuración</span>
+                    <li><a href="#" class="nav-link-ajax" data-modulo="gestion_perfil"><i class="bi bi-person-gear"></i> Mi Perfil</a></li>
 
 
                 </ul>

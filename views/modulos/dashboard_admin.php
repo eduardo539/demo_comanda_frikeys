@@ -27,7 +27,7 @@ $totalPlatillos = obtenerTotalPlatillos($pdo);
                     <div class="icon-circle bg-primary-subtle text-primary mx-auto mb-3">
                         <i class="bi bi-people-fill fs-3"></i>
                     </div>
-                    <h6 class="text-muted small fw-bold text-uppercase mb-2">Usuarios</h6>
+                    <h6 class="text-muted small fw-bold text-uppercase mb-2">Usuarios / Empleados</h6>
                     <h2 class="fw-bold mb-0"><?php echo $totalUsuarios ?? 0; ?></h2>
                 </div>
             </div>

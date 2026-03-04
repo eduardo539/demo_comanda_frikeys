@@ -108,13 +108,13 @@ $dataCategorias = obtenerCategorias($pdo);
                                     name="nombre_categoria"
                                     id="nombre_categoria"
                                     class="form-control border-0 bg-white ps-0 py-2 fw-semibold"
-                                    placeholder="Ej: Entradas"
+                                    placeholder="Ej: Plato Fuerte"
                                     required
                                     autocomplete="off"
-                                    pattern="[A-Za-zñÑáéíóúÁÉÍÓÚ]+"
-                                    oninvalid="this.setCustomValidity('Solo se permiten letras, sin espacios ni números')"
+                                    pattern="[A-Za-zñÑáéíóúÁÉÍÓÚ\s]+"
+                                    oninvalid="this.setCustomValidity('Solo se permiten letras y espacios')"
                                     oninput="this.setCustomValidity('')"
-                                    title="Solo letras, sin espacios">
+                                    title="Solo letras y espacios">
                             </div>
                         </div>
 

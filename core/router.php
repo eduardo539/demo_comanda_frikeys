@@ -22,6 +22,8 @@ function despacharRuta($pagina)
         'gestion_categorias' => 'views/modulos/gestion_categorias.php',
         'gestion_usuarios' => 'views/modulos/gestion_usuarios.php',
         'gestion_roles' => 'views/modulos/gestion_roles.php',
+        'historial_pedidos' => 'views/modulos/historial_pedidos.php',
+        'gestion_perfil' => 'views/modulos/gestion_perfil.php'
     ];
 
     // ==========================================

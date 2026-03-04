@@ -38,35 +38,6 @@ if ($mesa_encontrada && $mesa_encontrada['uuid'] === $uuid) {
     exit;
 }
 
-/*
-function generar_uuid() {
-return sprintf('%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
-mt_rand(0, 0xffff), mt_rand(0, 0xffff),
-mt_rand(0, 0xffff),
-mt_rand(0, 0x0fff) | 0x4000,
-mt_rand(0, 0x3fff) | 0x8000,
-mt_rand(0, 0xffff), mt_rand(0, 0xffff), mt_rand(0, 0xffff)
-);
-}
-
-
-
-
-include('phpqrcode/qrlib.php'); // Incluyes la librería
-
-$mesa_uuid = "550e8400-e29b-41d4-a716-446655440000";
-$url_pedido = "https://tusitio.com/menu.php?mesa_id=" . $mesa_uuid;
-
-// Nombre del archivo donde se guardará la imagen temporalmente
-$archivo_qr = "qrs/mesa_1.png";
-
-// Generar el código QR y guardarlo en el servidor
-QRcode::png($url_pedido, $archivo_qr, QR_ECLEVEL_L, 10);
-
-echo "<h3>Escanea para pedir:</h3>";
-echo "<img src='".$archivo_qr."'>";
-
-*/
 
 
 ?>
