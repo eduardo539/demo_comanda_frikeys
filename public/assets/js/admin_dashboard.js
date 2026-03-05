@@ -74,6 +74,45 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
+const modalEditarMesa = document.getElementById('modalEditarMesa');
+
+modalEditarMesa.addEventListener('show.bs.modal', function (event) {
+    const button = event.relatedTarget; // Botón que activó el modal
+    const uuid = button.getAttribute('data-uuid'); // Extraemos el UUID
+    
+    // Referencias a los elementos del modal
+    const inputUuid = document.getElementById('input_uuid');
+    const displayNombre = document.getElementById('display_nombre_mesa');
+    const selectEstado = document.getElementById('select_estado');
+
+    // 1. Limpieza inicial y asignación de ID
+    inputUuid.value = uuid;
+    displayNombre.innerHTML = '<span class="spinner-border spinner-border-sm text-primary"></span>';
+
+    // 2. Petición al servidor
+    fetch(`./views/mesas/get_mesa_info.php?uuid=${uuid}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // AQUÍ SE MUESTRA EL NOMBRE
+                displayNombre.textContent = data.nombre_mesa; 
+                // Seleccionamos el estado actual en el combo box
+                selectEstado.value = data.estado;
+            } else {
+                displayNombre.textContent = "No encontrada";
+            }
+        })
+        .catch(error => {
+            displayNombre.textContent = "Error de red";
+            console.error('Error:', error);
+        });
+});
+
+
+
+
+
+
 
 
 
