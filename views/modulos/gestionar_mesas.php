@@ -75,8 +75,11 @@ $estados = obtenerDataEstado($pdo);
                             </span>
 
                             <div class="d-flex justify-content-center gap-2 border-top border-secondary-subtle pt-4">
-                                <button class="btn btn-white shadow-sm text-primary rounded-3 py-2 px-3 border"
-                                    onclick="editarMesa(<?php echo $mesa['uuid']; ?>)" title="Editar Mesa">
+                                <button class="btn btn-white shadow-sm text-primary rounded-3 py-2 px-3 border btn-editar-mesa"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#modalEditarMesa"
+                                    data-uuid="<?php echo $mesa['uuid']; ?>"
+                                    title="Editar Mesa">
                                     <i class="bi bi-pencil-square"></i>
                                 </button>
                                 <button class="btn btn-white shadow-sm text-danger rounded-3 py-2 px-3 border"
@@ -152,6 +155,54 @@ $estados = obtenerDataEstado($pdo);
             </div>
         </div>
     </div>
+
+
+
+
+
+
+
+    <div class="modal fade" id="modalEditarMesa" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg rounded-4">
+                <div class="modal-header border-0 bg-primary bg-gradient text-white p-4 rounded-top-4">
+                    <h5 class="modal-title fw-bold m-0">Configurar Mesa</h5>
+
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+
+                <form action="actualizarMesa" method="POST">
+                    <div class="modal-body p-4">
+                        <input type="hidden" name="uuid" id="input_uuid">
+
+                        <div class="mb-4 text-center">
+                            <span class="text-muted small fw-bold text-uppercase d-block mb-2">Mesa Seleccionada</span>
+                            <div class="py-2 px-3 bg-light rounded-pill border d-inline-block">
+                                <h4 id="display_nombre_mesa" class="fw-bold">---</h4>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold text-secondary small">NUEVO ESTADO</label>
+                            <select name="estado" id="select_estado" class="form-select fw-semibold">
+                                <?php foreach ($estados as $est): ?>
+                                    <option value="<?php echo $est['estado_gen_id']; ?>">
+                                        <?php echo htmlspecialchars($est['estado']); ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer border-0 p-4 pt-0">
+                        <button type="submit" class="btn btn-primary fw-bold px-4 shadow">Actualizar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+
 
 
 </div>

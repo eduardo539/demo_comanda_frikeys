@@ -23,7 +23,10 @@ function despacharRuta($pagina)
         'gestion_usuarios' => 'views/modulos/gestion_usuarios.php',
         'gestion_roles' => 'views/modulos/gestion_roles.php',
         'historial_pedidos' => 'views/modulos/historial_pedidos.php',
-        'gestion_perfil' => 'views/modulos/gestion_perfil.php'
+        'gestion_perfil' => 'views/modulos/gestion_perfil.php',
+        'dashboard_cocina' => 'views/cocina/dashboard_cocina.php',
+        'pedidos_activos' => 'views/cocina/pedidos_activos.php',
+        'ajax_detalle_pedido' => 'views/cocina/ajax_detalle_pedido.php'
     ];
 
     // ==========================================

@@ -223,3 +223,144 @@ function obtenerDataPerfil($PDO, $id_usuario)
         return [];
     }
 }
+
+
+
+
+//consulta para contar los pedidos recibidos
+function obtenerTotalRecibidos($PDO)
+{
+    try {
+        $stmt = $PDO->query("SELECT COUNT(*)
+                                FROM detalle_pedido AS dp
+                                INNER JOIN estado_pedido AS ep ON dp.estado_id = ep.estado_id
+                                WHERE ep.estado_pedido = 'RECIBIDO';");
+        return (int)$stmt->fetchColumn();
+    } catch (PDOException $e) {
+        return 0;
+    }
+}
+//consulta para contar los pedidos en preparacion
+function obtenerTotalPreparando($PDO)
+{
+    try {
+        $stmt = $PDO->query("SELECT COUNT(*)
+                                FROM detalle_pedido AS dp
+                                INNER JOIN estado_pedido AS ep ON dp.estado_id = ep.estado_id
+                                WHERE ep.estado_pedido = 'PREPARANDO';");
+        return (int)$stmt->fetchColumn();
+    } catch (PDOException $e) {
+        return 0;
+    }
+}
+//consulta para contar los pedidos activos
+function obtenerTotalActivos($PDO)
+{
+    try {
+        $stmt = $PDO->query("SELECT COUNT(*)
+                                FROM detalle_pedido AS dp
+                                INNER JOIN estado_pedido AS ep ON dp.estado_id = ep.estado_id
+                                WHERE ep.estado_pedido IN('RECIBIDO','PREPARANDO');");
+        return (int)$stmt->fetchColumn();
+    } catch (PDOException $e) {
+        return 0;
+    }
+}
+
+
+//Consultar pedidos activos
+function obtenerPedidosCocina($PDO)
+{
+    try {
+        // Quitamos el ; de adentro del string y usamos fetchAll
+        $sql = "SELECT dp.folio, SUM(dp.cantidad) AS cantidad, SUM(dp.total) AS total,
+                       m.nombre_mesa, ep.estado_pedido
+                FROM detalle_pedido AS dp
+                INNER JOIN mesa AS m ON dp.mesa_id = m.mesa_id
+                INNER JOIN estado_pedido AS ep ON dp.estado_id = ep.estado_id
+                WHERE ep.estado_pedido IN('RECIBIDO','PREPARANDO')
+                GROUP BY dp.folio, dp.mesa_id, dp.estado_id
+                ORDER BY dp.fecha ASC"; // Asegúrate que 'fecha' tenga el prefijo dp. si es de detalle_pedido
+
+        $stmt = $PDO->query($sql);
+
+        // Usamos fetchAll para traer TODOS los pedidos de la consulta
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        // En caso de error, devolvemos un array vacío para que el foreach no rompa la página
+        return [];
+    }
+}
+
+//Obtener la cantidad de pedidos individuales por folio
+function obtenerPedidoxFolio($PDO)
+{
+    try {
+        $stmt = $PDO->query("SELECT COUNT(DISTINCT dp.folio) AS total_pedidos
+                                FROM detalle_pedido AS dp
+                                INNER JOIN estado_pedido AS ep ON dp.estado_id = ep.estado_id
+                                WHERE ep.estado_pedido = 'RECIBIDO';");
+        return (int)$stmt->fetchColumn();
+    } catch (PDOException $e) {
+        return 0;
+    }
+    
+}
+
+//Obtener la cantidad de pedidos individuales por entregar
+function obtenerPedidoxEntregar($PDO)
+{
+    try {
+        $stmt = $PDO->query("SELECT COUNT(DISTINCT dp.folio) AS total_pedidos
+                                FROM detalle_pedido AS dp
+                                INNER JOIN estado_pedido AS ep ON dp.estado_id = ep.estado_id
+                                WHERE ep.estado_pedido = 'PREPARANDO';");
+        return (int)$stmt->fetchColumn();
+    } catch (PDOException $e) {
+        return 0;
+    }
+    
+}
+
+//Consultar detalles del pedido
+function obtenerDetallePedido($PDO, $folio)
+{
+    try {
+        // Quitamos el ; de adentro del string y usamos fetchAll
+        $sql = $PDO->prepare("SELECT dp.detalle_id, dp.folio, p.nombre, p.descripcion,
+                    dp.cantidad, dp.total
+                    FROM detalle_pedido AS dp
+                    INNER JOIN productos AS p ON dp.producto_id = p.producto_id
+                    WHERE dp.folio = ?;");
+
+        $sql->execute([$folio]);
+
+        // Usamos fetchAll para traer TODOS los pedidos de la consulta
+        return $sql->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        // En caso de error, devolvemos un array vacío para que el foreach no rompa la página
+        return [];
+    }
+}
+
+
+
+
+//Consulta para obtener los datos de la mesa
+function obtenerMesaSelect($PDO, $uuid)
+{
+    try {
+        // Agregamos m.estado_gen_id a la selección
+        $sql = $PDO->prepare("SELECT m.mesa_id, m.nombre_mesa, m.uuid, e.estado_gen_id, e.estado
+                                FROM mesa AS m
+                                INNER JOIN estados AS e ON m.estado_gen_id = e.estado_gen_id
+                                WHERE m.uuid = ?;"); // El ; al final del string es opcional en PDO
+
+        $sql->execute([$uuid]);
+
+        // fetchAll devuelve un array de filas
+        return $sql->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        return [];
+    }
+}
