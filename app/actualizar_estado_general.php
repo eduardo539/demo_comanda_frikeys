@@ -12,12 +12,12 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
-$platilloID = $_POST['id_platillo'] ?? '';
+$estadoID = $_POST['id_gen'] ?? '';
 $newEstado = $_POST['nombre_estado'] ?? '';
 
-if (!empty($platilloID) && !empty($newEstado)) {
+if (!empty($estadoID) && !empty($newEstado)) {
     try {
-        $resultado = actualizarEstadoPlatillo($pdo, $platilloID, $newEstado);
+        $resultado = actualizarEstadoGen($pdo, $estadoID, $newEstado);
 
         if ($resultado) {
             echo "success"; // Mensaje para el JavaScript

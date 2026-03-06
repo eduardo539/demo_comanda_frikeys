@@ -304,7 +304,6 @@ function obtenerPedidoxFolio($PDO)
     } catch (PDOException $e) {
         return 0;
     }
-    
 }
 
 //Obtener la cantidad de pedidos individuales por entregar
@@ -319,7 +318,6 @@ function obtenerPedidoxEntregar($PDO)
     } catch (PDOException $e) {
         return 0;
     }
-    
 }
 
 //Consultar detalles del pedido
@@ -351,7 +349,7 @@ function obtenerMesaSelect($PDO, $uuid)
 {
     try {
         // Agregamos m.estado_gen_id a la selección
-        $sql = $PDO->prepare("SELECT m.mesa_id, m.nombre_mesa, m.uuid, e.estado_gen_id, e.estado
+        $sql = $PDO->prepare("SELECT m.mesa_id, m.nombre_mesa, m.uuid, m.qr_img, e.estado_gen_id, e.estado
                                 FROM mesa AS m
                                 INNER JOIN estados AS e ON m.estado_gen_id = e.estado_gen_id
                                 WHERE m.uuid = ?;"); // El ; al final del string es opcional en PDO
@@ -362,5 +360,30 @@ function obtenerMesaSelect($PDO, $uuid)
         return $sql->fetchAll(PDO::FETCH_ASSOC);
     } catch (PDOException $e) {
         return [];
+    }
+}
+
+
+
+
+function obtenerEstadoGenSelect($PDO, $idEstado)
+{
+    try {
+        $sql = $PDO->prepare("SELECT estado_gen_id, estado FROM estados WHERE estado_gen_id = ? LIMIT 1");
+        $sql->execute([$idEstado]);
+        return $sql->fetch(PDO::FETCH_ASSOC); // Fila única
+    } catch (PDOException $e) {
+        return false;
+    }
+}
+
+function obtenerEstadoPlatilloSelect($PDO, $idEstadoPlatillo)
+{
+    try {
+        $sql = $PDO->prepare("SELECT estado_id, estado_pedido FROM estado_pedido WHERE estado_id = ? LIMIT 1");
+        $sql->execute([$idEstadoPlatillo]);
+        return $sql->fetch(PDO::FETCH_ASSOC); // Fila única
+    } catch (PDOException $e) {
+        return false;
     }
 }

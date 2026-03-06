@@ -1,6 +1,8 @@
 <?php
 session_start();
 
+ob_clean();
+
 require_once __DIR__ . '/../config/config.php';
 require_once __DIR__ . '/../config/database.php';
 require_once __DIR__ . '/../core/consultas.php';
@@ -18,17 +20,13 @@ if (empty($uuid)) {
 }
 
 if ($uuid) {
-    // 1. Llamas a tu función que ya tienes en consultas.php
     $mesaData = obtenerMesaSelect($pdo, $uuid);
-
     if (!empty($mesaData)) {
-        // 2. Como es fetchAll, tomamos la primera fila
         $mesa = $mesaData[0];
-
-        // 3. IMPORTANTÍSIMO: Imprimimos texto plano separado por PIPE |
-        // Esto es lo que recibe tu .then(response => response.text())
-        echo $mesa['nombre_mesa'] . "|" . $mesa['uuid'];
+        // Devolvemos: Nombre|ID_Estado|UUID
+        // Es vital devolver el ID del estado para que el select se mueva solo
+        
+        echo $mesa['nombre_mesa'] . "|" . $mesa['estado_gen_id'] . "|" . $mesa['uuid'] . "|" . $mesa['qr_img'];
     }
 }
 exit;
-

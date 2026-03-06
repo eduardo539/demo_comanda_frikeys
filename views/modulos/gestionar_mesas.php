@@ -82,8 +82,12 @@ $estados = obtenerDataEstado($pdo);
                                     title="Editar Mesa">
                                     <i class="bi bi-pencil-square"></i>
                                 </button>
+
                                 <button class="btn btn-white shadow-sm text-danger rounded-3 py-2 px-3 border"
-                                    onclick="eliminarMesa(<?php echo $mesa['uuid']; ?>)" title="Eliminar Mesa">
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#modalEliminarMesa"
+                                    data-uuid="<?php echo $mesa['uuid']; ?>"
+                                    title="Eliminar Mesa">
                                     <i class="bi bi-trash3-fill"></i>
                                 </button>
                             </div>
@@ -166,25 +170,38 @@ $estados = obtenerDataEstado($pdo);
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content border-0 shadow-lg rounded-4">
                 <div class="modal-header border-0 bg-primary bg-gradient text-white p-4 rounded-top-4">
-                    <h5 class="modal-title fw-bold m-0">Configurar Mesa</h5>
-
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    <h5 class="modal-title fw-bold m-0">
+                        <i class="bi bi-gear-fill me-2"></i>Configurar Mesa
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
 
-                <form action="actualizarMesa" method="POST">
+                <form action="actualizaEstadoMesa" method="POST">
                     <div class="modal-body p-4">
                         <input type="hidden" name="uuid" id="input_uuid">
 
+
                         <div class="mb-4 text-center">
-                            <span class="text-muted small fw-bold text-uppercase d-block mb-2">Mesa Seleccionada</span>
-                            <div class="py-2 px-3 bg-light rounded-pill border d-inline-block">
-                                <h4 id="display_nombre_mesa" class="fw-bold">---</h4>
+                            <div id="container_qr" class="p-2 bg-white d-inline-block rounded-4 shadow-sm border overflow-hidden" style="width: 160px; height: 160px;">
+                                <img id="display_imagen_mesa" src="" alt="QR" class="img-fluid d-none" style="width: 100%; height: 100%; object-fit: contain;">
+
+                                <div id="qr_placeholder" class="d-flex flex-column align-items-center justify-content-center h-100">
+                                    <i class="bi bi-qr-code text-muted opacity-25" style="font-size: 3.5rem;"></i>
+                                    <p class="small text-muted mb-0">Sin imagen</p>
+                                </div>
                             </div>
                         </div>
 
+
+
+                        <div class="mb-4 text-center">
+                            <span class="text-muted small fw-bold text-uppercase d-block mb-1">Identificador</span>
+                            <h4 id="display_nombre_mesa" class="fw-bold m-0 text-dark">---</h4>
+                        </div>
+
                         <div class="mb-3">
-                            <label class="form-label fw-bold text-secondary small">NUEVO ESTADO</label>
-                            <select name="estado" id="select_estado" class="form-select fw-semibold">
+                            <label class="form-label fw-bold text-secondary small">CAMBIAR ESTADO ACTUAL</label>
+                            <select name="estado" id="select_estado" class="form-select form-select-lg fw-semibold border-2">
                                 <?php foreach ($estados as $est): ?>
                                     <option value="<?php echo $est['estado_gen_id']; ?>">
                                         <?php echo htmlspecialchars($est['estado']); ?>
@@ -193,8 +210,14 @@ $estados = obtenerDataEstado($pdo);
                             </select>
                         </div>
                     </div>
-                    <div class="modal-footer border-0 p-4 pt-0">
-                        <button type="submit" class="btn btn-primary fw-bold px-4 shadow">Actualizar</button>
+
+                    <div class="modal-footer border-0 p-4 pt-0 d-flex gap-3">
+                        <button type="button" class="btn btn-light btn-lg fw-bold text-secondary flex-grow-1 border" data-bs-dismiss="modal">
+                            Cancelar
+                        </button>
+                        <button type="submit" class="btn btn-primary btn-lg fw-bold flex-grow-1 shadow">
+                            Guardar
+                        </button>
                     </div>
                 </form>
             </div>
@@ -205,4 +228,50 @@ $estados = obtenerDataEstado($pdo);
 
 
 
+    <div class="modal fade" id="modalEliminarMesa" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg rounded-4">
+                <form action="deleteMesa" method="POST">
+                    <div class="modal-header border-0 pt-4 px-4 pb-2 justify-content-center">
+                        <div class="bg-light-danger rounded-circle p-3 mb-2">
+                            <i class="bi bi-exclamation-triangle-fill text-danger fs-1"></i>
+                        </div>
+                    </div>
+                    <div class="modal-body px-4 pt-0 text-center">
+                        <h5 class="fw-bold mb-2">¿Eliminar Mesa?</h5>
+                        <p class="text-muted small">
+                            Estás por eliminar la <strong id="display_nombre_mesa">---</strong>.
+                            <br><span class="text-danger">Esta acción es permanente.</span>
+                        </p>
+                        <input type="hidden" name="uuid" id="input_uuid">
+                    </div>
+                    <div class="modal-footer border-0 p-3 d-flex gap-2">
+                        <button type="button" class="btn btn-light fw-bold flex-grow-1 border" data-bs-dismiss="modal">
+                            Cancelar
+                        </button>
+                        <button type="submit" class="btn btn-danger fw-bold flex-grow-1 shadow">
+                            Eliminar
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .bg-light-danger {
+            background-color: #fee2e2;
+            width: 70px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+
+
+
+
 </div>
+
+
