@@ -48,10 +48,23 @@ $estadoPlatillo = obtenerDataEstadoPlatillo($pdo);
                                         style="width: 40px; height: 40px; object-fit: contain;">
                                 </div>
                                 <h4 class="fw-bold text-dark"><?php echo htmlspecialchars($gen['estado']); ?></h4>
+
                                 <div class="d-flex justify-content-center gap-2 border-top pt-3 mt-3">
-                                    <button class="btn-action-small btn-edit-status" onclick="editarEstadoGral(<?php echo $gen['estado_gen_id']; ?>)"><i class="bi bi-pencil-fill"></i></button>
-                                    <button class="btn-action-small btn-delete-status" onclick="eliminarEstadoGral(<?php echo $gen['estado_gen_id']; ?>)"><i class="bi bi-trash3-fill"></i></button>
+                                    <button class="btn-action-small btn-edit-status"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#modalEditarEstadoGral"
+                                        data-id="<?php echo $gen['estado_gen_id']; ?>">
+                                        <i class="bi bi-pencil-fill"></i>
+                                    </button>
+
+                                    <button class="btn-action-small btn-delete-status"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#modalEliminarEstadoGral"
+                                        data-id="<?php echo $gen['estado_gen_id']; ?>">
+                                        <i class="bi bi-trash3-fill"></i>
+                                    </button>
                                 </div>
+
                             </div>
                         </div>
                     </div>
@@ -90,8 +103,19 @@ $estadoPlatillo = obtenerDataEstadoPlatillo($pdo);
                                 </div>
                                 <h4 class="fw-bold text-dark"><?php echo htmlspecialchars($platillo['estado_pedido']); ?></h4>
                                 <div class="d-flex justify-content-center gap-2 border-top pt-3 mt-3">
-                                    <button class="btn-action-small btn-edit-status" onclick="editarEstadoPedido(<?php echo $platillo['estado_id']; ?>)"><i class="bi bi-pencil-fill"></i></button>
-                                    <button class="btn-action-small btn-delete-status" onclick="eliminarEstadoPedido(<?php echo $platillo['estado_id']; ?>)"><i class="bi bi-trash3-fill"></i></button>
+                                    <button class="btn-action-small btn-edit-status"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#modalEditarEstadoPlatillo"
+                                        data-platillo="<?php echo $platillo['estado_id']; ?>">
+                                        <i class="bi bi-pencil-fill"></i>
+                                    </button>
+
+                                    <button class="btn-action-small btn-delete-status"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#modalEliminarEstadoPlatillo"
+                                        data-platillo="<?php echo $platillo['estado_id']; ?>">
+                                        <i class="bi bi-trash3-fill"></i>
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -185,6 +209,153 @@ $estadoPlatillo = obtenerDataEstadoPlatillo($pdo);
         </div>
     </div>
 
+
+
+
+
+
+    <!--Modal para editar y eliminar estados generales-->
+    <div class="modal fade" id="modalEditarEstadoGral" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg rounded-4">
+                <form action="updateEstadoGen" method="POST">
+                    <div class="modal-header border-0 pt-4 px-4">
+                        <h5 class="fw-bold mb-0" id="display_nombre_estado_titulo">Editar Estado</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+
+                    <div class="modal-body px-4">
+                        <div class="alert alert-warning border-0 shadow-sm d-flex align-items-center rounded-3 mb-4" role="alert">
+                            <i class="bi bi-exclamation-triangle-fill fs-4 me-3"></i>
+                            <div class="small">
+                                <strong>¡Atención!</strong> Al cambiar el nombre de este estado, todos los registros vinculados se verán afectados automáticamente.
+                            </div>
+                        </div>
+
+                        <input type="hidden" name="id_gen" id="input_id_gen">
+
+                        <div class="mb-3">
+                            <label for="input_nombre_estado" class="form-label small fw-bold text-secondary">Nombre del Estado</label>
+                            <input type="text" class="form-control form-control-lg shadow-sm" name="nombre_estado" id="input_nombre_estado" placeholder="Ej. Activo, Pendiente..." required>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer border-0 p-4">
+                        <button type="button" class="btn btn-light fw-bold border px-4" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary fw-bold shadow px-4">Actualizar Estado</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modalEliminarEstadoGral" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg rounded-4">
+                <form action="deleteEstadoGen" method="POST">
+                    <div class="modal-header border-0 pt-4 px-4 pb-2 justify-content-center">
+                        <div class="bg-light-danger rounded-circle p-3 mb-2" style="background-color: #fee2e2; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center;">
+                            <i class="bi bi-exclamation-triangle-fill text-danger fs-3"></i>
+                        </div>
+                    </div>
+                    <div class="modal-body px-4 pt-0 text-center">
+                        <h5 class="fw-bold mb-2">¿Eliminar Estado?</h5>
+
+                        <p class="text-dark mb-2">
+                            Vas a eliminar: <strong id="display_nombre_estado_titulo">---</strong>
+                        </p>
+
+                        <div class="alert alert-danger py-2 px-3 border-0 rounded-3 mb-3">
+                            <p class="small mb-0" style="font-size: 0.75rem;">
+                                <i class="bi bi-info-circle-fill me-1"></i>
+                                Solo podrá eliminarse si no tiene registros (mesas, pedidos, etc.) enlazados.
+                            </p>
+                        </div>
+
+                        <input type="hidden" name="id_estado" id="input_id_gen">
+                    </div>
+                    <div class="modal-footer border-0 p-3 d-flex gap-2">
+                        <button type="button" class="btn btn-light fw-bold flex-grow-1 border" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-danger fw-bold flex-grow-1 shadow">Confirmar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+    <!--Modal para editar y eliminar estados de platillos-->
+    <div class="modal fade" id="modalEditarEstadoPlatillo" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg rounded-4">
+                <form action="updateEstadoPlatillo" method="POST">
+                    <div class="modal-header border-0 pt-4 px-4">
+                        <h5 class="fw-bold mb-0" id="display_nombre_estado_titulo">Editar Estado para los Platillos</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+
+                    <div class="modal-body px-4">
+                        <div class="alert alert-warning border-0 shadow-sm d-flex align-items-center rounded-3 mb-4" role="alert">
+                            <i class="bi bi-exclamation-triangle-fill fs-4 me-3"></i>
+                            <div class="small">
+                                <strong>¡Atención!</strong> Al cambiar el nombre de este estado, todos los registros vinculados se verán afectados automáticamente.
+                            </div>
+                        </div>
+
+                        <input type="hidden" name="id_platillo" id="input_id_platillo">
+
+                        <div class="mb-3">
+                            <label for="input_nombre_platillo" class="form-label small fw-bold text-secondary">Nombre del Estado</label>
+                            <input type="text" class="form-control form-control-lg shadow-sm" name="nombre_estado" id="input_nombre_platillo" placeholder="Ej. Activo, Pendiente..." required>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer border-0 p-4">
+                        <button type="button" class="btn btn-light fw-bold border px-4" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary fw-bold shadow px-4">Actualizar Estado</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modalEliminarEstadoPlatillo" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg rounded-4">
+                <form action="deleteEstadoPlatillo" method="POST">
+                    <div class="modal-header border-0 pt-4 px-4 pb-2 justify-content-center">
+                        <div class="bg-light-danger rounded-circle p-3 mb-2" style="background-color: #fee2e2; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center;">
+                            <i class="bi bi-exclamation-triangle-fill text-danger fs-3"></i>
+                        </div>
+                    </div>
+                    <div class="modal-body px-4 pt-0 text-center">
+                        <h5 class="fw-bold mb-2">¿Eliminar Estado del Platillo?</h5>
+
+                        <p class="text-dark mb-2">
+                            Vas a eliminar: <strong id="display_nombre_platillo_titulo">---</strong>
+                        </p>
+
+                        <div class="alert alert-danger py-2 px-3 border-0 rounded-3 mb-3">
+                            <p class="small mb-0" style="font-size: 0.75rem;">
+                                <i class="bi bi-info-circle-fill me-1"></i>
+                                Solo podrá eliminarse si no tiene registros (mesas, pedidos, etc.) enlazados.
+                            </p>
+                        </div>
+
+                        <input type="hidden" name="id_platillo" id="input_id_platillo">
+                    </div>
+                    <div class="modal-footer border-0 p-3 d-flex gap-2">
+                        <button type="button" class="btn btn-light fw-bold flex-grow-1 border" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-danger fw-bold flex-grow-1 shadow">Confirmar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
 
 

@@ -1,23 +1,21 @@
 <?php
 session_start();
-ob_clean();
-
 
 require_once __DIR__ . '/../config/config.php';
 require_once __DIR__ . '/../config/database.php';
 require_once __DIR__ . '/../core/actualizaciones.php';
 
 if (!isset($_SESSION['user_id'])) {
-    header("Location: " . RUTA_BASE . "admin?error=sesion");
+    header("Location: " . RUTA_BASE . "cocina?error=sesion");
     exit;
 }
 
-$platilloID = $_POST['id_platillo'] ?? '';
-$newEstado = $_POST['nombre_estado'] ?? '';
+$estadoID = $_POST['estado'] ?? '';
+$uuid = $_POST['uuid'] ?? ''; // Esta es la variable que llega del formulario
 
-if (!empty($platilloID) && !empty($newEstado)) {
+if (!empty($estadoID) && !empty($uuid)) {
     try {
-        $resultado = actualizarEstadoPlatillo($pdo, $platilloID, $newEstado);
+        $resultado = actualizarEstadoMesaxuuid($pdo, $estadoID, $uuid);
 
         if ($resultado) {
             echo "success"; // Mensaje para el JavaScript

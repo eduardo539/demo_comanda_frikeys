@@ -87,6 +87,7 @@ if (!isset($_SESSION['nombre_rol']) || $_SESSION['nombre_rol'] !== 'ADMINISTRADO
 
                     <span class="menu-label">Configuración</span>
                     <li><a href="#" class="nav-link-ajax" data-modulo="gestion_perfil"><i class="bi bi-person-gear"></i> Mi Perfil</a></li>
+                    <li><a href="logout"><i class="bi bi-box-arrow-right me-2"></i> Cerrar Sesión</a></li>
 
 
                 </ul>
