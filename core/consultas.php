@@ -78,9 +78,10 @@ function obtenerDataUsuarios($PDO)
 {
     try {
         $stmt = $PDO->query("SELECT u.user_id, u.Nombre, u.Apellidos, u.telefono, u.usuario, 
-                                    r.rol_id, r.nombre_rol 
+                                    r.rol_id, r.nombre_rol, e.estado_gen_id, e.estado
                              FROM usuario AS u 
-                             INNER JOIN roles AS r ON u.rol_id = r.rol_id");
+                             INNER JOIN roles AS r ON u.rol_id = r.rol_id
+                             INNER JOIN estados AS e ON u.estado_gen_id = e.estado_gen_id");
 
         // fetchAll devuelve un array con todos los usuarios encontrados
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -382,6 +383,74 @@ function obtenerEstadoPlatilloSelect($PDO, $idEstadoPlatillo)
     try {
         $sql = $PDO->prepare("SELECT estado_id, estado_pedido FROM estado_pedido WHERE estado_id = ? LIMIT 1");
         $sql->execute([$idEstadoPlatillo]);
+        return $sql->fetch(PDO::FETCH_ASSOC); // Fila única
+    } catch (PDOException $e) {
+        return false;
+    }
+}
+
+
+
+function dataProductoSelect($PDO, $idProducto)
+{
+    try {
+        $sql = $PDO->prepare("SELECT c.categoria_id, c.categoria, p.producto_id, p.nombre, p.descripcion, p.costo,
+                                p.imagen, e.estado_gen_id, e.estado
+                                FROM productos AS p
+                                INNER JOIN categoria AS c ON p.categoria_id = c.categoria_id
+                                INNER JOIN estados AS e ON p.estado_gen_id = e.estado_gen_id
+                                WHERE p.producto_id = ? LIMIT 1");
+        $sql->execute([$idProducto]);
+        return $sql->fetch(PDO::FETCH_ASSOC); // Fila única
+    } catch (PDOException $e) {
+        return false;
+    }
+}
+
+
+
+
+
+
+function dataCategoriaSelect($PDO, $id_categoria)
+{
+    try {
+        $sql = $PDO->prepare("SELECT * FROM categoria WHERE categoria_id = ? LIMIT 1");
+        $sql->execute([$id_categoria]);
+        return $sql->fetch(PDO::FETCH_ASSOC); // Fila única
+    } catch (PDOException $e) {
+        return false;
+    }
+}
+
+
+
+
+function dataUsuarioSelect($PDO, $usuarioID)
+{
+    try {
+        $sql = $PDO->prepare("SELECT u.user_id, u.Nombre, u.Apellidos, u.telefono, u.usuario,
+r.rol_id, r.nombre_rol, e.estado_gen_id, e.estado
+FROM usuario AS u
+INNER JOIN roles AS r ON u.rol_id = r.rol_id
+INNER JOIN estados AS e ON u.estado_gen_id = e.estado_gen_id
+WHERE u.user_id = ? LIMIT 1;");
+        $sql->execute([$usuarioID]);
+        return $sql->fetch(PDO::FETCH_ASSOC); // Fila única
+    } catch (PDOException $e) {
+        return false;
+    }
+}
+
+
+
+
+
+function dataRolSelect($PDO, $id_rol)
+{
+    try {
+        $sql = $PDO->prepare("SELECT * FROM roles WHERE rol_id = ?");
+        $sql->execute([$id_rol]);
         return $sql->fetch(PDO::FETCH_ASSOC); // Fila única
     } catch (PDOException $e) {
         return false;

@@ -25,7 +25,6 @@ function actualizarEstadoMesaxuuid($PDO, $estadoId, $uuid)
     } catch (PDOException $e) {
         return false;
     }
-
 }
 
 
@@ -43,7 +42,6 @@ function actualizarEstadoGen($PDO, $estadoId, $newEstado)
     } catch (PDOException $e) {
         return false;
     }
-
 }
 
 
@@ -58,6 +56,68 @@ function actualizarEstadoPlatillo($PDO, $platilloID, $newEstado)
     } catch (PDOException $e) {
         return false;
     }
-
 }
-?>
+
+
+function actualizaProductos($PDO, $categoriaID, $nombre, $descripcion, $costo, $estadoID, $productoID)
+{
+    try {
+        $sql = $PDO->prepare("UPDATE productos
+SET categoria_id = ?, nombre = ?, descripcion = ?, costo = ?,estado_gen_id = ?
+WHERE producto_id = ?;");
+        return $sql->execute([$categoriaID, $nombre, $descripcion, $costo, $estadoID, $productoID]);
+    } catch (PDOException $e) {
+        return false;
+    }
+}
+
+
+
+
+function actualizaCategoria($PDO, $newCategoria, $categoriaID)
+{
+    try {
+        $sql = $PDO->prepare("UPDATE categoria
+SET categoria = ?
+WHERE categoria_id = ?;");
+        return $sql->execute([$newCategoria, $categoriaID]);
+    } catch (PDOException $e) {
+        return false;
+    }
+}
+
+
+
+function actualizaEstadoUser($PDO, $estado, $userID)
+{
+    try {
+        $sql = $PDO->prepare("UPDATE usuario SET estado_gen_id = ? WHERE user_id = ?");
+        return $sql->execute([$estado, $userID]);
+    } catch (PDOException $e) {
+        return false;
+    }
+}
+
+
+function resetPassUser($PDO, $pass_reset, $userID)
+{
+    try {
+        $sql = $PDO->prepare("UPDATE usuario SET passw = SHA2(?, 256) WHERE user_id = ?");
+        return $sql->execute([$pass_reset, $userID]);
+    } catch (PDOException $e) {
+        return false;
+    }
+}
+
+
+
+
+function actualizaRol($PDO, $newRol, $rolID)
+{
+    try {
+        $sql = $PDO->prepare("UPDATE roles SET nombre_rol = ? WHERE rol_id = ?");
+        return $sql->execute([$newRol, $rolID]);
+    } catch (PDOException $e) {
+        return false;
+    }
+}

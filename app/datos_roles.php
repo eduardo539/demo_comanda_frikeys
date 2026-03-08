@@ -1,0 +1,26 @@
+<?php
+session_start();
+
+ob_clean();
+
+require_once __DIR__ . '/../config/config.php';
+require_once __DIR__ . '/../config/database.php';
+require_once __DIR__ . '/../core/consultas.php';
+
+$id_rol = $_GET['idRol'] ?? '';
+
+if (!empty($id_rol)) {
+    // Llamamos a la función que devuelve el array asociativo
+    $roles = dataRolSelect($pdo, $id_rol);
+
+    if ($roles) {
+        // Formateamos la salida para el JS: "ID|Nombre"
+        echo $roles['rol_id'] . "|" . $roles['nombre_rol'];
+    } else {
+        // En caso de no encontrar nada, enviamos vacío o un error simple
+        echo "0|No encontrado";
+    }
+} else {
+    echo "0|ID no proporcionado";
+}
+exit;
