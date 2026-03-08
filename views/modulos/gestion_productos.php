@@ -100,14 +100,25 @@ $categoria = obtenerCategorias($pdo);
 
                                     <div class="d-flex justify-content-between align-items-center border-top pt-3">
                                         <small class="text-uppercase fw-bold text-muted" style="font-size: 0.65rem; letter-spacing: 1px;">Acciones</small>
+
                                         <div class="btn-group shadow-sm rounded-3 overflow-hidden">
-                                            <button class="btn btn-sm btn-white border-end px-3" onclick="editarProducto(<?php echo $dp['producto_id']; ?>)" title="Editar">
+                                            <button class="btn btn-sm btn-white border-end px-3"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#modalEditarProducto"
+                                                data-product="<?php echo $dp['producto_id']; ?>"
+                                                title="Editar">
                                                 <i class="bi bi-pencil-square text-primary"></i>
                                             </button>
-                                            <button class="btn btn-sm btn-white px-3" onclick="eliminarProducto(<?php echo $dp['producto_id']; ?>)" title="Eliminar">
+
+                                            <button class="btn btn-sm btn-white px-3"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#modalEliminarProducto"
+                                                data-product="<?php echo $dp['producto_id']; ?>"
+                                                title="Eliminar">
                                                 <i class="bi bi-trash3 text-danger"></i>
                                             </button>
                                         </div>
+
                                     </div>
                                 </div>
                             </div>
@@ -219,6 +230,145 @@ $categoria = obtenerCategorias($pdo);
                         </div>
                     </form>
                 </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="modal fade" id="modalEditarProducto" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg rounded-4">
+                <div class="modal-header border-0 pt-4 px-4">
+                    <h5 class="modal-title fw-bold">Editar: <span id="display_nombre_producto" class="text-primary text-break"></span></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <form action="actualizaProducto" method="POST">
+                    <div class="modal-body px-4 pt-0">
+                        <div class="alert alert-warning border-0 rounded-3 mb-4 shadow-sm" style="background-color: #fffbeb; border-left: 4px solid #f59e0b !important;">
+                            <div class="d-flex align-items-center">
+                                <i class="bi bi-exclamation-triangle-fill text-warning fs-4 me-3"></i>
+                                <div class="text-dark small">
+                                    <strong>Nota importante:</strong> Al editar la descripción o precio, el historial se verá afectado.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3 text-center">
+                            <div class="position-relative d-inline-block border rounded-3 p-1 bg-light" style="width: 150px; height: 120px;">
+                                <img id="img_producto_edit" src="" class="img-fluid rounded d-none" style="width: 100%; height: 100%; object-fit: contain;" alt="Producto">
+
+                                <div id="placeholder_img_edit" class="text-muted p-4">
+                                    <i class="bi bi-image fs-1"></i>
+                                    <p class="small mb-0">Sin imagen</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <input type="hidden" name="producto_id" id="input_id_producto">
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold small text-muted">Nombre del Producto</label>
+                            <input type="text" name="nombre_producto" id="input_nombre_producto" class="form-control form-control-lg fs-6" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold small text-muted">Descripción</label>
+                            <textarea name="descripcion_producto" id="input_descripcion_producto" class="form-control fs-6" rows="2"></textarea>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold small text-muted">Precio de Venta</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light border-end-0">$</span>
+                                    <input type="number" step="0.01" name="precio_producto" id="input_precio_producto" class="form-control border-start-0" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold small text-muted">Categoría</label>
+                                <select name="categoria_id" id="select_cat" class="form-select" required>
+                                    <?php foreach ($categoria as $cat): ?>
+                                        <option value="<?php echo $cat['categoria_id']; ?>">
+                                            <?php echo htmlspecialchars($cat['categoria']); ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold small text-muted">Estado del Producto</label>
+                            <select name="estado_id" id="select_est" class="form-select" required>
+                                <?php foreach ($estado as $est): ?>
+                                    <option value="<?php echo $est['estado_gen_id']; ?>">
+                                        <?php echo htmlspecialchars($est['estado']); ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer border-0 pb-4 px-4">
+                        <button type="button" class="btn btn-light fw-bold" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary fw-bold px-4 shadow-sm">Guardar Cambios</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="modalEliminarProducto" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg rounded-4">
+                <form action="deleteProducto" method="POST">
+                    <div class="modal-header border-0 pt-4 px-4 justify-content-center">
+                        <div class="rounded-circle p-3" style="background-color: #fee2e2; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center;">
+                            <i class="bi bi-exclamation-octagon-fill text-danger fs-3"></i>
+                        </div>
+                    </div>
+                    <div class="modal-body px-4 text-center">
+                        <h5 class="fw-bold mb-2">¿Eliminar Producto?</h5>
+                        <p class="text-muted small mb-3">Vas a eliminar: <br>
+                            <strong id="display_nombre_producto" class="text-dark">---</strong>
+                        </p>
+
+                        <div class="alert alert-danger py-2 border-0 rounded-3 mb-0" style="background-color: #fef2f2;">
+                            <p class="small mb-0 text-danger" style="font-size: 0.75rem; line-height: 1.2;">
+                                <i class="bi bi-info-circle-fill me-1"></i>
+                                Esta acción es <strong>irreversible</strong> y puede afectar el historial de ventas.
+                            </p>
+                        </div>
+
+                        <input type="hidden" name="producto_id" id="input_id_producto">
+                    </div>
+                    <div class="modal-footer border-0 p-3 d-flex gap-2 pb-4">
+                        <button type="button" class="btn btn-light fw-bold flex-grow-1 border" data-bs-dismiss="modal">No, cancelar</button>
+                        <button type="submit" class="btn btn-danger fw-bold flex-grow-1 shadow">Sí, eliminar</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

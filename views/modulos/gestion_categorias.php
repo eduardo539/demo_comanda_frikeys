@@ -55,13 +55,24 @@ $dataCategorias = obtenerCategorias($pdo);
                             <h3 class="fw-bold text-dark mb-1"><?php echo htmlspecialchars($cat['categoria']); ?></h3>
 
                             <div class="d-flex justify-content-center gap-3 border-top pt-4">
-                                <button class="btn btn-action-cat btn-edit-cat" onclick="editarCategoria(1)" title="Editar Nombre/Icono">
+                                <button class="btn btn-action-cat btn-edit-cat"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#modalEditarCategoria"
+                                    data-categoria="<?php echo $cat['categoria_id']; ?>"
+                                    title="Editar Nombre/Icono">
                                     <i class="bi bi-pencil-fill"></i>
                                 </button>
-                                <button class="btn btn-action-cat btn-delete-cat" onclick="eliminarCategoria(1)" title="Eliminar Categoría">
+
+                                <button class="btn btn-action-cat btn-delete-cat"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#modalEliminarCategoria"
+                                    data-categoria="<?php echo $cat['categoria_id']; ?>"
+                                    title="Eliminar Categoría">
                                     <i class="bi bi-trash3-fill"></i>
                                 </button>
                             </div>
+
+
                         </div>
                     </div>
                 </div>
@@ -128,6 +139,86 @@ $dataCategorias = obtenerCategorias($pdo);
                         </div>
                     </form>
                 </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="modal fade" id="modalEditarCategoria" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg rounded-4">
+                <div class="modal-header border-0 pt-4 px-4">
+                    <h5 class="modal-title fw-bold">Editar Categoría</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="actualizaCategoria" method="POST">
+                    <div class="modal-body px-4 pt-0">
+                        <div class="alert alert-warning border-0 rounded-3 mb-4 shadow-sm" style="background-color: #fffbeb; border-left: 4px solid #f59e0b !important;">
+                            <div class="d-flex align-items-start">
+                                <i class="bi bi-exclamation-triangle-fill text-warning fs-4 me-3"></i>
+                                <div class="text-dark small">
+                                    <strong>Atención:</strong> Cualquier cambio en el nombre se reflejará en **todo el historial de ventas**. Use esta opción solo para corregir errores de escritura. Si desea cambiar el concepto, cree una nueva categoría.
+                                </div>
+                            </div>
+                        </div>
+
+                        <input type="hidden" name="id_categoria" id="input_categoria_id">
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold small text-muted">Nombre de la Categoría</label>
+                            <input type="text" name="nombre_categoria" id="edit_nombre_categoria" class="form-control form-control-lg fs-6" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer border-0 pb-4 px-4">
+                        <button type="button" class="btn btn-light fw-bold" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary fw-bold px-4">Guardar Cambios</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalEliminarCategoria" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg rounded-4">
+                <div class="modal-header border-0 pt-4 px-4 justify-content-center">
+                    <div class="rounded-circle p-3" style="background-color: #fee2e2; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center;">
+                        <i class="bi bi-trash3-fill text-danger fs-3"></i>
+                    </div>
+                </div>
+                <form action="deleteCategoria" method="POST">
+                    <div class="modal-body px-4 text-center">
+                        <h5 class="fw-bold mb-2">¿Eliminar Categoría?</h5>
+                        <p class="text-muted small">Vas a eliminar: <br><strong id="display_nombre_categoria" class="text-dark">---</strong></p>
+
+                        <div class="alert alert-danger py-2 border-0 rounded-3 mb-0" style="background-color: #fef2f2;">
+                            <p class="small mb-0 text-danger" style="font-size: 0.75rem; line-height: 1.2;">
+                                <i class="bi bi-info-circle-fill me-1"></i>
+                                Esta acción es **irreversible**. Afectará los reportes históricos y la organización de sus productos actuales.
+                            </p>
+                        </div>
+
+                        <input type="hidden" name="id_categoria" id="input_categoria_id">
+                    </div>
+                    <div class="modal-footer border-0 p-3 d-flex gap-2 pb-4">
+                        <button type="button" class="btn btn-light fw-bold flex-grow-1 border" data-bs-dismiss="modal">No</button>
+                        <button type="submit" class="btn btn-danger fw-bold flex-grow-1 shadow">Sí, eliminar</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

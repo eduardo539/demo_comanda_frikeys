@@ -56,15 +56,19 @@ $dataRoles = obtenerDataRoles($pdo);
                             <div class="d-flex justify-content-center gap-2 border-top pt-4">
                                 <button type="button"
                                     class="btn btn-light-primary rounded-3 py-2 px-3 btn-editar"
-                                    data-id="<?php echo $rol['rol_id']; ?>"
-                                    title="Editar Perfil">
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#modalEditarRol"
+                                    data-rol="<?php echo $rol['rol_id']; ?>"
+                                    title="Editar Rol">
                                     <i class="bi bi-pencil-square"></i>
                                 </button>
 
                                 <button type="button"
                                     class="btn btn-light-danger rounded-3 py-2 px-3 btn-eliminar"
-                                    data-id="<?php echo $rol['rol_id']; ?>"
-                                    title="Dar de Baja">
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#modalEliminarRol"
+                                    data-rol="<?php echo $rol['rol_id']; ?>"
+                                    title="Eliminar Rol">
                                     <i class="bi bi-person-x-fill"></i>
                                 </button>
                             </div>
@@ -130,6 +134,80 @@ $dataRoles = obtenerDataRoles($pdo);
                     </form>
 
                 </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+    <div class="modal fade" id="modalEditarRol" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg rounded-4">
+                <div class="modal-header border-0 pt-4 px-4">
+                    <h5 class="modal-title fw-bold">Editar Rol de Sistema</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="actualizarRol" method="POST">
+                    <div class="modal-body px-4">
+                        <div class="alert alert-warning border-0 rounded-3 mb-4 shadow-sm" style="background-color: #fffbeb; border-left: 4px solid #f59e0b !important;">
+                            <div class="d-flex">
+                                <i class="bi bi-exclamation-triangle-fill text-warning fs-4 me-3"></i>
+                                <div class="small">
+                                    <strong>Advertencia de Historial:</strong> Modificar el nombre de este rol afectará a todos los registros vinculados (usuarios, auditorías y ventas). Se recomienda realizar cambios solo para correcciones ortográficas menores.
+                                </div>
+                            </div>
+                        </div>
+
+                        <input type="hidden" name="rol_id" id="input_rol_id">
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold small text-muted">Nombre del Rol</label>
+                            <input type="text" name="nombre_rol" id="edit_nombre_rol" class="form-control form-control-lg fs-6" placeholder="Ej. Administrador, Cajero..." required>
+                        </div>
+                    </div>
+                    <div class="modal-footer border-0 pb-4 px-4">
+                        <button type="button" class="btn btn-light fw-bold" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary fw-bold px-4">Actualizar Rol</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalEliminarRol" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg rounded-4">
+                <div class="modal-header border-0 pt-4 px-4 justify-content-center">
+                    <div class="rounded-circle p-3" style="background-color: #fee2e2; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center;">
+                        <i class="bi bi-shield-x text-danger fs-3"></i>
+                    </div>
+                </div>
+                <form action="eliminarRol" method="POST">
+                    <div class="modal-body px-4 text-center">
+                        <h5 class="fw-bold mb-2">¿Eliminar Rol?</h5>
+                        <p class="text-muted small">Vas a eliminar el rol:<br><strong id="display_nombre_rol" class="text-dark"></strong></p>
+
+                        <div class="alert alert-danger py-2 border-0 rounded-3 mb-0" style="background-color: #fef2f2;">
+                            <p class="small mb-0 text-danger" style="font-size: 0.75rem;">
+                                <i class="bi bi-info-circle-fill me-1"></i>
+                                Esta acción es <strong>irreversible</strong>. Si existen usuarios con este rol, la operación podría fallar o dejar cuentas sin acceso.
+                            </p>
+                        </div>
+
+                        <input type="hidden" name="rol_id" id="input_rol_id">
+                    </div>
+                    <div class="modal-footer border-0 p-3 d-flex gap-2 pb-4">
+                        <button type="button" class="btn btn-light flex-grow-1 border" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-danger flex-grow-1 shadow">Confirmar</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
