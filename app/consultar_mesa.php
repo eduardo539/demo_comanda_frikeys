@@ -16,20 +16,18 @@ if (empty($uuid)) {
 $mesa_encontrada = obtenerNumeroMesa($pdo, $uuid);
 
 // Verificamos que se haya encontrado algo y que el UUID coincida
+// Verificamos que se haya encontrado algo
 if ($mesa_encontrada && $mesa_encontrada['uuid'] === $uuid) {
 
-    // GUARDAR DATOS EN LA SESIÓN (Sin borrar el array $_SESSION)
-    $_SESSION['mesa_id'] = $mesa_encontrada['id_mesa']; // Asegúrate que el nombre de columna sea igual al de tu BD
-    $_SESSION['nombre_mesa'] = $mesa_encontrada['nombre_mesa'];
-    $_SESSION['uuid'] = $mesa_encontrada['uuid'];
-    
-    // Si quieres un token de seguridad para la visita, guárdalo en una llave:
-    $_SESSION['visita_token'] = bin2hex(random_bytes(16));
+    // Cambia 'id_mesa' por 'mesa_id' si ese es el nombre en tu tabla
+    // Usamos el operador null coalescing ?? para evitar errores
+    $_SESSION['mesa_id'] = $mesa_encontrada['mesa_id'] ?? $mesa_encontrada['id_mesa'] ?? $mesa_encontrada['id'];
 
-    // GUARDAMOS EL TIEMPO ACTUAL (en segundos)
+    $_SESSION['nombre_mesa'] = $mesa_encontrada['nombre_mesa'] ?? $mesa_encontrada['nombre'];
+    $_SESSION['uuid'] = $mesa_encontrada['uuid'];
+
     $_SESSION['creacion_sesion'] = time();
 
-    // Redireccionamos al menú
     header("Location: " . RUTA_BASE . "menu");
     exit;
 } else {
@@ -37,7 +35,3 @@ if ($mesa_encontrada && $mesa_encontrada['uuid'] === $uuid) {
     header("Location: " . RUTA_BASE . "error_scan");
     exit;
 }
-
-
-
-?>
