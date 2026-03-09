@@ -5,7 +5,10 @@ include 'seguridad_modulo.php';
 require_once __DIR__ . '/../../config/database.php';
 require_once __DIR__ . '/../../core/consultas.php';
 
-$usuarios = obtenerDataUsuarios($pdo);
+$idExcluir = $_SESSION['user_id'];
+
+
+$usuarios = obtenerDataUsuarios($pdo, $idExcluir);
 $roles = obtenerDataRoles($pdo);
 $estado = obtenerDataEstado($pdo);
 
@@ -24,7 +27,7 @@ $estado = obtenerDataEstado($pdo);
             <button class="btn btn-primary btn-lg rounded-pill shadow px-5 py-3 fw-bold"
                 data-bs-toggle="modal"
                 data-bs-target="#modalNewUsuario">
-                <i class="bi bi-person-plus-fill me-2"></i>Nueva Categoría
+                <i class="bi bi-person-plus-fill me-2"></i>Agregar Nuevo Usuario
             </button>
         </div>
     </div>

@@ -1,0 +1,22 @@
+Array
+(
+    [mesa_id] => 6
+    [productos_ids] => Array
+        (
+            [0] => 9
+            [1] => 10
+        )
+
+    [cantidades] => Array
+        (
+            [0] => 3
+            [1] => 1
+        )
+
+    [subtotales] => Array
+        (
+            [0] => 270.00
+            [1] => 22.00
+        )
+
+)

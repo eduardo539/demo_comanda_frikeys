@@ -121,3 +121,31 @@ function actualizaRol($PDO, $newRol, $rolID)
         return false;
     }
 }
+
+
+
+
+function actualizaPassUsuario($PDO, $nuevoPass, $idUser)
+{
+    try {
+        $sql = $PDO->prepare("UPDATE usuario SET passw = ? WHERE user_id = ?");
+        return $sql->execute([$nuevoPass, $idUser]);
+    } catch (PDOException $e) {
+        return false;
+    }
+}
+
+
+
+
+function actualizaUsuarioPerfil($PDO, $nombre, $apellidos, $telefono, $edad, $usuario, $userID)
+{
+    try {
+        $sql = $PDO->prepare("UPDATE usuario
+SET Nombre = ?, Apellidos = ?, telefono = ?, edad = ?, usuario = ?
+WHERE user_id = ?");
+        return $sql->execute([$nombre, $apellidos, $telefono, $edad, $usuario, $userID]);
+    } catch (PDOException $e) {
+        return false;
+    }
+}

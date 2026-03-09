@@ -1382,3 +1382,124 @@ document.addEventListener("submit", function (e) {
       });
   }
 });
+
+
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////
+//Actualizacion para el modal de editar usuario
+document.addEventListener("submit", function (e) {
+  if (e.target && e.target.closest("#modalNewPass form")) {
+    e.preventDefault();
+
+    const form = e.target;
+    const formData = new FormData(form);
+    const btnSubmit = form.querySelector('button[type="submit"]');
+
+    const originalHTML = btnSubmit.innerHTML;
+    btnSubmit.disabled = true;
+    btnSubmit.innerHTML =
+      '<span class="spinner-border spinner-border-sm"></span> Guardando...';
+
+    fetch("cambiarPasswUsuario", {
+      method: "POST",
+      body: formData,
+    })
+      .then((response) => response.text())
+      .then((data) => {
+        if (data.trim() === "success") {
+          // 1. Cerrar el modal
+          const modalEl = document.getElementById("modalNewPass");
+          const modalInstance = bootstrap.Modal.getInstance(modalEl);
+          if (modalInstance) modalInstance.hide();
+
+          // 2. CAMBIAR LA URL SIN RECARGAR LA PÁGINA
+          const nuevaURL = window.location.pathname + "?success=ok";
+          window.history.pushState({ path: nuevaURL }, "", nuevaURL);
+
+          // 3. RECARGAR EL CONTENIDO (Mesas)
+          const activeLink = document.querySelector(".nav-link-ajax.active");
+          if (activeLink) {
+            cargarContenido(activeLink.getAttribute("data-modulo"));
+          }
+
+          // 4. LANZAR LA FUNCIÓN GLOBAL
+          verificarAlertasURL();
+        } else {
+          Swal.fire("Error", "No se pudo actualizar, la contraseña actual es incorrecta: " + data, "error");
+        }
+      })
+      .catch((err) => {
+        console.error("Error crítico en envío AJAX:", err);
+        Swal.fire("Error", "Fallo en la conexión con el servidor", "error");
+      })
+      .finally(() => {
+        btnSubmit.disabled = false;
+        btnSubmit.innerHTML = originalHTML;
+      });
+  }
+})
+
+
+
+document.addEventListener("submit", function (e) {
+  // Cambiamos el selector para que apunte a tu formulario de perfil
+  if (e.target && e.target.id === "formActualizaPerfil") {
+    e.preventDefault();
+
+    const form = e.target;
+    const formData = new FormData(form);
+    const btnSubmit = form.querySelector('button[type="submit"]');
+
+    const originalHTML = btnSubmit.innerHTML;
+    btnSubmit.disabled = true;
+    btnSubmit.innerHTML =
+      '<span class="spinner-border spinner-border-sm me-2"></span> Guardando...';
+
+    fetch("actualizaPerfil", { // Asegúrate de que esta sea la ruta a tu PHP
+      method: "POST",
+      body: formData,
+    })
+      .then((response) => response.text())
+      .then((data) => {
+        if (data.trim() === "success") {
+          // 1. CAMBIAR LA URL SIN RECARGAR LA PÁGINA (Feedback visual)
+          const nuevaURL = window.location.pathname + "?update=ok";
+          window.history.pushState({ path: nuevaURL }, "", nuevaURL);
+
+          // 2. RECARGAR EL CONTENIDO (Si usas el sistema de carga dinámica)
+          const activeLink = document.querySelector(".nav-link-ajax.active");
+          if (activeLink) {
+            cargarContenido(activeLink.getAttribute("data-modulo"));
+          }
+
+          // 3. MOSTRAR ALERTA DE ÉXITO
+          Swal.fire({
+            title: "¡Actualizado!",
+            text: "Los datos del perfil se guardaron correctamente",
+            icon: "success",
+            timer: 2000,
+            showConfirmButton: false
+          });
+
+          // 4. LANZAR LA FUNCIÓN GLOBAL (Para manejar alertas en URL si existe)
+          if (typeof verificarAlertasURL === "function") {
+            verificarAlertasURL();
+          }
+        } else {
+          Swal.fire("Error", "No se pudo actualizar: " + data, "error");
+        }
+      })
+      .catch((err) => {
+        console.error("Error crítico en envío AJAX:", err);
+        Swal.fire("Error", "Fallo en la conexión con el servidor", "error");
+      })
+      .finally(() => {
+        btnSubmit.disabled = false;
+        btnSubmit.innerHTML = originalHTML;
+      });
+  }
+});

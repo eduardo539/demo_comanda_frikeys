@@ -73,6 +73,7 @@ if (!isset($_SESSION['nombre_rol']) || $_SESSION['nombre_rol'] !== 'COCINA') {
 
                     <span class="menu-label">Configuración</span>
                     <li><a href="#" class="nav-link-ajax" data-modulo="gestion_perfil"><i class="bi bi-person-gear"></i> Mi Perfil</a></li>
+                    <li><a href="logout"><i class="bi bi-box-arrow-right me-2"></i> Cerrar Sesión</a></li>
 
 
                 </ul>
@@ -160,6 +161,7 @@ if (!isset($_SESSION['nombre_rol']) || $_SESSION['nombre_rol'] !== 'COCINA') {
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="<?php echo RUTA_BASE; ?>public/assets/js/home_cocina.js"></script>
+    <script src="<?php echo RUTA_BASE; ?>public/assets/js/update_pass.js"></script>
 
 
 

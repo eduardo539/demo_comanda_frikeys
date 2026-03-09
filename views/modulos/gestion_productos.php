@@ -24,33 +24,12 @@ $categoria = obtenerCategorias($pdo);
             <button class="btn btn-primary btn-lg rounded-pill shadow px-5 py-3 fw-bold"
                 data-bs-toggle="modal"
                 data-bs-target="#modalNewPlatillo">
-                <i class="bi bi-plus-circle-fill me-2"></i>Nueva Categoría
+                <i class="bi bi-plus-circle-fill me-2"></i>Nuevo Platillo
             </button>
         </div>
     </div>
 
-    <div class="row mb-5">
-        <div class="col-12">
-            <div class="card border-0 shadow-sm rounded-4 p-4 bg-white d-flex flex-md-row align-items-center justify-content-between gap-3">
-                <div class="d-flex align-items-center">
-                    <div class="icon-box bg-primary bg-opacity-10 text-primary p-2 rounded-3 me-3">
-                        <i class="bi bi-filter-right fs-4"></i>
-                    </div>
-                    <span class="fw-bold text-dark fs-5">Filtrar por Categoría</span>
-                </div>
 
-                <div class="col-md-4">
-                    <select class="form-select form-select-lg border-2 rounded-3" onchange="filtrarCategoria(this.value)">
-                        <option value="todos" selected>Ver Todo el Menú</option>
-                        <option value="entradas">Entradas</option>
-                        <option value="fuertes">Platos Fuertes</option>
-                        <option value="bebidas">Bebidas</option>
-                        <option value="postres">Postres</option>
-                    </select>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <div class="row g-4" id="grid-productos">
         <?php if (!empty($dataPlatillos)): ?>
@@ -89,6 +68,12 @@ $categoria = obtenerCategorias($pdo);
                                     <div class="mb-2">
                                         <span class="badge bg-primary bg-opacity-10 text-primary rounded-pill px-3 fw-bold" style="font-size: 0.7rem;">
                                             <i class="bi bi-tag-fill me-1"></i><?php echo htmlspecialchars($dp['categoria']); ?>
+                                        </span>
+                                    </div>
+
+                                    <div class="mb-2">
+                                        <span class="badge bg-secondary bg-opacity-10 text-secondary rounded-pill px-3 fw-bold" style="font-size: 0.7rem; border: 1px solid rgba(108, 117, 125, 0.2);">
+                                            <i class="bi bi-info-circle me-1"></i><?php echo htmlspecialchars($dp['estado']); ?>
                                         </span>
                                     </div>
 
