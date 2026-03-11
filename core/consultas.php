@@ -29,7 +29,7 @@ function obtenerUsuarioPorID($PDO, $userID)
 function obtenerNumeroMesa($PDO, $uuid)
 {
     $stmt = $PDO->prepare("SELECT mesa_id, nombre_mesa, uuid FROM mesa
-                            WHERE uuid = ?;");
+                            WHERE uuid = ? AND estado_gen_id = 1 ;");
     $stmt->execute([$uuid]);
     return $stmt->fetch();
 }
