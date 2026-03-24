@@ -1,13 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 4.9.0.1
 -- https://www.phpmyadmin.net/
 --
--- Servidor: 127.0.0.1
--- Tiempo de generación: 04-03-2026 a las 23:36:17
--- Versión del servidor: 10.4.32-MariaDB
--- Versión de PHP: 8.2.12
+-- Servidor: sql201.infinityfree.com
+-- Tiempo de generación: 24-03-2026 a las 13:19:37
+-- Versión del servidor: 11.4.10-MariaDB
+-- Versión de PHP: 7.2.22
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -18,7 +19,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de datos: `bd_frikeys`
+-- Base de datos: `if0_41289913_bd_frikeys`
 --
 
 -- --------------------------------------------------------
@@ -37,10 +38,14 @@ CREATE TABLE `categoria` (
 --
 
 INSERT INTO `categoria` (`categoria_id`, `categoria`) VALUES
-(2, 'Bebidas'),
-(6, 'Postres'),
-(7, 'Entradas'),
-(8, 'Plato fuerte');
+(9, 'Cafés'),
+(10, 'Frappés'),
+(11, 'Bebidas'),
+(12, 'Desayunos'),
+(13, 'Comida Casera'),
+(14, 'Comida Rápida'),
+(15, 'Antojitos'),
+(16, 'Postres');
 
 -- --------------------------------------------------------
 
@@ -64,9 +69,15 @@ CREATE TABLE `detalle_pedido` (
 --
 
 INSERT INTO `detalle_pedido` (`detalle_id`, `folio`, `fecha`, `producto_id`, `cantidad`, `total`, `mesa_id`, `estado_id`) VALUES
-(1, '1', '2026-03-04 14:24:48', 9, 1, 90, 5, 3),
-(2, '1', '2026-03-04 14:42:15', 10, 2, 44, 5, 3),
-(3, '2', '2026-03-04 14:55:28', 11, 1, 80, 6, 3);
+(4, 'FOL-20260310-6401', '2026-03-10 22:29:11', 13, 1, 50, 7, 3),
+(5, 'FOL-20260310-1553', '2026-03-10 22:43:17', 17, 1, 40, 7, 3),
+(6, 'FOL-20260310-1553', '2026-03-10 22:43:17', 25, 1, 90, 7, 3),
+(7, 'FOL-20260311-9002', '2026-03-11 00:21:46', 16, 1, 55, 7, 1),
+(8, 'FOL-20260311-9002', '2026-03-11 00:21:46', 19, 1, 30, 7, 1),
+(9, 'FOL-20260311-4605', '2026-03-11 08:32:02', 41, 1, 55, 7, 1),
+(10, 'FOL-20260311-4605', '2026-03-11 08:32:02', 22, 2, 140, 7, 1),
+(11, 'FOL-20260311-6991', '2026-03-11 08:59:26', 39, 1, 70, 7, 3),
+(12, 'FOL-20260311-7490', '2026-03-11 23:10:14', 13, 1, 50, 7, 1);
 
 -- --------------------------------------------------------
 
@@ -104,8 +115,8 @@ CREATE TABLE `estado_pedido` (
 
 INSERT INTO `estado_pedido` (`estado_id`, `estado_pedido`) VALUES
 (1, 'RECIBIDO'),
-(2, 'EN PREPARACIÓN'),
-(3, 'LISTO/ENTREGADO'),
+(2, 'PREPARANDO'),
+(3, 'ENTREGADO'),
 (4, 'CANCELADO');
 
 -- --------------------------------------------------------
@@ -127,8 +138,13 @@ CREATE TABLE `mesa` (
 --
 
 INSERT INTO `mesa` (`mesa_id`, `nombre_mesa`, `uuid`, `qr_img`, `estado_gen_id`) VALUES
-(5, 'MESA 5', '803af23c-a6ca-4250-b051-a743b8080841', '/../public/img_public/qr_803af23c-a6ca-4250-b051-a743b8080841.png', 1),
-(6, 'MESA 10', '3244812d-7f7b-4171-8fc4-a219b0636e48', '/../public/img_public/qr_3244812d-7f7b-4171-8fc4-a219b0636e48.png', 1);
+(7, 'MESA 1', 'dddc0500-c9fc-4f2f-9fea-0b60234644e5', '/../public/img_public/qr_dddc0500-c9fc-4f2f-9fea-0b60234644e5.png', 1),
+(8, 'MESA 2', '86550ef4-e82d-4729-8b7d-ff18e636651f', '/../public/img_public/qr_86550ef4-e82d-4729-8b7d-ff18e636651f.png', 2),
+(9, 'MESA 3', '2b9f20dd-db1d-4cec-9071-4ba02b5c0d04', '/../public/img_public/qr_2b9f20dd-db1d-4cec-9071-4ba02b5c0d04.png', 2),
+(13, 'MESA 4', 'e525b366-9e17-4b4f-b16f-d22febd1b1af', '/../public/img_public/qr_e525b366-9e17-4b4f-b16f-d22febd1b1af.png', 2),
+(14, 'MESA 5', 'e1a9b1e2-5064-4e37-a32d-66af223156ca', '/../public/img_public/qr_e1a9b1e2-5064-4e37-a32d-66af223156ca.png', 2),
+(15, 'MESA 6', '45c1a1f0-ca01-4fd0-bd43-411a88ddf6a4', '/../public/img_public/qr_45c1a1f0-ca01-4fd0-bd43-411a88ddf6a4.png', 2),
+(16, 'MESA 7', '46d7a509-9cef-4e86-ba88-d36e6798a701', '/../public/img_public/qr_46d7a509-9cef-4e86-ba88-d36e6798a701.png', 2);
 
 -- --------------------------------------------------------
 
@@ -151,9 +167,36 @@ CREATE TABLE `productos` (
 --
 
 INSERT INTO `productos` (`producto_id`, `categoria_id`, `nombre`, `descripcion`, `costo`, `estado_gen_id`, `imagen`) VALUES
-(9, 8, 'Hamburguesa', 'Hamburguesa sencilla', 90, 1, '/../public/img_public/afe5ae80f2ff811f7ae5e69afb7215ec.jpg'),
-(10, 2, 'Coca cola', 'coca de 600ml', 22, 1, '/../public/img_public/e632ea37076a8c10dd3cbb625379863f.jpg'),
-(11, 6, 'Frappe', 'Frappe de Oreo', 80, 1, '/../public/img_public/693438464c5dba565c2a935c9e11f466.png');
+(12, 9, 'Café Americano', 'Café negro preparado con espresso y agua caliente sabor suave y aromático', 35, 1, '/../public/img_public/99c5d2bf2e276426e607b91d6fe14879.jpg'),
+(13, 9, 'Capuchino', 'Espresso con leche vaporizada y espuma cremosa con un toque de cacao o canela', 50, 1, '/../public/img_public/c6816035168e16815677e1956531d6f5.jpg'),
+(14, 9, 'Café con Leche', 'Café tradicional combinado con leche caliente para un sabor suave', 45, 1, '/../public/img_public/27b7f6758d946bbd4491d14e789d3fb5.jpg'),
+(15, 9, 'Moka', 'Café espresso mezclado con chocolate y leche caliente', 60, 1, '/../public/img_public/74636647cd4528d65192d3c9dcd5896b.jpg'),
+(16, 9, 'Café Latte', 'Espresso con abundante leche caliente y ligera capa de espuma', 55, 1, '/../public/img_public/a433d7de1617f01b7128462eadcee225.jpg'),
+(17, 11, 'Limonada Natural', 'Bebida refrescante preparada con limón natural agua y azúcar', 40, 1, '/../public/img_public/3eadbe74a9f1e1d3ef05999329a4536c.jpg'),
+(18, 11, 'Té Helado', 'Té frío servido con hielo y un toque de limón', 35, 1, '/../public/img_public/27d04adf5c36c5689d2f4cae40b9bf91.jpg'),
+(19, 11, 'Coca Cola', 'Bebida gaseosa fría en presentación individual', 30, 1, '/../public/img_public/9111433e51bcbc0993d5dab9b8d5ad20.jpg'),
+(20, 11, 'Agua Mineral', 'Agua con gas refrescante', 30, 1, '/../public/img_public/4e9882c7b8415f59939ef8629b99eeff.png'),
+(21, 10, 'Frappé de Galleta', 'Frappé preparado con galletas trituradas leche y crema batida', 75, 1, '/../public/img_public/ca4dfe12c78bc4a2654d3aa308bd38fd.jpg'),
+(22, 10, 'Frappé de Chocolate', 'Bebida cremosa de chocolate mezclada con hielo y leche', 70, 1, '/../public/img_public/742f6e7679a38612c39bd8af50bf2dfe.jpg'),
+(23, 10, 'Frappé de Vainilla', 'Frappé frío con sabor suave a vainilla', 65, 1, '/../public/img_public/db23dd203a00e000f77cc0cd86465765.jpg'),
+(24, 12, 'Enchiladas Rojas', 'Enchiladas con pollo en salsa roja con crema queso y cebolla', 85, 1, '/../public/img_public/9274fc4b4f67df85194c7dec4fa03e6b.jpg'),
+(25, 12, 'Chilaquiles', 'Totopos en salsa roja o verde con crema queso y pollo opcional', 90, 1, '/../public/img_public/a96c6b432a362b65f62ea3622aacf1ea.jpg'),
+(26, 12, 'Huevos al Gusto', 'Huevos revueltos o estrellados acompañados con frijoles y tortillas', 75, 1, '/../public/img_public/4ae3235f53b990bcb96fc919af1e8419.jpg'),
+(27, 12, 'Hot Cakes', 'Hot cakes esponjosos con mantequilla y miel o jarabe', 80, 1, '/../public/img_public/bbeb80a256712cca15336df57faeb5a2.jpg'),
+(28, 13, 'Enchiladas Suizas', 'Tortillas rellenas de pollo bañadas en salsa verde cremosa y queso gratinado', 110, 1, '/../public/img_public/7c58900621b1b437aad5023e2b95481c.jpg'),
+(29, 13, 'Milanesa con Papas', 'Filete empanizado crujiente acompañado con papas fritas y ensalada', 120, 1, '/../public/img_public/8eb420906faa537d0522dc13b4330303.jpg'),
+(30, 13, 'Ensalada de Pollo', 'Mezcla fresca de lechuga tomate con pollo y aderezo', 95, 1, '/../public/img_public/2c4990a55823e11377b34e2e5a61cf9a.jpg'),
+(31, 14, 'Hamburguesa Clásica', 'Carne de res con lechuga tomate queso y aderezos', 90, 1, '/../public/img_public/2388da19f2db71e9a0eb9dfc23869875.png'),
+(32, 14, 'Hamburguesa Especial', 'Carne con doble queso, tocino y vegetales con aderezo de la casa', 110, 1, '/../public/img_public/5b798f8c14089e959a186d4458e8bcef.jpg'),
+(33, 14, 'Hot Dog', 'Salchicha en pan suave con cátsup, mostaza y complementos', 45, 1, '/../public/img_public/e62b088cf17c36d7e3d7a1934778ccc0.jpg'),
+(34, 14, 'Nuggets de Pollo', '6 Trozos de pollo empanizado crujiente acompañados con papas', 85, 1, '/../public/img_public/35d4c00a301e2a466d6a15cca732ba9b.jpg'),
+(35, 15, 'Papas Fritas', 'Papas crujientes fritas sazonadas con sal', 60, 1, '/../public/img_public/7339f8ef05279aca6bc8b1bef4c5b353.jpg'),
+(36, 15, 'Nachos con Queso', 'Totopos crujientes cubiertos con queso derretido', 75, 1, '/../public/img_public/8b84c528879b4cb68bdb5688749034d2.jpg'),
+(37, 15, 'Quesadillas', '2 Quesadillas rellenas de queso derretido servidas calientes', 65, 1, '/../public/img_public/184671a47a98558b4b44e2ca90fc0eec.jpg'),
+(38, 15, 'Alitas de Pollo', 'Alitas crujientes bañadas en salsa BBQ o picante', 110, 1, '/../public/img_public/9593b8d5a7c76fe791771fd87d8f139a.jpg'),
+(39, 16, 'Pastel de Chocolate', 'Rebanada de pastel suave de chocolate con cobertura dulce', 70, 1, '/../public/img_public/77885cea066999870d15ff68ba8b6cd8.jpg'),
+(40, 16, 'Pay de Queso', 'Postre cremoso sobre base crujiente de galleta', 75, 1, '/../public/img_public/40b9f3adf17385fd6eadfdd7aaa9a1f4.jpg'),
+(41, 16, 'Brownie', 'Pastelito de chocolate denso y húmedo', 55, 1, '/../public/img_public/3354ae0e512938cfcf692723f29dff72.jpg');
 
 -- --------------------------------------------------------
 
@@ -198,7 +241,8 @@ CREATE TABLE `usuario` (
 
 INSERT INTO `usuario` (`user_id`, `Nombre`, `Apellidos`, `telefono`, `edad`, `usuario`, `passw`, `rol_id`, `estado_gen_id`) VALUES
 (2, 'LINDA JHOANA', 'MELENDREZ', '1234568789', 23, 'linda123', '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92', 1, 1),
-(3, 'JUAN', 'PEREZ', '1234567890', 20, 'perez123', 'dbbaf87ba5f76398286b95743d8fbca9928088b8c11f8fd87e792e23c31c1c07', 2, 1);
+(4, 'Karla Eunice', 'Martínez', '1234568790', 21, 'karla123', 'dbbaf87ba5f76398286b95743d8fbca9928088b8c11f8fd87e792e23c31c1c07', 2, 1),
+(8, 'Perla', 'Cortes', '7711205910', 19, 'perla13', 'dbbaf87ba5f76398286b95743d8fbca9928088b8c11f8fd87e792e23c31c1c07', 2, 1);
 
 --
 -- Índices para tablas volcadas
@@ -268,13 +312,13 @@ ALTER TABLE `usuario`
 -- AUTO_INCREMENT de la tabla `categoria`
 --
 ALTER TABLE `categoria`
-  MODIFY `categoria_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `categoria_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT de la tabla `detalle_pedido`
 --
 ALTER TABLE `detalle_pedido`
-  MODIFY `detalle_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `detalle_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT de la tabla `estados`
@@ -292,13 +336,13 @@ ALTER TABLE `estado_pedido`
 -- AUTO_INCREMENT de la tabla `mesa`
 --
 ALTER TABLE `mesa`
-  MODIFY `mesa_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `mesa_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT de la tabla `productos`
 --
 ALTER TABLE `productos`
-  MODIFY `producto_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `producto_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
 
 --
 -- AUTO_INCREMENT de la tabla `roles`
@@ -310,7 +354,7 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT de la tabla `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- Restricciones para tablas volcadas
