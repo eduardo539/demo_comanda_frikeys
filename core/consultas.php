@@ -15,11 +15,21 @@ function obtenerUsuarioPorUsername($PDO, $username)
 
 
 
+function obtenerUsuarioPorID($PDO, $userID)
+{
+    $stmt = $PDO->prepare("SELECT user_id, Nombre, usuario, passw
+                            FROM usuario AS u
+                            WHERE u.user_id = ? LIMIT 1");
+    $stmt->execute([$userID]);
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
+
 
 function obtenerNumeroMesa($PDO, $uuid)
 {
     $stmt = $PDO->prepare("SELECT mesa_id, nombre_mesa, uuid FROM mesa
-                            WHERE uuid = ?;");
+                            WHERE uuid = ? AND estado_gen_id = 1 ;");
     $stmt->execute([$uuid]);
     return $stmt->fetch();
 }
@@ -74,20 +84,32 @@ function obtenerTotalPlatillos($PDO)
 
 
 //Consulta para obtener los datos de los usuarios
-function obtenerDataUsuarios($PDO)
+function obtenerDataUsuarios($PDO, $idExcluir)
 {
     try {
-        $stmt = $PDO->query("SELECT u.user_id, u.Nombre, u.Apellidos, u.telefono, u.usuario, 
-                                    r.rol_id, r.nombre_rol 
-                             FROM usuario AS u 
-                             INNER JOIN roles AS r ON u.rol_id = r.rol_id");
+        // 1. Preparamos la consulta con el marcador '?'
+        $sql = "SELECT u.user_id, u.Nombre, u.Apellidos, u.telefono, u.usuario, 
+                       r.rol_id, r.nombre_rol, e.estado_gen_id, e.estado
+                FROM usuario AS u 
+                INNER JOIN roles AS r ON u.rol_id = r.rol_id
+                INNER JOIN estados AS e ON u.estado_gen_id = e.estado_gen_id 
+                WHERE u.user_id != ?";
 
-        // fetchAll devuelve un array con todos los usuarios encontrados
+        $stmt = $PDO->prepare($sql);
+
+        // 2. Ejecutamos pasando el ID que no queremos mostrar (ej. el del usuario logueado)
+        $stmt->execute([$idExcluir]);
+
+        // Retorna todos los registros excepto el del ID proporcionado
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     } catch (PDOException $e) {
-        return []; // Retorna un array vacío si hay un error
+        // Es buena idea registrar el error para depuración si no es demo
+        // error_log($e->getMessage());
+        return [];
     }
 }
+
+
 
 //Consulta para obtener los datos de los roles
 function obtenerDataRoles($PDO)
@@ -156,7 +178,25 @@ function obtenerDataPlatillos($PDO)
                                 e.estado_gen_id, e.estado
                                 FROM productos AS p
                                 INNER JOIN categoria AS c ON p.categoria_id = c.categoria_id
-                                INNER JOIN estados AS e ON p.estado_gen_id = e.estado_gen_id;");
+                                INNER JOIN estados AS e ON p.estado_gen_id = e.estado_gen_id");
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        return [];
+    }
+}
+
+
+
+function obtenerDataPlatillosCliente($PDO)
+{
+    try {
+        $stmt = $PDO->query("SELECT p.producto_id, p.nombre, p.descripcion, p.costo,
+                                p.imagen, c.categoria_id, c.categoria,
+                                e.estado_gen_id, e.estado
+                                FROM productos AS p
+                                INNER JOIN categoria AS c ON p.categoria_id = c.categoria_id
+                                INNER JOIN estados AS e ON p.estado_gen_id = e.estado_gen_id
+                                WHERE e.estado = 'ACTIVO'");
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     } catch (PDOException $e) {
         return [];
@@ -231,7 +271,7 @@ function obtenerDataPerfil($PDO, $id_usuario)
 function obtenerTotalRecibidos($PDO)
 {
     try {
-        $stmt = $PDO->query("SELECT COUNT(*)
+        $stmt = $PDO->query("SELECT COUNT(DISTINCT (folio))
                                 FROM detalle_pedido AS dp
                                 INNER JOIN estado_pedido AS ep ON dp.estado_id = ep.estado_id
                                 WHERE ep.estado_pedido = 'RECIBIDO';");
@@ -244,7 +284,7 @@ function obtenerTotalRecibidos($PDO)
 function obtenerTotalPreparando($PDO)
 {
     try {
-        $stmt = $PDO->query("SELECT COUNT(*)
+        $stmt = $PDO->query("SELECT COUNT(DISTINCT (folio))
                                 FROM detalle_pedido AS dp
                                 INNER JOIN estado_pedido AS ep ON dp.estado_id = ep.estado_id
                                 WHERE ep.estado_pedido = 'PREPARANDO';");
@@ -257,7 +297,7 @@ function obtenerTotalPreparando($PDO)
 function obtenerTotalActivos($PDO)
 {
     try {
-        $stmt = $PDO->query("SELECT COUNT(*)
+        $stmt = $PDO->query("SELECT COUNT(DISTINCT (folio))
                                 FROM detalle_pedido AS dp
                                 INNER JOIN estado_pedido AS ep ON dp.estado_id = ep.estado_id
                                 WHERE ep.estado_pedido IN('RECIBIDO','PREPARANDO');");
@@ -382,6 +422,96 @@ function obtenerEstadoPlatilloSelect($PDO, $idEstadoPlatillo)
     try {
         $sql = $PDO->prepare("SELECT estado_id, estado_pedido FROM estado_pedido WHERE estado_id = ? LIMIT 1");
         $sql->execute([$idEstadoPlatillo]);
+        return $sql->fetch(PDO::FETCH_ASSOC); // Fila única
+    } catch (PDOException $e) {
+        return false;
+    }
+}
+
+
+
+function dataProductoSelect($PDO, $idProducto)
+{
+    try {
+        $sql = $PDO->prepare("SELECT c.categoria_id, c.categoria, p.producto_id, p.nombre, p.descripcion, p.costo,
+                                p.imagen, e.estado_gen_id, e.estado
+                                FROM productos AS p
+                                INNER JOIN categoria AS c ON p.categoria_id = c.categoria_id
+                                INNER JOIN estados AS e ON p.estado_gen_id = e.estado_gen_id
+                                WHERE p.producto_id = ? LIMIT 1");
+        $sql->execute([$idProducto]);
+        return $sql->fetch(PDO::FETCH_ASSOC); // Fila única
+    } catch (PDOException $e) {
+        return false;
+    }
+}
+
+
+
+
+
+
+function dataCategoriaSelect($PDO, $id_categoria)
+{
+    try {
+        $sql = $PDO->prepare("SELECT * FROM categoria WHERE categoria_id = ? LIMIT 1");
+        $sql->execute([$id_categoria]);
+        return $sql->fetch(PDO::FETCH_ASSOC); // Fila única
+    } catch (PDOException $e) {
+        return false;
+    }
+}
+
+
+
+
+function dataUsuarioSelect($PDO, $usuarioID)
+{
+    try {
+        $sql = $PDO->prepare("SELECT u.user_id, u.Nombre, u.Apellidos, u.telefono, u.usuario,
+r.rol_id, r.nombre_rol, e.estado_gen_id, e.estado
+FROM usuario AS u
+INNER JOIN roles AS r ON u.rol_id = r.rol_id
+INNER JOIN estados AS e ON u.estado_gen_id = e.estado_gen_id
+WHERE u.user_id = ? LIMIT 1;");
+        $sql->execute([$usuarioID]);
+        return $sql->fetch(PDO::FETCH_ASSOC); // Fila única
+    } catch (PDOException $e) {
+        return false;
+    }
+}
+
+
+
+
+
+function dataRolSelect($PDO, $id_rol)
+{
+    try {
+        $sql = $PDO->prepare("SELECT * FROM roles WHERE rol_id = ?");
+        $sql->execute([$id_rol]);
+        return $sql->fetch(PDO::FETCH_ASSOC); // Fila única
+    } catch (PDOException $e) {
+        return false;
+    }
+}
+
+
+
+
+
+
+function dataProductosxCategoria($PDO, $id_categoria)
+{
+    try {
+        $sql = $PDO->prepare("SELECT p.producto_id, p.nombre, p.descripcion, p.costo,
+p.imagen, c.categoria_id, c.categoria,
+e.estado_gen_id, e.estado
+FROM productos AS p
+INNER JOIN categoria AS c ON p.categoria_id = c.categoria_id
+INNER JOIN estados AS e ON p.estado_gen_id = e.estado_gen_id
+WHERE c.categoria_id = ? AND e.estado='ACTIVO'");
+        $sql->execute([$id_categoria]);
         return $sql->fetch(PDO::FETCH_ASSOC); // Fila única
     } catch (PDOException $e) {
         return false;

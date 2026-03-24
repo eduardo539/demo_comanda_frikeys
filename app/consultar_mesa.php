@@ -15,29 +15,18 @@ if (empty($uuid)) {
 // 2. CONSULTA DIRECTA A BASE DE DATOS
 $mesa_encontrada = obtenerNumeroMesa($pdo, $uuid);
 
-// Verificamos que se haya encontrado algo y que el UUID coincida
-if ($mesa_encontrada && $mesa_encontrada['uuid'] === $uuid) {
-
-    // GUARDAR DATOS EN LA SESIÓN (Sin borrar el array $_SESSION)
-    $_SESSION['mesa_id'] = $mesa_encontrada['id_mesa']; // Asegúrate que el nombre de columna sea igual al de tu BD
+// Si la mesa_encontrada es FALSE (no hay resultados), entrará al ELSE automáticamente
+if ($mesa_encontrada) {
+    // Si entramos aquí es porque la consulta SÍ regresó datos
+    $_SESSION['mesa_id'] = $mesa_encontrada['mesa_id'] ?? $mesa_encontrada['id_mesa'];
     $_SESSION['nombre_mesa'] = $mesa_encontrada['nombre_mesa'];
     $_SESSION['uuid'] = $mesa_encontrada['uuid'];
-    
-    // Si quieres un token de seguridad para la visita, guárdalo en una llave:
-    $_SESSION['visita_token'] = bin2hex(random_bytes(16));
-
-    // GUARDAMOS EL TIEMPO ACTUAL (en segundos)
     $_SESSION['creacion_sesion'] = time();
 
-    // Redireccionamos al menú
     header("Location: " . RUTA_BASE . "menu");
     exit;
 } else {
-    // Si no existe la mesa o el UUID es incorrecto
+    // Si la consulta regresó vacía (porque id != 1 o uuid incorrecto)
     header("Location: " . RUTA_BASE . "error_scan");
     exit;
 }
-
-
-
-?>

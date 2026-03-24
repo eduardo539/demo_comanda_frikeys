@@ -51,7 +51,7 @@ $totalFinal = 0;
 
     <div class="mt-4">
         <?php if ($estado === 'RECIBIDO'): ?>
-            <form action="updateEstadoPlatillo" method="POST">
+            <form action="updateEstadoPlatilloxFolio" method="POST">
                 <input type="hidden" name="folio" value="<?php echo htmlspecialchars($folio); ?>">
                 <input type="hidden" name="estado_id" value="2"> <button type="submit" class="btn btn-primary w-100 py-3 fw-bold text-uppercase">
                     <i class="bi bi-play-circle-fill me-2"></i> Comenzar a Preparar
@@ -59,7 +59,7 @@ $totalFinal = 0;
             </form>
 
         <?php elseif ($estado === 'PREPARANDO'): ?>
-            <form action="updateEstadoPlatillo" method="POST">
+            <form action="updateEstadoPlatilloxFolio" method="POST">
                 <input type="hidden" name="folio" value="<?php echo htmlspecialchars($folio); ?>">
                 <input type="hidden" name="estado_id" value="3">
 

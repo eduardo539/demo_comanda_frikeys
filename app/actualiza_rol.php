@@ -12,16 +12,12 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
-$userID = $_POST['user_id'] ?? '';
-$nombre = $_POST['nombre'] ?? '';
-$apellidos = $_POST['apellidos'] ?? '';
-$telefono = $_POST['telefono'] ?? '';
-$edad = $_POST['edad'] ?? '';
-$usuario = $_POST['usuario'] ?? '';
+$rolID = $_POST['rol_id'] ?? '';
+$newRol = $_POST['nombre_rol'] ?? '';
 
-if (!empty($userID) && !empty($nombre) && !empty($apellidos) && !empty($telefono) && !empty($edad) && !empty($usuario)) {
+if (!empty($rolID) && !empty($newRol)) {
     try {
-        $resultado = actualizaUsuarioPerfil($pdo, $nombre, $apellidos, $telefono, $edad, $usuario, $userID);
+        $resultado = actualizaRol($pdo, $newRol, $rolID);
 
         if ($resultado) {
             echo "success"; // Mensaje para el JavaScript

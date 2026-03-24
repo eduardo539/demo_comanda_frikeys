@@ -12,16 +12,12 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
-$userID = $_POST['user_id'] ?? '';
-$nombre = $_POST['nombre'] ?? '';
-$apellidos = $_POST['apellidos'] ?? '';
-$telefono = $_POST['telefono'] ?? '';
-$edad = $_POST['edad'] ?? '';
-$usuario = $_POST['usuario'] ?? '';
+$categoriaID = $_POST['id_categoria'] ?? '';
+$newCategoria = $_POST['nombre_categoria'] ?? '';
 
-if (!empty($userID) && !empty($nombre) && !empty($apellidos) && !empty($telefono) && !empty($edad) && !empty($usuario)) {
+if (!empty($categoriaID) && !empty($newCategoria)) {
     try {
-        $resultado = actualizaUsuarioPerfil($pdo, $nombre, $apellidos, $telefono, $edad, $usuario, $userID);
+        $resultado = actualizaCategoria($pdo, $newCategoria, $categoriaID);
 
         if ($resultado) {
             echo "success"; // Mensaje para el JavaScript

@@ -1,24 +1,28 @@
 <?php
 
-function registrarNewRol($PDO, $nombre) {
+function registrarNewRol($PDO, $nombre)
+{
     $sql = "INSERT INTO roles (nombre_rol) VALUES (:nombre)";
     $stmt = $PDO->prepare($sql);
     return $stmt->execute([':nombre' => $nombre]);
 }
 
-function registrarNewEstadoGen($PDO, $estadoGen) {
+function registrarNewEstadoGen($PDO, $estadoGen)
+{
     $sql = "INSERT INTO estados(estado) VALUES (:estadoGen);";
     $stmt = $PDO->prepare($sql);
     return $stmt->execute([':estadoGen' => $estadoGen]);
 }
 
-function registrarNewEstadoPlatillo($PDO, $estadoPlatillo) {
+function registrarNewEstadoPlatillo($PDO, $estadoPlatillo)
+{
     $sql = "INSERT INTO estado_pedido(estado_pedido) VALUES (:estadoPlatillo)";
     $stmt = $PDO->prepare($sql);
     return $stmt->execute([':estadoPlatillo' => $estadoPlatillo]);
 }
 
-function registrarNewCategoria($PDO, $categria) {
+function registrarNewCategoria($PDO, $categria)
+{
     $sql = "INSERT INTO categoria(categoria) VALUES (:categria)";
     $stmt = $PDO->prepare($sql);
     return $stmt->execute([':categria' => $categria]);
@@ -29,9 +33,9 @@ function registrarNewUsuario($PDO, $nombre, $apellido, $telefono, $edad, $usuari
 {
     $sql = "INSERT INTO usuario(Nombre, Apellidos, telefono, edad, usuario, passw, rol_id, estado_gen_id)
             VALUES (:nombre, :apellido, :telefono, :edad, :usuario, SHA2(:passw, 256), :rol, :estado)";
-    
+
     $stmt = $PDO->prepare($sql);
-    
+
     // Pasamos el array asociativo mapeando cada marcador con su variable
     return $stmt->execute([
         ':nombre'   => $nombre,
@@ -79,8 +83,51 @@ function registrarNewMesa($PDO, $nombre, $uuid, $qrimg, $estado)
         ':qrimg' => $qrimg,
         ':estado' => $estado,
     ]);
-
 }
 
 
-?>
+
+
+
+function registrarVentaCompleta($PDO, $datosPreparados)
+{
+    try {
+        if (empty($datosPreparados)) return ['success' => false, 'error' => 'No hay datos'];
+
+        $PDO->beginTransaction();
+
+        // 1. Construir la base de la consulta
+        $sql = "INSERT INTO detalle_pedido (folio, fecha, producto_id, cantidad, total, mesa_id, estado_id) VALUES ";
+        
+        $valores = [];
+        $placeholders = [];
+
+        // 2. Crear los placeholders (?,?,?,?,?,?,?) por cada producto
+        foreach ($datosPreparados as $index => $item) {
+            $placeholders[] = "(?, ?, ?, ?, ?, ?, ?)";
+            
+            // Metemos los valores en orden al arreglo plano para PDO
+            $valores[] = $item['folio'];
+            $valores[] = $item['fecha'];
+            $valores[] = $item['producto_id'];
+            $valores[] = $item['cantidad'];
+            $valores[] = $item['total'];
+            $valores[] = $item['mesa_id'];
+            $valores[] = $item['estado_id'];
+        }
+
+        // Unimos los placeholders con comas: (?,?,...), (?,?,...)
+        $sql .= implode(', ', $placeholders);
+
+        $stmt = $PDO->prepare($sql);
+        $stmt->execute($valores);
+
+        $PDO->commit();
+        // Retornamos el folio del primer item (todos tienen el mismo)
+        return ['success' => true, 'folio' => $datosPreparados[0]['folio']];
+
+    } catch (Exception $e) {
+        if ($PDO->inTransaction()) $PDO->rollBack();
+        return ['success' => false, 'error' => $e->getMessage()];
+    }
+}

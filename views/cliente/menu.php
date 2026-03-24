@@ -1,19 +1,33 @@
 <?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 require_once __DIR__ . '/../../config/config.php';
 require_once __DIR__ . '/../../config/database.php';
-require_once __DIR__ . '/../../core/consultas.php'; // Asumiendo que aquí están tus SELECT
+require_once __DIR__ . '/../../core/consultas.php';
 
 // 1. Configuración de tiempo de sesión (15 min)
 $minutos_limite = 15;
 $segundos_limite = $minutos_limite * 60;
 
+// VERIFICACIÓN A: ¿Existe la sesión?
 if (!isset($_SESSION['uuid'])) {
     header("Location: " . RUTA_BASE . "error_scan");
     exit;
 }
 
-// 2. Control de expiración
+// VERIFICACIÓN B: ¿Sigue activa en la Base de Datos? (Seguridad en tiempo real)
+$mesa_activa = obtenerNumeroMesa($pdo, $_SESSION['uuid']);
+
+if (!$mesa_activa) {
+    session_unset();
+    session_destroy();
+    header("Location: " . RUTA_BASE . "error_scan?razon=mesa_inactiva");
+    exit;
+}
+
+// 2. Control de expiración por tiempo
 if (isset($_SESSION['creacion_sesion'])) {
     $segundos_transcurridos = time() - $_SESSION['creacion_sesion'];
     if ($segundos_transcurridos > $segundos_limite) {
@@ -24,57 +38,63 @@ if (isset($_SESSION['creacion_sesion'])) {
     }
 }
 
-// 3. Obtener datos de la mesa y base de datos
-$nombreMesa = $_SESSION['nombre_mesa'] ?? 'Mesa Desconocida';
-$idMesa = $_SESSION['mesa_id'] ?? 0;
+// 3. Obtener datos actualizados de la DB
+$nombreMesa = $mesa_activa['nombre_mesa'];
+$idMesa = $mesa_activa['mesa_id'];
 
-// Consultas dinámicas
-$categorias = obtenerCategorias($pdo); // Función que debes tener
-$productos = obtenerDataPlatillos($pdo);   // Función que debes tener
+// Consultas para el contenido
+$categorias = obtenerCategorias($pdo);
+$productos = obtenerDataPlatillosCliente($pdo);
 ?>
-
-
-
-
-
 
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Menú | <?php echo $nombreMesa; ?></title>
+    <title>Menú | <?php echo htmlspecialchars($nombreMesa); ?></title>
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="<?php echo RUTA_BASE; ?>public/assets/css/menu_cliente.css">
 </head>
-
 <body>
+
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasCategories" aria-labelledby="offcanvasCategoriesLabel">
+        <div class="offcanvas-header bg-dark text-white">
+            <h5 class="offcanvas-title fw-bold" id="offcanvasCategoriesLabel">Categorías</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body p-0">
+            <div class="list-group list-group-flush">
+                <button class="list-group-item list-group-item-action cat-btn active" data-category="todos">
+                    ✨ Todos los productos
+                </button>
+                <?php foreach ($categorias as $cat): ?>
+                    <button class="list-group-item list-group-item-action cat-btn" data-category="<?php echo $cat['categoria_id']; ?>">
+                        <?php echo htmlspecialchars($cat['categoria']); ?>
+                    </button>
+                <?php endforeach; ?>
+            </div>
+        </div>
+    </div>
 
     <header class="menu-header sticky-top">
         <div class="container">
             <div class="d-flex align-items-center justify-content-between">
-                <button class="btn-menu-categorias shadow-sm" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCategories">
-                    <i class="bi bi-grid-fill"></i>
+                <button class="btn btn-light rounded-circle shadow-sm d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCategories">
+                    <i class="bi bi-grid-fill text-primary"></i>
                 </button>
-
                 <div class="text-center flex-grow-1">
                     <h1 class="brand-font">Frikeys</h1>
                     <p class="brand-subtitle mb-0">Café Restaurante</p>
                     <div class="mt-2">
-                        <span class="badge bg-white text-dark rounded-pill px-3 py-2 shadow-sm" style="font-size: 0.75rem;">
+                        <span class="badge bg-white text-dark rounded-pill px-3 py-2 shadow-sm">
                             <i class="bi bi-geo-alt-fill text-info me-1"></i> <?php echo htmlspecialchars($nombreMesa); ?>
                         </span>
                     </div>
                 </div>
-
-                <div style="width: 45px;" class="d-flex justify-content-end">
-                    <i class="bi bi-clock-history text-white opacity-75"></i>
-                </div>
             </div>
-
             <nav class="d-none d-md-flex justify-content-center mt-4">
                 <div class="desktop-nav">
                     <button class="cat-btn active" data-category="todos">✨ Todos</button>
@@ -88,77 +108,224 @@ $productos = obtenerDataPlatillos($pdo);   // Función que debes tener
         </div>
     </header>
 
-    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasCategories">
-        <div class="offcanvas-header bg-primary text-white">
-            <h5 class="offcanvas-title fw-bold">Nuestro Menú</h5>
-            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
+    <main class="container py-5">
+        <div class="row g-4" id="contenedor-productos">
+            <?php foreach ($productos as $prod): ?>
+                <div class="col-12 col-md-6 col-lg-4 producto-item" data-cat="<?php echo $prod['categoria_id']; ?>">
+                    <div class="card frikeys-card h-100 border-0 shadow-sm">
+                        <div class="img-wrapper position-relative">
+                            <?php $img = !empty($prod['imagen']) ? ltrim($prod['imagen'], '/. ') : 'public/img_public/default.png'; ?>
+                            <img src="<?php echo RUTA_BASE . $img; ?>" alt="<?php echo htmlspecialchars($prod['nombre']); ?>" class="img-fluid rounded-top">
+                            <div class="position-absolute bottom-0 start-0 m-3">
+                                <span class="badge price-tag rounded-pill shadow-sm">
+                                    $<?php echo number_format($prod['costo'], 2); ?>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="card-body p-4">
+                            <h5 class="fw-bold text-dark mb-2"><?php echo htmlspecialchars($prod['nombre']); ?></h5>
+                            <p class="text-muted small mb-4"><?php echo htmlspecialchars($prod['descripcion']); ?></p>
+                            <div class="d-grid">
+                                <button class="btn btn-primary btn-agregar"
+                                    data-id="<?php echo $prod['producto_id']; ?>"
+                                    data-nombre="<?php echo htmlspecialchars($prod['nombre']); ?>"
+                                    data-precio="<?php echo $prod['costo']; ?>">
+                                    <i class="bi bi-bag-plus-fill me-2"></i>Añadir
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <?php endforeach; ?>
         </div>
-        <div class="offcanvas-body p-0">
-            <div class="list-group list-group-flush">
-                <button class="list-group-item list-group-item-action cat-btn active" data-category="todos" data-bs-dismiss="offcanvas">✨ Todos</button>
-                <?php foreach ($categorias as $cat): ?>
-                    <button class="list-group-item list-group-item-action cat-btn"
-                        data-category="<?php echo $cat['categoria_id']; ?>" data-bs-dismiss="offcanvas">
-                        <?php echo htmlspecialchars($cat['categoria']); ?>
-                    </button>
-                <?php endforeach; ?>
+    </main>
+
+    <div id="cart-floating" class="cart-container d-none fixed-bottom m-4 shadow-lg p-3 bg-primary rounded-pill text-white justify-content-between align-items-center" style="z-index: 1050; max-width: 400px; margin-left: auto !important;">
+        <div class="d-flex align-items-center gap-3">
+            <div class="position-relative">
+                <i class="bi bi-bag-heart-fill fs-3"></i>
+                <span id="cart-count" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">0</span>
+            </div>
+            <span id="cart-total-amount" class="fw-bold">$0.00</span>
+        </div>
+        <button class="btn btn-light rounded-pill px-4 fw-bold" onclick="abrirModalPedido()">Ver Pedido</button>
+    </div>
+
+    <div class="modal fade" id="modalPedido" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 rounded-4 shadow-lg">
+                <div class="modal-header bg-dark text-white rounded-top-4">
+                    <h5 class="modal-title fw-bold">Tu Pedido</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle">
+                            <tbody id="lista-pedido-cuerpo"></tbody>
+                        </table>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center mt-4 p-3 bg-light rounded-3">
+                        <span class="fw-bold fs-5">Total:</span>
+                        <span class="fw-bold fs-5 text-primary" id="modal-total-amount">$0.00</span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary px-4" onclick="enviarPedidoFinal()">Confirmar Pedido</button>
+                </div>
             </div>
         </div>
     </div>
 
-    <main class="container py-5">
-        <div class="row g-4" id="contenedor-productos">
-            <?php if (!empty($productos)): ?>
-                <?php foreach ($productos as $prod): ?>
-                    <div class="col-12 col-md-6 col-lg-4 producto-item" data-cat="<?php echo $prod['producto_id']; ?>">
-                        <div class="card frikeys-card h-100 border-0">
-                            <div class="img-wrapper position-relative">
-                                <?php
-                                $img = !empty($prod['imagen']) ? ltrim($prod['imagen'], '/. ') : 'public/img_public/default.png';
-                                ?>
-                                <img src="<?php echo RUTA_BASE . $img; ?>" alt="<?php echo $prod['nombre']; ?>" class="loading-lazy">
-
-                                <div class="position-absolute bottom-0 start-0 m-3">
-                                    <span class="badge bg-dark bg-opacity-50 backdrop-blur rounded-pill text-white border border-light border-opacity-25">
-                                        $<?php echo number_format($prod['costo'], 2); ?>
-                                    </span>
-                                </div>
-                            </div>
-
-                            <div class="card-body p-4">
-                                <h5 class="fw-bold text-dark mb-2"><?php echo htmlspecialchars($prod['nombre']); ?></h5>
-                                <p class="text-muted small mb-4" style="line-height: 1.5; height: 3rem; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">
-                                    <?php echo htmlspecialchars($prod['descripcion']); ?>
-                                </p>
-
-                                <div class="d-grid">
-                                    <button class="btn btn-frikeys shadow-sm btn-agregar w-100"
-                                        data-id="<?php echo $prod['producto_id']; ?>"
-                                        data-nombre="<?php echo htmlspecialchars($prod['nombre']); ?>"
-                                        data-precio="<?php echo $prod['costo']; ?>">
-                                        <i class="bi bi-bag-plus-fill me-2"></i>Añadir al pedido
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                <?php endforeach; ?>
-            <?php endif; ?>
-        </div>
-    </main>
-
-
-
-    <div id="cart-floating" class="cart-container d-none">
-        <div class="cart-info">
-            <i class="bi bi-bag-heart-fill fs-4"></i>
-            <span id="cart-count">0 items</span>
-        </div>
-        <div class="cart-total">
-            <span id="cart-total-amount">$0.00</span>
-        </div>
-        <button class="btn-ver-pedido">Ver Pedido</button>
-    </div>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../../public/assets/js/js_menu_cliente.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        let carrito = JSON.parse(localStorage.getItem('carrito_frikeys')) || [];
+        const RUTA_BASE = '<?php echo RUTA_BASE; ?>';
+        const ID_MESA = Number(<?php echo $idMesa; ?>);
+
+        document.addEventListener("DOMContentLoaded", () => {
+            initFiltros();
+            actualizarInterfaz();
+            vincularBotonesAgregar();
+        });
+
+        function initFiltros() {
+            document.querySelectorAll(".cat-btn").forEach(btn => {
+                btn.addEventListener("click", function() {
+                    const cat = this.getAttribute("data-category");
+                    
+                    // 1. Filtrar Productos
+                    document.querySelectorAll(".producto-item").forEach(item => {
+                        const itemCat = item.getAttribute('data-cat');
+                        item.style.display = (cat === "todos" || itemCat === cat) ? "block" : "none";
+                    });
+
+                    // 2. Sincronizar estado visual de botones (PC y Móvil)
+                    document.querySelectorAll(".cat-btn").forEach(b => b.classList.remove("active"));
+                    document.querySelectorAll(`[data-category="${cat}"]`).forEach(el => el.classList.add('active'));
+
+                    // 3. Cerrar el Offcanvas si estamos en móvil
+                    const offcanvasElement = document.getElementById('offcanvasCategories');
+                    const instance = bootstrap.Offcanvas.getInstance(offcanvasElement);
+                    if (instance) instance.hide();
+                });
+            });
+        }
+
+        function vincularBotonesAgregar() {
+            document.querySelectorAll(".btn-agregar").forEach(btn => {
+                btn.onclick = function() {
+                    const item = {
+                        id: this.dataset.id,
+                        nombre: this.dataset.nombre,
+                        precio: parseFloat(this.dataset.precio),
+                        cantidad: 1
+                    };
+                    agregarAlCarrito(item);
+                };
+            });
+        }
+
+        function agregarAlCarrito(nuevo) {
+            const existe = carrito.find(p => p.id === nuevo.id);
+            if (existe) {
+                existe.cantidad++;
+            } else {
+                carrito.push(nuevo);
+            }
+            guardarYActualizar();
+        }
+
+        function guardarYActualizar() {
+            localStorage.setItem('carrito_frikeys', JSON.stringify(carrito));
+            actualizarInterfaz();
+        }
+
+        function actualizarInterfaz() {
+            const flotante = document.getElementById("cart-floating");
+            const count = document.getElementById("cart-count");
+            const total = document.getElementById("cart-total-amount");
+
+            if (carrito.length > 0) {
+                flotante.classList.remove("d-none");
+                flotante.classList.add("d-flex");
+                count.innerText = carrito.reduce((acc, p) => acc + p.cantidad, 0);
+                total.innerText = `$${carrito.reduce((acc, p) => acc + (p.precio * p.cantidad), 0).toFixed(2)}`;
+            } else {
+                flotante.classList.add("d-none");
+            }
+        }
+
+        function abrirModalPedido() {
+            const cuerpo = document.getElementById("lista-pedido-cuerpo");
+            cuerpo.innerHTML = "";
+            carrito.forEach((p, i) => {
+                cuerpo.innerHTML += `
+                    <tr>
+                        <td><strong>${p.nombre}</strong><br><small>$${p.precio}</small></td>
+                        <td class="text-center">${p.cantidad}</td>
+                        <td class="text-end">$${(p.precio * p.cantidad).toFixed(2)}</td>
+                        <td><button class="btn btn-sm text-danger" onclick="eliminar(${i})"><i class="bi bi-trash"></i></button></td>
+                    </tr>`;
+            });
+            document.getElementById("modal-total-amount").innerText = `$${carrito.reduce((acc, p) => acc + (p.precio * p.cantidad), 0).toFixed(2)}`;
+            const myModal = new bootstrap.Modal(document.getElementById('modalPedido'));
+            myModal.show();
+        }
+
+        function eliminar(i) {
+            carrito.splice(i, 1);
+            guardarYActualizar();
+            if (carrito.length > 0) {
+                 // Refrescar el contenido del modal si sigue abierto
+                 abrirModalPedido();
+            } else {
+                location.reload();
+            }
+        }
+
+        function enviarPedidoFinal() {
+            if (carrito.length === 0) return;
+
+            Swal.fire({
+                title: 'Enviando pedido...',
+                text: 'Por favor espera un momento',
+                allowOutsideClick: false,
+                didOpen: () => { Swal.showLoading(); }
+            });
+
+            const formData = new FormData();
+            formData.append('mesa_id', ID_MESA);
+            carrito.forEach(p => {
+                formData.append('productos_ids[]', p.id);
+                formData.append('cantidades[]', p.cantidad);
+                formData.append('subtotales[]', (p.precio * p.cantidad).toFixed(2));
+            });
+
+            fetch('registrarVenta', {
+                method: 'POST',
+                body: formData
+            })
+            .then(res => res.text())
+            .then(data => {
+                if (data.includes("EXITO") || data.includes("OK")) {
+                    Swal.fire({
+                        title: '¡Pedido Confirmado!',
+                        icon: 'success',
+                        confirmButtonText: 'Entendido',
+                        allowOutsideClick: false
+                    }).then(() => {
+                        localStorage.removeItem('carrito_frikeys');
+                        location.reload();
+                    });
+                } else {
+                    Swal.fire("Error", "Servidor: " + data, "error");
+                }
+            })
+            .catch(() => Swal.fire("Error", "Sin conexión con el servidor.", "error"));
+        }
+    </script>
+</body>
+</html>

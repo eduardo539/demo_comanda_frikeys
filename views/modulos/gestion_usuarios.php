@@ -5,7 +5,10 @@ include 'seguridad_modulo.php';
 require_once __DIR__ . '/../../config/database.php';
 require_once __DIR__ . '/../../core/consultas.php';
 
-$usuarios = obtenerDataUsuarios($pdo);
+$idExcluir = $_SESSION['user_id'];
+
+
+$usuarios = obtenerDataUsuarios($pdo, $idExcluir);
 $roles = obtenerDataRoles($pdo);
 $estado = obtenerDataEstado($pdo);
 
@@ -24,7 +27,7 @@ $estado = obtenerDataEstado($pdo);
             <button class="btn btn-primary btn-lg rounded-pill shadow px-5 py-3 fw-bold"
                 data-bs-toggle="modal"
                 data-bs-target="#modalNewUsuario">
-                <i class="bi bi-person-plus-fill me-2"></i>Nueva Categoría
+                <i class="bi bi-person-plus-fill me-2"></i>Agregar Nuevo Usuario
             </button>
         </div>
     </div>
@@ -56,6 +59,12 @@ $estado = obtenerDataEstado($pdo);
                                 </span>
                             </div>
 
+                            <div class="mb-3">
+                                <span class="badge rounded-pill px-3 py-2 bg-light text-dark border shadow-sm" style="font-weight: 500;">
+                                    <?php echo htmlspecialchars($user['estado']); ?>
+                                </span>
+                            </div>
+
                             <div class="user-info text-muted small mb-4">
                                 <div class="d-flex align-items-center justify-content-center mb-1">
                                     <i class="bi bi-person-badge me-2"></i> Usuario: <?php echo htmlspecialchars($user['usuario']); ?>
@@ -67,14 +76,28 @@ $estado = obtenerDataEstado($pdo);
 
                             <div class="d-flex justify-content-center gap-2 border-top pt-4">
                                 <button class="btn btn-light-primary rounded-3 py-2 px-3"
-                                    onclick="editarUsuario(<?php echo $user['user_id']; ?>)" title="Editar Perfil">
+                                    data-bs-toggle="modal" data-bs-target="#modalEditarUsuario"
+                                    data-usuario="<?php echo $user['user_id']; ?>"
+                                    title="Editar Perfil">
                                     <i class="bi bi-pencil-square"></i>
                                 </button>
+
+                                <button class="btn btn-light-warning rounded-3 py-2 px-3 text-warning"
+                                    data-bs-toggle="modal" data-bs-target="#modalRestablecerPass"
+                                    data-usuario="<?php echo $user['user_id']; ?>"
+                                    title="Restablecer Contraseña">
+                                    <i class="bi bi-key-fill"></i>
+                                </button>
+
                                 <button class="btn btn-light-danger rounded-3 py-2 px-3"
-                                    onclick="eliminarUsuario(<?php echo $user['user_id']; ?>)" title="Dar de Baja">
+                                    data-bs-toggle="modal" data-bs-target="#modalEliminarUsuario"
+                                    data-usuario="<?php echo $user['user_id']; ?>"
+                                    title="Eliminar Usuario">
                                     <i class="bi bi-person-x-fill"></i>
                                 </button>
                             </div>
+
+
                         </div>
                     </div>
                 </div>
@@ -222,6 +245,145 @@ $estado = obtenerDataEstado($pdo);
     </div>
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="modal fade" id="modalEditarUsuario" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg rounded-4">
+                <div class="modal-header border-0 pt-4 px-4">
+                    <h5 class="modal-title fw-bold">Perfil de Usuario</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form action="actualizarEstadoUser" method="POST">
+                    <div class="modal-body px-4">
+                        <input type="hidden" name="user_id" id="input_usuario_id">
+
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold text-muted">Nombre(s)</label>
+                                <input type="text" id="view_nombre" class="form-control bg-light" readonly>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold text-muted">Apellidos</label>
+                                <input type="text" id="view_apellidos" class="form-control bg-light" readonly>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold text-muted">Nombre de Usuario</label>
+                                <input type="text" id="view_username" class="form-control bg-light" readonly>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold text-muted">Teléfono</label>
+                                <input type="text" id="view_telefono" class="form-control bg-light" readonly>
+                            </div>
+
+                            <div class="col-12">
+                                <label class="form-label small fw-bold text-muted">Rol asignado</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light border-end-0"><i class="bi bi-shield-lock"></i></span>
+                                    <input type="text" id="view_rol" class="form-control bg-light border-start-0" readonly>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr class="my-4 text-muted opacity-25">
+
+                        <div class="mb-2">
+                            <label class="form-label small fw-bold text-primary">Estado de la cuenta (Editable)</label>
+                            <select name="estado_id" id="edit_estado_user" class="form-select border-primary shadow-sm" required>
+                                <?php foreach ($estado as $est): ?>
+                                    <option value="<?php echo $est['estado_gen_id']; ?>"><?php echo $est['estado']; ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                            <div class="form-text mt-2" style="font-size: 0.75rem;">
+                                <i class="bi bi-info-circle"></i> Solo el estado de actividad puede ser modificado desde este panel.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer border-0 pb-4 px-4">
+                        <button type="button" class="btn btn-light fw-bold" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="submit" class="btn btn-primary fw-bold px-4 shadow-sm">Guardar Cambios</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalRestablecerPass" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg rounded-4">
+                <form action="" method="POST">
+                    <div class="modal-body p-4 text-center">
+                        <div class="mb-3">
+                            <i class="bi bi-shield-lock-fill text-warning" style="font-size: 3rem;"></i>
+                        </div>
+
+                        <h5 class="fw-bold">Seguridad de Cuenta</h5>
+                        <p class="text-muted small">¿Confirmas restablecer la contraseña para:<br><strong id="display_view_nombre" class="text-dark"></strong>?</p>
+
+                        <input type="hidden" name="user_id" id="input_usuario_id">
+
+                        <div class="alert alert-warning border-0 shadow-sm text-start py-3" style="background-color: #fffbeb;">
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="bi bi-info-circle-fill me-2"></i>
+                                <span class="fw-bold small">Información importante:</span>
+                            </div>
+                            <p class="mb-2 small">La clave se restablecerá a:</p>
+                            <div class="text-center mb-2">
+                                <code class="fs-5 fw-bold text-dark px-3 py-1 bg-white rounded border">cambio123</code>
+                            </div>
+                            <p class="mb-0 small text-muted italic" style="font-size: 0.7rem;">
+                                * El usuario deberá actualizarla obligatoriamente al iniciar sesión por motivos de seguridad.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="modal-footer border-0 p-3 d-flex gap-2 pb-4">
+                        <button type="button" class="btn btn-light flex-grow-1 fw-bold" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-warning flex-grow-1 fw-bold shadow-sm">Confirmar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalEliminarUsuario" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg rounded-4">
+                <form action="deleteUsuario" method="POST">
+                    <div class="modal-body p-4 text-center">
+                        <div class="bg-light-danger rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 70px; height: 70px; background-color: #fee2e2;">
+                            <i class="bi bi-person-dash-fill text-danger fs-2"></i>
+                        </div>
+                        <h5 class="fw-bold">Eliminar Cuenta de Usuario</h5>
+                        <p class="text-muted small">Usuario: <strong id="display_view_nombre"></strong></p>
+
+                        <div class="alert alert-danger border-0 text-start small mb-0" style="background-color: #fef2f2;">
+                            <p class="mb-2"><strong><i class="bi bi-exclamation-octagon-fill me-1"></i> Política de Seguridad:</strong></p>
+                            <p class="mb-0">Solo se puede eliminar un registro si el usuario <strong>no tiene actividad registrada</strong> (ventas, compras, movimientos). Si el usuario ya operó en el sistema, la acción se convertirá automáticamente en <strong>"Inactivar Cuenta"</strong> para preservar el historial de auditoría.</p>
+                        </div>
+
+                        <input type="hidden" name="user_id" id="input_usuario_id">
+                    </div>
+                    <div class="modal-footer border-0 p-4 pt-0 d-flex gap-2">
+                        <button type="button" class="btn btn-light flex-grow-1 fw-bold" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-danger flex-grow-1 fw-bold shadow">Confirmar Acción</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
 
 

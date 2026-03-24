@@ -14,7 +14,6 @@ RewriteRule ^addNuevaCategoria$ app/registrar_new_categoria.php [L]
 RewriteRule ^addNewUsuario$ app/registrar_usuario.php [L]
 RewriteRule ^addNewPlatillo$ app/registrar_platillo.php [L]
 RewriteRule ^addNewMesa$ app/registrar_mesa.php [L]
-RewriteRule ^actualizaPerfil$ app/actualizar_data_perfil.php [L]
 RewriteRule ^newPass$ app/update_pass.php [L]
 RewriteRule ^obtenerMesaSelect$ app/datos_mesa.php [L]
 RewriteRule ^actualizaEstadoMesa$ app/actualizar_estado_mesa.php [L]
@@ -23,9 +22,39 @@ RewriteRule ^obtenerEstadoGenSelect$ app/datos_estado_gen.php [L]
 RewriteRule ^updateEstadoGen$ app/actualizar_estado_general.php [L]
 RewriteRule ^deleteEstadoGen$ app/eliminar_estado_gen.php [L]
 
+RewriteRule ^updateEstadoPlatilloxFolio$ app/actualiza_estado_platillo_folio.php [L]
+
 RewriteRule ^obtenerEstadoPlatilloSelect$ app/datos_estado_platillo.php [L]
 RewriteRule ^updateEstadoPlatillo$ app/actualiza_estado_platillo.php [L]
 RewriteRule ^deleteEstadoPlatillo$ app/eliminar_estado_platillo.php [L]
+
+RewriteRule ^obtenerProductoSelect$ app/datos_productos.php [L]
+RewriteRule ^actualizaProducto$ app/actualizar_producto.php [L]
+RewriteRule ^deleteProducto$ app/eliminar_producto.php [L]
+
+
+RewriteRule ^obtenerCategoriaSelect$ app/datos_categoria.php [L]
+RewriteRule ^actualizaCategoria$ app/actualizar_categoria.php [L]
+RewriteRule ^deleteCategoria$ app/eliminar_categoria.php [L]
+
+
+RewriteRule ^obtenerDataUsuario$ app/datos_usuario.php [L]
+RewriteRule ^actualizarEstadoUser$ app/actualizar_estado_user.php [L]
+RewriteRule ^restablecerPassUser$ app/update_pass_user.php [L]
+RewriteRule ^deleteUsuario$ app/eliminar_usuario.php [L]
+
+
+RewriteRule ^obtenerDatosRoles$ app/datos_roles.php [L]
+RewriteRule ^actualizarRol$ app/actualiza_rol.php [L]
+RewriteRule ^eliminarRol$ app/eliminar_rol.php [L]
+
+
+RewriteRule ^cambiarPasswUsuario$ app/cambiar_passw_usuario.php [L]
+RewriteRule ^actualizaPerfil$ app/actualizar_data_perfil.php [L]
+
+
+RewriteRule ^filtrarProductos$ app/filtrar_productos.php [L]
+RewriteRule ^registrarVenta$ app/registrar_venta_cliente.php [L]
 
 
 # 2. Proteger archivos reales (Para que las imágenes y el CSS sigan funcionando)

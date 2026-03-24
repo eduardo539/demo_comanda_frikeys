@@ -68,7 +68,7 @@ $dataPerfil = obtenerDataPerfil($pdo, $id_usuario_sesion);
                                 <label class="form-label fw-semibold small text-uppercase">Usuario</label>
                                 <div class="input-group">
                                     <span class="input-group-text bg-light border-0"><i class="bi bi-at"></i></span>
-                                    <input type="text" class="form-control border-0 bg-light" value="<?php echo $dataPerfil['usuario']; ?>">
+                                    <input type="text" name="usuario" class="form-control border-0 bg-light" value="<?php echo $dataPerfil['usuario']; ?>">
                                 </div>
                             </div>
 
@@ -91,117 +91,93 @@ $dataPerfil = obtenerDataPerfil($pdo, $id_usuario_sesion);
             </div>
         </div>
     </div>
-</div>
 
 
 
 
 
 
-<div class="modal fade" id="modalNewPass" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-sm">
-        <div class="modal-content border-0 shadow-lg rounded-0" style="background: #f8f9fa;">
-            <div class="modal-header border-0 pb-0 justify-content-center pt-4">
-                <div class="text-center">
-                    <div class="bg-warning bg-opacity-10 text-warning rounded-circle mx-auto mb-2 d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
-                        <i class="bi bi-shield-lock fs-2"></i>
+
+
+    <div class="modal fade" id="modalNewPass" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+            <div class="modal-content border-0 shadow-lg rounded-0" style="background: #f8f9fa;">
+                <div class="modal-header border-0 pb-0 justify-content-center pt-4">
+                    <div class="text-center">
+                        <div class="bg-warning bg-opacity-10 text-warning rounded-circle mx-auto mb-2 d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                            <i class="bi bi-shield-lock fs-2"></i>
+                        </div>
+                        <h5 class="modal-title fw-bold text-dark px-3">Seguridad</h5>
+                        <p class="text-muted small">Actualiza tu clave de acceso</p>
                     </div>
-                    <h5 class="modal-title fw-bold text-dark px-3">Seguridad</h5>
-                    <p class="text-muted small">Actualiza tu clave de acceso</p>
                 </div>
-            </div>
 
-            <div class="modal-body p-4 pt-2">
-                <form id="formChangePass" action="newPass" method="POST">
+                <div class="modal-body p-4 pt-2">
+                    <form action="cambiarPasswUsuario" method="POST" id="formNewPass">
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold text-uppercase text-muted mb-2 ls-1">Contraseña Actual</label>
 
-                    <div class="mb-3">
-                        <label class="form-label small fw-bold text-uppercase text-muted mb-2 ls-1">Contraseña Actual</label>
-                        <div class="input-group border-bottom border-warning border-2 shadow-sm">
-                            <span class="input-group-text bg-white border-0 text-warning">
-                                <i class="bi bi-lock-fill"></i>
-                            </span>
-                            <input type="password" name="pass_actual" id="pass_actual"
-                                class="form-control border-0 bg-white ps-0 py-2 fw-semibold"
-                                placeholder="••••••••" required>
+                            <input type="hidden" name="user_id" value="<?php echo $dataPerfil['user_id']; ?>">
+
+                            <div class="input-group border-bottom border-warning border-2 shadow-sm">
+                                <span class="input-group-text bg-white border-0 text-warning">
+                                    <i class="bi bi-lock-fill"></i>
+                                </span>
+                                <input type="password" name="pass_actual" id="pass_actual"
+                                    class="form-control border-0 bg-white ps-0 py-2 fw-semibold"
+                                    placeholder="••••••••" required>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="mb-3">
-                        <label class="form-label small fw-bold text-uppercase text-muted mb-2 ls-1">Nueva Contraseña</label>
-                        <div class="input-group border-bottom border-primary border-2 shadow-sm">
-                            <span class="input-group-text bg-white border-0 text-primary">
-                                <i class="bi bi-key-fill"></i>
-                            </span>
-                            <input type="password" name="pass_nueva" id="pass_nueva"
-                                class="form-control border-0 bg-white ps-0 py-2 fw-semibold"
-                                placeholder="Mín. 8 caracteres" required>
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold text-uppercase text-muted mb-2 ls-1">Nueva Contraseña</label>
+                            <div class="input-group border-bottom border-primary border-2 shadow-sm">
+                                <span class="input-group-text bg-white border-0 text-primary">
+                                    <i class="bi bi-key-fill"></i>
+                                </span>
+                                <input type="password" name="pass_nueva" id="pass_nueva"
+                                    class="form-control border-0 bg-white ps-0 py-2 fw-semibold"
+                                    placeholder="Mín. 8 caracteres" required>
+                            </div>
+                            <div id="msg-error-pass" class="small mt-1" style="min-height: 18px;"></div>
                         </div>
-                        <div id="msg-error-pass" class="small mt-1" style="font-size: 0.7rem;"></div>
-                    </div>
 
-                    <div class="mb-4">
-                        <label class="form-label small fw-bold text-uppercase text-muted mb-2 ls-1">Confirmar Nueva</label>
-                        <div class="input-group border-bottom border-primary border-2 shadow-sm">
-                            <span class="input-group-text bg-white border-0 text-primary">
-                                <i class="bi bi-check-all"></i>
-                            </span>
-                            <input type="password" name="pass_confirmar" id="pass_confirmar"
-                                class="form-control border-0 bg-white ps-0 py-2 fw-semibold"
-                                placeholder="Repite la clave" required>
+                        <div class="mb-4">
+                            <label class="form-label small fw-bold text-uppercase text-muted mb-2 ls-1">Confirmar Nueva</label>
+                            <div class="input-group border-bottom border-primary border-2 shadow-sm">
+                                <span class="input-group-text bg-white border-0 text-primary">
+                                    <i class="bi bi-check-all"></i>
+                                </span>
+                                <input type="password" name="pass_confirmar" id="pass_confirmar"
+                                    class="form-control border-0 bg-white ps-0 py-2 fw-semibold"
+                                    placeholder="Repite la clave" required>
+                            </div>
+                            <div id="msg-error-confirm" class="small mt-1" style="min-height: 18px;"></div>
                         </div>
-                        <div id="msg-error-confirm" class="small mt-1" style="font-size: 0.7rem;"></div>
-                    </div>
 
-                    <div class="d-grid gap-2 mt-4">
-                        <button type="submit" id="btnGuardarPass"
-                            class="btn btn-primary py-2 fw-bold text-uppercase rounded-0 shadow-sm border-0 disabled"
-                            style="background: linear-gradient(45deg, #4fc3d0, #38b2ac);">
-                            <i class="bi bi-arrow-repeat me-2"></i>Actualizar
-                        </button>
-                        <button type="button" class="btn btn-link text-muted text-decoration-none small fw-bold py-2" data-bs-dismiss="modal">
-                            CANCELAR
-                        </button>
-                    </div>
-                </form>
+                        <div class="d-grid gap-2 mt-4">
+                            <button type="submit" id="btnGuardarPass" disabled
+                                class="btn btn-primary py-2 fw-bold text-uppercase rounded-0 shadow-sm border-0 opacity-50"
+                                style="background: linear-gradient(45deg, #4fc3d0, #38b2ac);">
+                                <i class="bi bi-arrow-repeat me-2"></i>Actualizar
+                            </button>
+                            <button type="button" class="btn btn-link text-muted text-decoration-none small fw-bold py-2" data-bs-dismiss="modal">
+                                CANCELAR
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
+
+
+
+
+
+
 </div>
 
 
 
-<script>
-    document.addEventListener('input', function(e) {
-        if (e.target.id === 'pass_nueva' || e.target.id === 'pass_confirmar') {
-            const pass = document.getElementById('pass_nueva').value;
-            const confirm = document.getElementById('pass_confirmar').value;
-            const btn = document.getElementById('btnGuardarPass');
-            const errorPass = document.getElementById('msg-error-pass');
-            const errorConfirm = document.getElementById('msg-error-confirm');
 
-            // RegEx: Al menos una letra, un número, sin espacios, mínimo 8 caracteres
-            const regex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
-
-            // Validar Formato
-            const esValida = regex.test(pass);
-            errorPass.innerHTML = esValida ?
-                '<span class="text-success fw-bold">✓ Formato válido</span>' :
-                '<span class="text-danger">⚠ Letras, números y mín. 8 caracteres</span>';
-
-            // Validar Coincidencia
-            const coinciden = (pass === confirm && pass !== "");
-            if (confirm !== "") {
-                errorConfirm.innerHTML = coinciden ?
-                    '<span class="text-success fw-bold">✓ Coinciden</span>' :
-                    '<span class="text-danger">⚠ No coinciden</span>';
-            }
-
-            // Habilitar Botón
-            if (esValida && coinciden) {
-                btn.classList.remove('disabled');
-            } else {
-                btn.classList.add('disabled');
-            }
-        }
-    });
-</script>
