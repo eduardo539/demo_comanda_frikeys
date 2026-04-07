@@ -4,7 +4,7 @@
 
 // 1. Si intentan entrar directo al archivo, simplemente apagamos la página
 if (!defined('RUTA_BASE')) {
-    header("Location: ../../"); 
+    header("Location: ../../");
     exit;
 }
 
@@ -50,8 +50,14 @@ if (!isset($_SESSION['nombre_rol']) || $_SESSION['nombre_rol'] !== 'COCINA') {
 
         <nav id="sidebar">
 
-            <div class="sidebar-header">
-                <h3 class="text-white fw-bold m-0">Fri<span style="color: var(--primary-color);">Keys</span></h3>
+            <div class="sidebar-header" style="padding: 1.5rem; text-align: center; display: flex; justify-content: center; align-items: center;">
+                <a href="#" style="text-decoration: none; display: block;">
+                    <img src="<?php echo RUTA_BASE; ?>public/assets/img/logo_sin_contorno.png"
+                        alt="Logo FriKeys"
+                        style="max-width: 140px; height: auto; object-fit: contain; transition: transform 0.3s ease;"
+                        onmouseover="this.style.transform='scale(1.05)'"
+                        onmouseout="this.style.transform='scale(1)'">
+                </a>
             </div>
 
             <div class="user-profile-section">
@@ -114,7 +120,7 @@ if (!isset($_SESSION['nombre_rol']) || $_SESSION['nombre_rol'] !== 'COCINA') {
                     title: '¡Registro Exitoso!',
                     text: 'El nuevo registro ha sido añadido al sistema.',
                     icon: 'success',
-                    confirmButtonColor: '#38b2ac', // Color acorde a tu gradiente
+                    confirmButtonColor: '#dc644b', // Color acorde a tu gradiente
                     confirmButtonText: 'Continuar'
                 }).then(() => {
                     // Limpia la URL para que no repita la alerta si refrescan (F5)
@@ -153,7 +159,7 @@ if (!isset($_SESSION['nombre_rol']) || $_SESSION['nombre_rol'] !== 'COCINA') {
             }
 
 
-            
+
         });
     </script>
 

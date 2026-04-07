@@ -14,13 +14,13 @@ $dataCategorias = obtenerCategorias($pdo);
     <div class="row mb-5 align-items-center">
         <div class="col-md-8">
             <h1 class="fw-bold text-dark m-0 d-flex align-items-center">
-                <i class="bi bi-tags-fill text-primary me-3"></i>
+                <i class="bi bi-tags-fill text-dark me-3"></i>
                 Categorías del Menú
             </h1>
             <p class="text-muted fs-5 mt-2">Organiza tus productos en grupos para facilitar la navegación de tus clientes.</p>
         </div>
         <div class="col-md-4 text-md-end">
-            <button class="btn btn-primary btn-lg rounded-pill shadow px-5 py-3 fw-bold"
+            <button class="btn btn-success btn-lg rounded-pill shadow px-5 py-3 fw-bold"
                 data-bs-toggle="modal"
                 data-bs-target="#modalNewCategoria">
                 <i class="bi bi-plus-circle-fill me-2"></i>Nueva Categoría
@@ -29,7 +29,7 @@ $dataCategorias = obtenerCategorias($pdo);
     </div>
 
     <div class="alert bg-white border-0 shadow-sm rounded-4 p-4 mb-5 d-flex align-items-center">
-        <div class="icon-info me-4 bg-primary bg-opacity-10 p-3 rounded-circle text-primary">
+        <div class="icon-info me-4 bg-dark bg-opacity-10 p-3 rounded-circle text-dark">
             <i class="bi bi-grid-fill fs-3"></i>
         </div>
         <div>
@@ -185,7 +185,7 @@ $dataCategorias = obtenerCategorias($pdo);
                     </div>
                     <div class="modal-footer border-0 pb-4 px-4">
                         <button type="button" class="btn btn-light fw-bold" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-primary fw-bold px-4">Guardar Cambios</button>
+                        <button type="submit" class="btn btn-success fw-bold px-4">Guardar Cambios</button>
                     </div>
                 </form>
             </div>

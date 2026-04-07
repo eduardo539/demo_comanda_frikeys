@@ -90,7 +90,7 @@ $productos = obtenerDataPlatillosCliente($pdo);
                     <p class="brand-subtitle mb-0">Café Restaurante</p>
                     <div class="mt-2">
                         <span class="badge bg-white text-dark rounded-pill px-3 py-2 shadow-sm">
-                            <i class="bi bi-geo-alt-fill text-info me-1"></i> <?php echo htmlspecialchars($nombreMesa); ?>
+                            <i class="bi bi-geo-alt-fill text-dark me-1"></i> <?php echo htmlspecialchars($nombreMesa); ?>
                         </span>
                     </div>
                 </div>
@@ -126,7 +126,7 @@ $productos = obtenerDataPlatillosCliente($pdo);
                             <h5 class="fw-bold text-dark mb-2"><?php echo htmlspecialchars($prod['nombre']); ?></h5>
                             <p class="text-muted small mb-4"><?php echo htmlspecialchars($prod['descripcion']); ?></p>
                             <div class="d-grid">
-                                <button class="btn btn-primary btn-agregar"
+                                <button class="btn btn-success btn-agregar"
                                     data-id="<?php echo $prod['producto_id']; ?>"
                                     data-nombre="<?php echo htmlspecialchars($prod['nombre']); ?>"
                                     data-precio="<?php echo $prod['costo']; ?>">
@@ -140,7 +140,7 @@ $productos = obtenerDataPlatillosCliente($pdo);
         </div>
     </main>
 
-    <div id="cart-floating" class="cart-container d-none fixed-bottom m-4 shadow-lg p-3 bg-primary rounded-pill text-white justify-content-between align-items-center" style="z-index: 1050; max-width: 400px; margin-left: auto !important;">
+    <div id="cart-floating" class="cart-container d-none fixed-bottom m-4 shadow-lg p-3 bg-success rounded-pill text-white justify-content-between align-items-center" style="z-index: 1050; max-width: 400px; margin-left: auto !important;">
         <div class="d-flex align-items-center gap-3">
             <div class="position-relative">
                 <i class="bi bi-bag-heart-fill fs-3"></i>
@@ -166,12 +166,12 @@ $productos = obtenerDataPlatillosCliente($pdo);
                     </div>
                     <div class="d-flex justify-content-between align-items-center mt-4 p-3 bg-light rounded-3">
                         <span class="fw-bold fs-5">Total:</span>
-                        <span class="fw-bold fs-5 text-primary" id="modal-total-amount">$0.00</span>
+                        <span class="fw-bold fs-5 text-success" id="modal-total-amount">$0.00</span>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cerrar</button>
-                    <button type="button" class="btn btn-primary px-4" onclick="enviarPedidoFinal()">Confirmar Pedido</button>
+                    <button type="button" class="btn btn-success px-4" onclick="enviarPedidoFinal()">Confirmar Pedido</button>
                 </div>
             </div>
         </div>

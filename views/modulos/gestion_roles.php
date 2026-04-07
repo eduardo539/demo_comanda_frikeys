@@ -12,13 +12,13 @@ $dataRoles = obtenerDataRoles($pdo);
     <div class="row mb-5 align-items-center">
         <div class="col-md-8">
             <h1 class="fw-bold text-dark m-0 d-flex align-items-center">
-                <i class="bi bi-shield-lock-fill text-primary me-3"></i>
+                <i class="bi bi-shield-lock-fill text-dark me-3"></i>
                 Roles y Permisos
             </h1>
             <p class="text-muted fs-5 mt-2">Define los niveles de acceso y responsabilidades para el personal del restaurante.</p>
         </div>
         <div class="col-md-4 text-md-end">
-            <button class="btn btn-primary btn-lg rounded-pill shadow px-5 py-3 fw-bold"
+            <button class="btn btn-success btn-lg rounded-pill shadow px-5 py-3 fw-bold"
                 data-bs-toggle="modal"
                 data-bs-target="#modalNuevoRol">
                 <i class="bi bi-plus-circle-fill me-2"></i>Nuevo Rol
@@ -26,8 +26,8 @@ $dataRoles = obtenerDataRoles($pdo);
         </div>
     </div>
 
-    <div class="alert bg-white border-0 shadow-sm rounded-4 p-4 mb-5 d-flex align-items-center border-start border-primary border-4">
-        <div class="icon-info me-4 text-primary">
+    <div class="alert bg-white border-0 shadow-sm rounded-4 p-4 mb-5 d-flex align-items-center border-start border-success border-4">
+        <div class="icon-info me-4 text-success">
             <i class="bi bi-info-square-fill fs-2"></i>
         </div>
         <div>
@@ -43,7 +43,7 @@ $dataRoles = obtenerDataRoles($pdo);
                 <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
                     <div class="card role-card border-0 shadow-lg h-100 p-2">
                         <div class="card-body text-center">
-                            <div class="role-icon-bg mx-auto mb-4 bg-primary bg-opacity-10 text-white shadow-sm">
+                            <div class="role-icon-bg mx-auto mb-4 bg-success bg-opacity-10 text-white shadow-sm">
                                 <img src="<?php echo RUTA_BASE; ?>public/assets/img/roles.png"
                                     alt="Icono Roles"
                                     style="width: 70px; height: 70px; object-fit: contain;">
@@ -55,7 +55,7 @@ $dataRoles = obtenerDataRoles($pdo);
 
                             <div class="d-flex justify-content-center gap-2 border-top pt-4">
                                 <button type="button"
-                                    class="btn btn-light-primary rounded-3 py-2 px-3 btn-editar"
+                                    class="btn btn-light-success rounded-3 py-2 px-3 btn-editar"
                                     data-bs-toggle="modal"
                                     data-bs-target="#modalEditarRol"
                                     data-rol="<?php echo $rol['rol_id']; ?>"
@@ -92,7 +92,7 @@ $dataRoles = obtenerDataRoles($pdo);
             <div class="modal-content border-0 shadow-lg rounded-0" style="background: #f8f9fa;">
                 <div class="modal-header border-0 pb-0 justify-content-center pt-4">
                     <div class="text-center">
-                        <div class="bg-primary bg-opacity-10 text-primary rounded-circle mx-auto mb-2 d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                        <div class="bg-success bg-opacity-10 text-success rounded-circle mx-auto mb-2 d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
                             <i class="bi bi-shield-plus fs-2"></i>
                         </div>
                         <h5 class="modal-title fw-bold text-dark px-3">Crear Nuevo Rol</h5>
@@ -105,8 +105,8 @@ $dataRoles = obtenerDataRoles($pdo);
                     <form id="formNuevoRol" action="addRol" method="POST">
                         <div class="mb-4">
                             <label class="form-label small fw-bold text-uppercase text-muted mb-2 ls-1">Nombre del Rol</label>
-                            <div class="input-group border-bottom border-primary border-2 shadow-sm">
-                                <span class="input-group-text bg-white border-0 text-primary">
+                            <div class="input-group border-bottom border-success border-2 shadow-sm">
+                                <span class="input-group-text bg-white border-0 text-success">
                                     <i class="bi bi-person-badge"></i>
                                 </span>
                                 <input type="text"
@@ -124,7 +124,7 @@ $dataRoles = obtenerDataRoles($pdo);
                         </div>
 
                         <div class="d-grid gap-2 mt-4">
-                            <button type="submit" id="btnGuardarRol" class="btn btn-primary py-2 fw-bold text-uppercase rounded-0 shadow-sm border-0" style="background: linear-gradient(45deg, #4fc3d0, #38b2ac);">
+                            <button type="submit" id="btnGuardarRol" class="btn btn-success py-2 fw-bold text-uppercase rounded-0 shadow-sm border-0" style="background: linear-gradient(45deg, #4fc3d0, #38b2ac);">
                                 <i class="bi bi-check-lg me-2"></i>Guardar Rol
                             </button>
                             <button type="button" class="btn btn-link text-muted text-decoration-none small fw-bold py-2" data-bs-dismiss="modal">
@@ -174,7 +174,7 @@ $dataRoles = obtenerDataRoles($pdo);
                     </div>
                     <div class="modal-footer border-0 pb-4 px-4">
                         <button type="button" class="btn btn-light fw-bold" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-primary fw-bold px-4">Actualizar Rol</button>
+                        <button type="submit" class="btn btn-success fw-bold px-4">Actualizar Rol</button>
                     </div>
                 </form>
             </div>

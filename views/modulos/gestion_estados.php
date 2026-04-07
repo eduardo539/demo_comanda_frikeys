@@ -26,10 +26,10 @@ $estadoPlatillo = obtenerDataEstadoPlatillo($pdo);
     <div class="mb-5">
         <div class="d-flex align-items-center justify-content-between mb-4">
             <div class="d-flex align-items-center flex-grow-1">
-                <h4 class="fw-bold text-primary text-uppercase tracking-wider m-0 me-3">Estados Generales</h4>
-                <hr class="flex-grow-1 border-primary opacity-25 d-none d-md-block">
+                <h4 class="fw-bold text-dark text-uppercase tracking-wider m-0 me-3">Estados Generales</h4>
+                <hr class="flex-grow-1 border-dark opacity-25 d-none d-md-block">
             </div>
-            <button class="btn btn-primary rounded-pill px-4 shadow-sm fw-bold ms-3"
+            <button class="btn btn-success rounded-pill px-4 shadow-sm fw-bold ms-3"
                 data-bs-toggle="modal"
                 data-bs-target="#modalNuevoEstadoGen">
                 <i class="bi bi-plus-lg me-2"></i>Nuevo Estado Gral.
@@ -80,10 +80,10 @@ $estadoPlatillo = obtenerDataEstadoPlatillo($pdo);
     <div class="mb-5">
         <div class="d-flex align-items-center justify-content-between mb-4">
             <div class="d-flex align-items-center flex-grow-1">
-                <h4 class="fw-bold text-info text-uppercase tracking-wider m-0 me-3">Estados de Pedidos</h4>
-                <hr class="flex-grow-1 border-info opacity-25 d-none d-md-block">
+                <h4 class="fw-bold text-dark text-uppercase tracking-wider m-0 me-3">Estados de Pedidos</h4>
+                <hr class="flex-grow-1 border-dark opacity-25 d-none d-md-block">
             </div>
-            <button class="btn btn-info text-white rounded-pill px-4 shadow-sm fw-bold ms-3"
+            <button class="btn btn-success text-white rounded-pill px-4 shadow-sm fw-bold ms-3"
                 data-bs-toggle="modal"
                 data-bs-target="#modalNuevoEstadoPedido">
                 <i class="bi bi-plus-lg me-2"></i>Nuevo Estado Pedido
@@ -161,7 +161,7 @@ $estadoPlatillo = obtenerDataEstadoPlatillo($pdo);
                                 oninput="this.setCustomValidity('')">
                         </div>
                         <div class="d-grid gap-2">
-                            <button type="submit" class="btn btn-primary fw-bold py-2">GUARDAR ESTADO</button>
+                            <button type="submit" class="btn btn-success fw-bold py-2">GUARDAR ESTADO</button>
                             <button type="button" class="btn btn-light text-muted small fw-bold" data-bs-dismiss="modal">CANCELAR</button>
                         </div>
                     </form>
@@ -200,7 +200,7 @@ $estadoPlatillo = obtenerDataEstadoPlatillo($pdo);
                                 oninput="this.setCustomValidity('')">
                         </div>
                         <div class="d-grid gap-2">
-                            <button type="submit" class="btn btn-info text-white fw-bold py-2">GUARDAR ESTADO</button>
+                            <button type="submit" class="btn btn-success text-white fw-bold py-2">GUARDAR ESTADO</button>
                             <button type="button" class="btn btn-light text-muted small fw-bold" data-bs-dismiss="modal">CANCELAR</button>
                         </div>
                     </form>
@@ -242,7 +242,7 @@ $estadoPlatillo = obtenerDataEstadoPlatillo($pdo);
 
                     <div class="modal-footer border-0 p-4">
                         <button type="button" class="btn btn-light fw-bold border px-4" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-primary fw-bold shadow px-4">Actualizar Estado</button>
+                        <button type="submit" class="btn btn-success fw-bold shadow px-4">Actualizar Estado</button>
                     </div>
                 </form>
             </div>
@@ -317,7 +317,7 @@ $estadoPlatillo = obtenerDataEstadoPlatillo($pdo);
 
                     <div class="modal-footer border-0 p-4">
                         <button type="button" class="btn btn-light fw-bold border px-4" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-primary fw-bold shadow px-4">Actualizar Estado</button>
+                        <button type="submit" class="btn btn-success fw-bold shadow px-4">Actualizar Estado</button>
                     </div>
                 </form>
             </div>

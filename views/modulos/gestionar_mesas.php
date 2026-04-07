@@ -14,7 +14,7 @@ $estados = obtenerDataEstado($pdo);
     <div class="row mb-5 align-items-center">
         <div class="col-md-8">
             <h1 class="fw-bold text-dark m-0 d-flex align-items-center">
-                <i class="bi bi-grid-3x3-gap-fill text-primary me-3"></i>
+                <i class="bi bi-grid-3x3-gap-fill text-dark me-3"></i>
                 Gestión de Mesas
             </h1>
             <p class="text-muted fs-5 mt-2">
@@ -22,7 +22,7 @@ $estados = obtenerDataEstado($pdo);
             </p>
         </div>
         <div class="col-md-4 text-md-end">
-            <button class="btn btn-primary btn-lg rounded-pill shadow px-5 py-3 fw-bold"
+            <button class="btn btn-success btn-lg rounded-pill shadow px-5 py-3 fw-bold"
                 data-bs-toggle="modal"
                 data-bs-target="#modalNewMesa">
                 <i class="bi bi-plus-circle-fill me-2"></i>Nueva Mesa
@@ -169,7 +169,7 @@ $estados = obtenerDataEstado($pdo);
     <div class="modal fade" id="modalEditarMesa" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content border-0 shadow-lg rounded-4">
-                <div class="modal-header border-0 bg-primary bg-gradient text-white p-4 rounded-top-4">
+                <div class="modal-header border-0 bg-dark bg-gradient text-white p-4 rounded-top-4">
                     <h5 class="modal-title fw-bold m-0">
                         <i class="bi bi-gear-fill me-2"></i>Configurar Mesa
                     </h5>
@@ -215,7 +215,7 @@ $estados = obtenerDataEstado($pdo);
                         <button type="button" class="btn btn-light btn-lg fw-bold text-secondary flex-grow-1 border" data-bs-dismiss="modal">
                             Cancelar
                         </button>
-                        <button type="submit" class="btn btn-primary btn-lg fw-bold flex-grow-1 shadow">
+                        <button type="submit" class="btn btn-success btn-lg fw-bold flex-grow-1 shadow">
                             Guardar
                         </button>
                     </div>

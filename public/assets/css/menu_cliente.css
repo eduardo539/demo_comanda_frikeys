@@ -2,7 +2,7 @@
    VARIABLES Y CONFIGURACIÓN GLOBAL
    ========================================= */
 :root {
-  --frikeys-blue: #4fc3d0;
+  --frikeys-blue: #dc644b;
   --frikeys-gold: #b38b4d;
   --frikeys-gold-light: #cd9e5a;
   --frikeys-dark: #1a1a1a;
@@ -22,7 +22,7 @@ body {
    CABECERA (HEADER)
    ========================================= */
 .menu-header {
-  background: linear-gradient(135deg, var(--frikeys-blue) 0%, #3aa9b5 100%);
+  background: linear-gradient(135deg, var(--frikeys-blue) 0%, #dc644b 100%);
   border-radius: 0 0 35px 35px;
   padding: 25px 0;
   z-index: 1020;

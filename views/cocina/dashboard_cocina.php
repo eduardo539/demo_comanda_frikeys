@@ -52,9 +52,9 @@ $totalPlatillos = obtenerTotalActivos($pdo);
         </div>
 
         <div class="col-12 col-md-4">
-            <div class="card border-0 shadow-sm rounded-4 p-4 h-100 bg-white border-start border-primary border-5">
+            <div class="card border-0 shadow-sm rounded-4 p-4 h-100 bg-white border-start border-success border-5">
                 <div class="d-flex align-items-center">
-                    <div class="icon-circle bg-primary-subtle text-primary me-3">
+                    <div class="icon-circle bg-success-subtle text-success me-3">
                         <i class="bi bi-egg-fried fs-3"></i>
                     </div>
                     <div>

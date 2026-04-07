@@ -1,7 +1,7 @@
 :root {
     --sidebar-width: 280px;
-    --primary-color: #4fc3d0;
-    --accent-color: #38b2ac;
+    --primary-color: #dc644b;
+    --accent-color: #dc644b;
     --dark-bg: #111827; /* Gris azulado muy oscuro */
     --sidebar-item-hover: rgba(79, 195, 208, 0.15);
     --glass: rgba(255, 255, 255, 0.03);

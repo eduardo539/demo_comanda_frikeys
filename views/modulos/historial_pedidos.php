@@ -27,7 +27,7 @@ $queryString = $filtroFolio ? "&folio=" . urlencode($filtroFolio) : "";
             <div class="row g-3 align-items-center">
                 <div class="col-xl-3 col-lg-4">
                     <h5 class="fw-bold mb-0 text-dark">
-                        <i class="bi bi-receipt-cutoff me-2 text-primary"></i>Historial de Ventas
+                        <i class="bi bi-receipt-cutoff me-2 text-dark"></i>Historial de Ventas
                     </h5>
                     <p class="text-muted small mb-0">Total: <b><?php echo number_format($totalRegistros); ?></b> líneas registradas</p>
                 </div>
@@ -65,7 +65,7 @@ $queryString = $filtroFolio ? "&folio=" . urlencode($filtroFolio) : "";
                         </div>
 
                         <a href="?p=<?php echo $paginaActual + 1 . $queryString; ?>"
-                            class="btn btn-primary <?php echo ($paginaActual >= $totalPaginas) ? 'disabled' : ''; ?>">
+                            class="btn btn-success <?php echo ($paginaActual >= $totalPaginas) ? 'disabled' : ''; ?>">
                             Sig. 40 <i class="bi bi-chevron-right ms-1"></i>
                         </a>
                     </div>
@@ -100,7 +100,7 @@ $queryString = $filtroFolio ? "&folio=" . urlencode($filtroFolio) : "";
                                     <span class="small opacity-75 ms-1"><?php echo date('H:i', strtotime($reg['fecha'])); ?></span>
                                 </td>
                                 <td>
-                                    <span class="badge bg-light text-primary border rounded-pill">
+                                    <span class="badge bg-light text-success border rounded-pill">
                                         <i class="bi bi-geo-alt-fill me-1"></i><?php echo $reg['nombre_mesa']; ?>
                                     </span>
                                 </td>
@@ -116,7 +116,7 @@ $queryString = $filtroFolio ? "&folio=" . urlencode($filtroFolio) : "";
                                         <?php echo $reg['cantidad']; ?>
                                     </span>
                                 </td>
-                                <td class="fw-bold text-primary">$<?php echo number_format($reg['total'], 2); ?></td>
+                                <td class="fw-bold text-success">$<?php echo number_format($reg['total'], 2); ?></td>
                                 <td class="pe-4 text-end">
                                     <?php
                                     $status = strtolower($reg['estado_pedido']);
