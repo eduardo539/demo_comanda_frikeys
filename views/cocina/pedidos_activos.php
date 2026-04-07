@@ -15,15 +15,15 @@ $totalxEntregar = obtenerPedidoxEntregar($pdo);
     <div class="row mb-5 align-items-center">
         <div class="col-md-8 text-center text-md-start">
             <h1 class="fw-bold text-dark m-0 d-flex align-items-center justify-content-center justify-content-md-start">
-                <i class="bi bi-fire text-primary me-3"></i>
+                <i class="bi bi-fire text-dark me-3"></i>
                 Pedidos en Cocina
             </h1>
             <p class="text-muted fs-5 mt-2">Monitoreo de comandas en preparación.</p>
         </div>
         <div class="col-md-4 text-center text-md-end">
-            <div class="bg-white shadow-sm rounded-pill px-4 py-3 d-inline-block border-start border-primary border-4">
+            <div class="bg-white shadow-sm rounded-pill px-4 py-3 d-inline-block border-start border-dark border-4">
                 <span class="text-muted small fw-bold text-uppercase">Por preparar: </span>
-                <span class="text-primary fw-bold fs-5"><?php echo ($totalPedidos); ?></span>
+                <span class="text-dark fw-bold fs-5"><?php echo ($totalPedidos); ?></span>
             </div>
             <div class="bg-white shadow-sm rounded-pill px-4 py-3 d-inline-block border-start border-warning border-4">
                 <span class="text-muted small fw-bold text-uppercase">Por Entregar: </span>
@@ -58,7 +58,7 @@ $totalxEntregar = obtenerPedidoxEntregar($pdo);
                                     </td>
                                     <td>
                                         <div class="d-flex align-items-center">
-                                            <i class="bi bi-geo-alt-fill text-primary me-2"></i>
+                                            <i class="bi bi-geo-alt-fill text-dark me-2"></i>
                                             <span class="fw-semibold text-dark"><?php echo htmlspecialchars($pedido['nombre_mesa']); ?></span>
                                         </div>
                                     </td>
@@ -93,7 +93,7 @@ $totalxEntregar = obtenerPedidoxEntregar($pdo);
                                     <td class="pe-4 text-end">
                                         <button type="button"
                                             class="btn btn-primary rounded-0 py-2 px-4 fw-bold text-uppercase btn-detalle shadow-sm"
-                                            style="background: linear-gradient(45deg, #4fc3d0, #38b2ac); border: none; font-size: 0.8rem;"
+                                            style="background: linear-gradient(45deg, #dc644b, #dc644b); border: none; font-size: 0.8rem;"
                                             data-bs-toggle="modal"
                                             data-bs-target="#modalDetallePedido"
                                             data-folio="<?php echo $pedido['folio']; ?>"

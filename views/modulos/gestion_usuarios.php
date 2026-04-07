@@ -18,13 +18,13 @@ $estado = obtenerDataEstado($pdo);
     <div class="row mb-5 align-items-center">
         <div class="col-md-8">
             <h1 class="fw-bold text-dark m-0 d-flex align-items-center">
-                <i class="bi bi-people-fill text-primary me-3"></i>
+                <i class="bi bi-people-fill text-dark me-3"></i>
                 Gestión de Empleados
             </h1>
             <p class="text-muted fs-5 mt-2">Administra el personal de tu restaurante y asigna sus permisos en el sistema.</p>
         </div>
         <div class="col-md-4 text-md-end">
-            <button class="btn btn-primary btn-lg rounded-pill shadow px-5 py-3 fw-bold"
+            <button class="btn btn-success btn-lg rounded-pill shadow px-5 py-3 fw-bold"
                 data-bs-toggle="modal"
                 data-bs-target="#modalNewUsuario">
                 <i class="bi bi-person-plus-fill me-2"></i>Agregar Nuevo Usuario
@@ -39,7 +39,7 @@ $estado = obtenerDataEstado($pdo);
                 <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
                     <div class="card user-card border-0 shadow-lg h-100 overflow-hidden">
                         <div class="card-body p-4 text-center">
-                            <div class="avatar-wrapper mx-auto mb-3 bg-primary text-white shadow">
+                            <div class="avatar-wrapper mx-auto mb-3 bg-success text-white shadow">
                                 <span class="fs-2 fw-bold">
                                     <?php
                                     $inicialNombre = substr($user['Nombre'], 0, 1);
@@ -124,7 +124,7 @@ $estado = obtenerDataEstado($pdo);
             <div class="modal-content border-0 shadow-lg rounded-4">
                 <div class="modal-header border-0 pb-0 justify-content-center pt-4">
                     <div class="text-center">
-                        <div class="bg-primary bg-opacity-10 text-primary rounded-circle mx-auto mb-2 d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                        <div class="bg-success bg-opacity-10 text-success rounded-circle mx-auto mb-2 d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
                             <i class="bi bi-person-plus-fill fs-2"></i>
                         </div>
                         <h5 class="modal-title fw-bold text-dark px-3">Registro de Nuevo Usuario</h5>
@@ -137,8 +137,8 @@ $estado = obtenerDataEstado($pdo);
                         <div class="row g-3">
                             <div class="col-md-6">
                                 <label class="form-label small fw-bold text-muted text-uppercase mb-1">Nombre</label>
-                                <div class="input-group border-bottom border-primary border-2 mb-3 shadow-sm">
-                                    <span class="input-group-text bg-white border-0 text-primary"><i class="bi bi-person"></i></span>
+                                <div class="input-group border-bottom border-success border-2 mb-3 shadow-sm">
+                                    <span class="input-group-text bg-white border-0 text-success"><i class="bi bi-person"></i></span>
                                     <input type="text" name="nombre" class="form-control border-0 bg-white"
                                         placeholder="Ej: Juan Pablo" required
                                         pattern="[A-Za-zñÑáéíóúÁÉÍÓÚ\s]+"
@@ -146,8 +146,8 @@ $estado = obtenerDataEstado($pdo);
                                 </div>
 
                                 <label class="form-label small fw-bold text-muted text-uppercase mb-1">Usuario (Login)</label>
-                                <div class="input-group border-bottom border-primary border-2 mb-3 shadow-sm">
-                                    <span class="input-group-text bg-white border-0 text-primary"><i class="bi bi-at"></i></span>
+                                <div class="input-group border-bottom border-success border-2 mb-3 shadow-sm">
+                                    <span class="input-group-text bg-white border-0 text-success"><i class="bi bi-at"></i></span>
                                     <input type="text" name="usuario" class="form-control border-0 bg-white"
                                         placeholder="juan123" required
                                         pattern="[A-Za-z0-9]+"
@@ -156,8 +156,8 @@ $estado = obtenerDataEstado($pdo);
                                 </div>
 
                                 <label class="form-label small fw-bold text-muted text-uppercase mb-1">Teléfono</label>
-                                <div class="input-group border-bottom border-primary border-2 mb-3 shadow-sm">
-                                    <span class="input-group-text bg-white border-0 text-primary"><i class="bi bi-telephone"></i></span>
+                                <div class="input-group border-bottom border-success border-2 mb-3 shadow-sm">
+                                    <span class="input-group-text bg-white border-0 text-success"><i class="bi bi-telephone"></i></span>
                                     <input type="text" name="telefono" class="form-control border-0 bg-white"
                                         placeholder="987654321" required
                                         pattern="\d+" maxlength="10"
@@ -169,8 +169,8 @@ $estado = obtenerDataEstado($pdo);
                             <div class="col-md-6">
 
                                 <label class="form-label small fw-bold text-muted text-uppercase mb-1">Apellidos</label>
-                                <div class="input-group border-bottom border-primary border-2 mb-3 shadow-sm">
-                                    <span class="input-group-text bg-white border-0 text-primary"><i class="bi bi-person-vcard"></i></span>
+                                <div class="input-group border-bottom border-success border-2 mb-3 shadow-sm">
+                                    <span class="input-group-text bg-white border-0 text-success"><i class="bi bi-person-vcard"></i></span>
                                     <input type="text" name="apellidos" class="form-control border-0 bg-white"
                                         placeholder="Ej: Pérez García" required
                                         pattern="[A-Za-zñÑáéíóúÁÉÍÓÚ\s]+"
@@ -178,8 +178,8 @@ $estado = obtenerDataEstado($pdo);
                                 </div>
 
                                 <label class="form-label small fw-bold text-muted text-uppercase mb-1">Edad</label>
-                                <div class="input-group border-bottom border-primary border-2 mb-3 shadow-sm">
-                                    <span class="input-group-text bg-white border-0 text-primary"><i class="bi bi-calendar-event"></i></span>
+                                <div class="input-group border-bottom border-success border-2 mb-3 shadow-sm">
+                                    <span class="input-group-text bg-white border-0 text-success"><i class="bi bi-calendar-event"></i></span>
                                     <input type="text" name="edad" class="form-control border-0 bg-white"
                                         placeholder="25" required
                                         maxlength="3"
@@ -188,8 +188,8 @@ $estado = obtenerDataEstado($pdo);
                                 </div>
 
                                 <label class="form-label small fw-bold text-muted text-uppercase mb-1">Rol de Acceso</label>
-                                <div class="input-group border-bottom border-primary border-2 mb-3 shadow-sm">
-                                    <span class="input-group-text bg-white border-0 text-primary"><i class="bi bi-shield-lock"></i></span>
+                                <div class="input-group border-bottom border-success border-2 mb-3 shadow-sm">
+                                    <span class="input-group-text bg-white border-0 text-success"><i class="bi bi-shield-lock"></i></span>
                                     <select name="id_rol" class="form-select border-0 bg-white fw-semibold" required>
                                         <option value="" selected disabled>Elija un rol...</option>
                                         <?php foreach ($roles as $rol): ?>
@@ -203,8 +203,8 @@ $estado = obtenerDataEstado($pdo);
 
 
                                 <label class="form-label small fw-bold text-muted text-uppercase mb-1">Estado del Usuario</label>
-                                <div class="input-group border-bottom border-primary border-2 mb-3 shadow-sm">
-                                    <span class="input-group-text bg-white border-0 text-primary">
+                                <div class="input-group border-bottom border-success border-2 mb-3 shadow-sm">
+                                    <span class="input-group-text bg-white border-0 text-success">
                                         <i class="bi bi-toggle-on"></i> </span>
                                     <select name="id_estado" class="form-select border-0 bg-white fw-semibold" required>
                                         <option value="" selected disabled>Elija un estado...</option>
@@ -220,7 +220,7 @@ $estado = obtenerDataEstado($pdo);
                         </div>
 
                         <div class="d-grid gap-2 mt-4">
-                            <button type="submit" class="btn btn-primary py-3 fw-bold text-uppercase rounded-3 shadow border-0">
+                            <button type="submit" class="btn btn-success py-3 fw-bold text-uppercase rounded-3 shadow border-0">
                                 <i class="bi bi-person-check-fill me-2"></i>Registrar Usuario
                             </button>
                             <button type="button" class="btn btn-link text-muted text-decoration-none small fw-bold py-2" data-bs-dismiss="modal">
@@ -229,12 +229,12 @@ $estado = obtenerDataEstado($pdo);
                         </div>
 
 
-                        <div class="mt-4 p-3 bg-light border-start border-primary border-4 rounded shadow-sm">
+                        <div class="mt-4 p-3 bg-light border-start border-success border-4 rounded shadow-sm">
                             <div class="d-flex align-items-center">
-                                <i class="bi bi-info-circle-fill text-primary fs-5 me-3"></i>
+                                <i class="bi bi-info-circle-fill text-success fs-5 me-3"></i>
                                 <div>
                                     <span class="text-dark fw-bold d-block small">Nota de Seguridad:</span>
-                                    <span class="text-muted small">La contraseña de acceso por defecto será: <strong class="text-primary">cambio123</strong></span>
+                                    <span class="text-muted small">La contraseña de acceso por defecto será: <strong class="text-success">cambio123</strong></span>
                                 </div>
                             </div>
                         </div>
@@ -301,8 +301,8 @@ $estado = obtenerDataEstado($pdo);
                         <hr class="my-4 text-muted opacity-25">
 
                         <div class="mb-2">
-                            <label class="form-label small fw-bold text-primary">Estado de la cuenta (Editable)</label>
-                            <select name="estado_id" id="edit_estado_user" class="form-select border-primary shadow-sm" required>
+                            <label class="form-label small fw-bold text-success">Estado de la cuenta (Editable)</label>
+                            <select name="estado_id" id="edit_estado_user" class="form-select border-success shadow-sm" required>
                                 <?php foreach ($estado as $est): ?>
                                     <option value="<?php echo $est['estado_gen_id']; ?>"><?php echo $est['estado']; ?></option>
                                 <?php endforeach; ?>
@@ -314,7 +314,7 @@ $estado = obtenerDataEstado($pdo);
                     </div>
                     <div class="modal-footer border-0 pb-4 px-4">
                         <button type="button" class="btn btn-light fw-bold" data-bs-dismiss="modal">Cerrar</button>
-                        <button type="submit" class="btn btn-primary fw-bold px-4 shadow-sm">Guardar Cambios</button>
+                        <button type="submit" class="btn btn-success fw-bold px-4 shadow-sm">Guardar Cambios</button>
                     </div>
                 </form>
             </div>

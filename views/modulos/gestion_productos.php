@@ -21,7 +21,7 @@ $categoria = obtenerCategorias($pdo);
             <p class="text-muted fs-5 mt-2">Configura los platillos y bebidas que ofreces a tus clientes.</p>
         </div>
         <div class="col-md-5 text-md-end">
-            <button class="btn btn-primary btn-lg rounded-pill shadow px-5 py-3 fw-bold"
+            <button class="btn btn-success btn-lg rounded-pill shadow px-5 py-3 fw-bold"
                 data-bs-toggle="modal"
                 data-bs-target="#modalNewPlatillo">
                 <i class="bi bi-plus-circle-fill me-2"></i>Nuevo Platillo
@@ -177,9 +177,9 @@ $categoria = obtenerCategorias($pdo);
                                 <div class="input-group border-bottom border-warning border-2 mb-3 shadow-sm">
                                     <span class="input-group-text bg-white border-0 text-warning"><i class="bi bi-card-text"></i></span>
                                     <input type="text" name="descripcion" class="form-control border-0 bg-white"
-                                        placeholder="Ej: Orden de 5 tacos con piña" required
-                                        pattern="[A-Za-zñÑáéíóúÁÉÍÓÚ0-9\s]+"
-                                        title="Letras, números y espacios permitidos">
+                                        placeholder="Ej: Orden de 5 tacos, con piña_extra-especial." required
+                                        pattern="[A-Za-zñÑáéíóúÁÉÍÓÚ0-9\s.,_-]+"
+                                        title="Letras, números, espacios, puntos, comas y guiones permitidos">
                                 </div>
 
                                 <label class="form-label small fw-bold text-muted text-uppercase mb-1">Estado de Disponibilidad</label>
@@ -246,7 +246,7 @@ $categoria = obtenerCategorias($pdo);
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content border-0 shadow-lg rounded-4">
                 <div class="modal-header border-0 pt-4 px-4">
-                    <h5 class="modal-title fw-bold">Editar: <span id="display_nombre_producto" class="text-primary text-break"></span></h5>
+                    <h5 class="modal-title fw-bold">Editar: <span id="display_nombre_producto" class="text-success text-break"></span></h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
 
@@ -317,7 +317,7 @@ $categoria = obtenerCategorias($pdo);
                     </div>
                     <div class="modal-footer border-0 pb-4 px-4">
                         <button type="button" class="btn btn-light fw-bold" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-primary fw-bold px-4 shadow-sm">Guardar Cambios</button>
+                        <button type="submit" class="btn btn-success fw-bold px-4 shadow-sm">Guardar Cambios</button>
                     </div>
                 </form>
             </div>

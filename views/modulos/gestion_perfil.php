@@ -12,7 +12,7 @@ $dataPerfil = obtenerDataPerfil($pdo, $id_usuario_sesion);
     <div class="row justify-content-center">
         <div class="col-lg-8">
             <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
-                <div class="card-header bg-primary py-5 text-center position-relative">
+                <div class="card-header bg-dark py-5 text-center position-relative">
                     <div class="position-absolute top-100 start-50 translate-middle">
                         <div class="bg-white p-1 rounded-circle shadow">
                             <img src="https://ui-avatars.com/api/?name=<?php echo $dataPerfil['Nombre'] . '+' . $dataPerfil['Apellidos']; ?>&size=128&background=random"
@@ -24,7 +24,7 @@ $dataPerfil = obtenerDataPerfil($pdo, $id_usuario_sesion);
                 <div class="card-body pt-5 mt-4">
                     <div class="text-center mb-4">
                         <h3 class="fw-bold mb-0"><?php echo $dataPerfil['Nombre'] . " " . $dataPerfil['Apellidos']; ?></h3>
-                        <span class="badge bg-info-subtle text-info px-3 rounded-pill"><?php echo $dataPerfil['nombre_rol']; ?></span>
+                        <span class="badge bg-secondary-subtle text-secondary px-3 rounded-pill"><?php echo $dataPerfil['nombre_rol']; ?></span>
                         <span class="badge bg-success-subtle text-success px-3 rounded-pill"><?php echo $dataPerfil['estado']; ?></span>
                     </div>
 
@@ -80,7 +80,7 @@ $dataPerfil = obtenerDataPerfil($pdo, $id_usuario_sesion);
                                         <i class="bi bi-key me-2"></i> Cambiar Contraseña
                                     </button>
 
-                                    <button type="submit" class="btn btn-primary rounded-pill px-5 fw-bold shadow">
+                                    <button type="submit" class="btn btn-dark rounded-pill px-5 fw-bold shadow">
                                         <i class="bi bi-check2-circle me-2"></i> Guardar Cambios
                                     </button>
                                 </div>
@@ -177,7 +177,3 @@ $dataPerfil = obtenerDataPerfil($pdo, $id_usuario_sesion);
 
 
 </div>
-
-
-
-
